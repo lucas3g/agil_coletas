@@ -5,11 +5,11 @@ import 'package:result_dart/result_dart.dart';
 abstract class Entity {
   final IdVO id;
 
-  const Entity({required this.id});
-
   Result<Entity, String> validate([Object? object]) {
     return id.validate().pure(this);
   }
+
+  const Entity({required this.id});
 
   @override
   bool operator ==(covariant Entity other) {
