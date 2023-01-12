@@ -6,7 +6,7 @@ class UserAdapter {
     return User(
       id: IdVO(map['id']),
       cnpj: map['cnpj'],
-      name: map['name'],
+      name: map['nome'],
       login: map['login'],
       password: map['password'],
     );
