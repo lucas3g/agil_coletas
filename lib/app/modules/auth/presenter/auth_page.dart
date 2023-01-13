@@ -1,18 +1,26 @@
-import 'package:agil_coletas/app/components/my_elevated_button_widget.dart';
-import 'package:agil_coletas/app/components/my_input_widget.dart';
-import 'package:agil_coletas/app/core_module/constants/constants.dart';
-import 'package:agil_coletas/app/modules/auth/domain/entities/user.dart';
-import 'package:agil_coletas/app/modules/auth/infra/adapters/user_adapter.dart';
-import 'package:agil_coletas/app/theme/app_theme.dart';
-import 'package:agil_coletas/app/utils/constants.dart';
-import 'package:agil_coletas/app/utils/formatters.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:agil_coletas/app/components/my_elevated_button_widget.dart';
+import 'package:agil_coletas/app/components/my_input_widget.dart';
+import 'package:agil_coletas/app/core_module/constants/constants.dart';
+import 'package:agil_coletas/app/modules/auth/domain/entities/user.dart';
+import 'package:agil_coletas/app/modules/auth/infra/adapters/user_adapter.dart';
+import 'package:agil_coletas/app/modules/auth/presenter/bloc/auth_bloc.dart';
+import 'package:agil_coletas/app/theme/app_theme.dart';
+import 'package:agil_coletas/app/utils/constants.dart';
+import 'package:agil_coletas/app/utils/formatters.dart';
+
 class AuthPage extends StatefulWidget {
-  const AuthPage({super.key});
+  final AuthBloc authBloc;
+
+  const AuthPage({
+    Key? key,
+    required this.authBloc,
+  }) : super(key: key);
 
   @override
   State<AuthPage> createState() => _AuthPageState();
