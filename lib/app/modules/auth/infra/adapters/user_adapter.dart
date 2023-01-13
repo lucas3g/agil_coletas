@@ -13,9 +13,9 @@ class UserAdapter {
 
   static Map<String, dynamic> toJson(User user) {
     return {
-      'CNPJ': user.cnpj,
-      'USUARIO': user.login,
-      'SENHA': user.password,
+      'CNPJ': user.cnpj.value,
+      'USUARIO': user.login.value,
+      'SENHA': user.password.value,
     };
   }
 

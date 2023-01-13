@@ -1,7 +1,13 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
+
+import 'package:agil_coletas/app/modules/auth/presenter/bloc/events/auth_events.dart';
+import 'package:agil_coletas/app/modules/auth/presenter/bloc/states/auth_states.dart';
+import 'package:agil_coletas/app/utils/my_snackbar.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:agil_coletas/app/components/my_elevated_button_widget.dart';
@@ -35,11 +41,30 @@ class _AuthPageState extends State<AuthPage> {
 
   late bool visiblePass = true;
 
+  late StreamSubscription sub;
+
   @override
   void initState() {
     super.initState();
 
     user = UserAdapter.empty();
+
+    sub = widget.authBloc.stream.listen((state) {
+      if (state is ErrorAuth) {
+        MySnackBar(
+          title: 'Atenção',
+          message: state.message,
+          type: ContentType.failure,
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    sub.cancel();
+
+    super.dispose();
   }
 
   @override
@@ -118,11 +143,31 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                MyElevatedButtonWidget(
-                  label: const Text('Entrar'),
-                  icon: Icons.check_circle_rounded,
-                  onPressed: () {},
-                  height: 35,
+                BlocBuilder<AuthBloc, AuthStates>(
+                  bloc: widget.authBloc,
+                  builder: (context, state) {
+                    return MyElevatedButtonWidget(
+                      label: state is LoadingAuth
+                          ? const Center(
+                              child: SizedBox(
+                                height: 25,
+                                width: 25,
+                                child: CircularProgressIndicator(),
+                              ),
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.check_circle_rounded),
+                                SizedBox(width: 10),
+                                Text('Entrar')
+                              ],
+                            ),
+                      onPressed: () {
+                        widget.authBloc.add(SignInAuthEvent(user: user));
+                      },
+                    );
+                  },
                 ),
               ],
             ),

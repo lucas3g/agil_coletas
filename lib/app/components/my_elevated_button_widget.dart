@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 
 class MyElevatedButtonWidget extends StatefulWidget {
   final Widget label;
-  final IconData icon;
   final Function() onPressed;
   final double height;
   const MyElevatedButtonWidget({
     Key? key,
     required this.label,
-    required this.icon,
     required this.onPressed,
     this.height = 35,
   }) : super(key: key);
@@ -23,7 +21,7 @@ class _MyElevatedButtonWidgetState extends State<MyElevatedButtonWidget> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: widget.height,
-      child: ElevatedButton.icon(
+      child: ElevatedButton(
         onPressed: widget.onPressed,
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
@@ -31,8 +29,7 @@ class _MyElevatedButtonWidgetState extends State<MyElevatedButtonWidget> {
           ),
           padding: EdgeInsets.zero,
         ),
-        icon: Icon(widget.icon),
-        label: widget.label,
+        child: widget.label,
       ),
     );
   }

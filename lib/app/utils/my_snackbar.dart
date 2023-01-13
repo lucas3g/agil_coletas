@@ -1,18 +1,14 @@
 import 'package:agil_coletas/app/utils/navigation_service.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 
-enum TypeSnackBar {
-  success,
-  error,
-}
-
 class MySnackBar {
+  final String title;
   final String message;
-  final TypeSnackBar type;
-
-  late Animation<Offset> animation;
+  final ContentType type;
 
   MySnackBar({
+    required this.title,
     required this.message,
     required this.type,
   }) {
@@ -21,12 +17,17 @@ class MySnackBar {
 
   _showSnackBar() {
     late SnackBar snackBar = SnackBar(
-      content: Text(message),
-      backgroundColor: type == TypeSnackBar.success ? Colors.green : Colors.red,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
       margin: const EdgeInsets.all(20),
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
+      ),
+      content: AwesomeSnackbarContent(
+        title: title,
+        message: message,
+        contentType: type,
       ),
     );
 

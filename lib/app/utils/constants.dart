@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class Constants {}
 
-const double kPadding = 10;
+const double kPadding = 20;
 
 extension ContextExtensions on BuildContext {
   double get screenHeight => MediaQuery.of(this).size.height;
