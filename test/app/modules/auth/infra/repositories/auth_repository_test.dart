@@ -1,4 +1,4 @@
-import 'package:agil_coletas/app/modules/auth/domain/entities/user.dart';
+import 'package:agil_coletas/app/modules/auth/domain/entities/funcionario.dart';
 import 'package:agil_coletas/app/modules/auth/infra/datasources/auth_datasource.dart';
 import 'package:agil_coletas/app/modules/auth/infra/repositories/auth_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,21 +18,20 @@ void main() {
     repository = AuthRepository(datasource: datasource);
   });
 
-  test('deve retornar uma instancia de user', () async {
+  test('deve retornar uma instancia de funcionario', () async {
     when(
       () => datasource.signInUser(user),
     ).thenAnswer((_) async => json);
 
     final result = await repository.signinUser(user);
 
-    expect(result.fold(id, id), isA<User>());
+    expect(result.fold(id, id), isA<Funcionario>());
   });
 }
 
 final json = {
-  'id': '1',
+  'id': 1,
   'nome': 'lucas',
-  'cnpj': '97.305.890/0001-81',
-  'login': 'adm',
-  'password': 'pass'
+  'ccusto': 101,
+  'empresa': 'el sistemas'
 };

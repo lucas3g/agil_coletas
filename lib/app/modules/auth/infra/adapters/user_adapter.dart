@@ -6,9 +6,16 @@ class UserAdapter {
     return User(
       id: IdVO(map['id']),
       cnpj: map['cnpj'],
-      name: map['nome'],
       login: map['login'],
       password: map['password'],
     );
+  }
+
+  static Map<String, dynamic> toJson(User user) {
+    return {
+      'CNPJ': user.cnpj,
+      'USUARIO': user.login,
+      'SENHA': user.password,
+    };
   }
 }

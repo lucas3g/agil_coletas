@@ -3,21 +3,22 @@
 import 'dart:convert';
 
 import 'package:agil_coletas/app/core_module/services/shared_preferences/local_storage_interface.dart';
-import 'package:agil_coletas/app/modules/auth/domain/entities/user.dart';
-import 'package:agil_coletas/app/modules/auth/infra/adapters/user_adapter.dart';
+import 'package:agil_coletas/app/modules/auth/domain/entities/funcionario.dart';
+import 'package:agil_coletas/app/modules/auth/infra/adapters/funcionario_adapter.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 const baseUrl = String.fromEnvironment('BASE_URL');
 const baseUrlLicense = String.fromEnvironment('BASE_URL_LICENSE');
 
-class GlobalUser {
-  GlobalUser._();
+class GlobalFuncionario {
+  GlobalFuncionario._();
 
-  static GlobalUser instance = GlobalUser._();
+  static GlobalFuncionario instance = GlobalFuncionario._();
 
-  User get user {
+  Funcionario get user {
     final shared = Modular.get<ILocalStorage>();
 
-    return UserAdapter.fromMap(jsonDecode(shared.getData('user')));
+    return FuncionarioAdapter.fromMap(
+        jsonDecode(shared.getData('funcionario')));
   }
 }

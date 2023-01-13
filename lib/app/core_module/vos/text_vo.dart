@@ -7,7 +7,7 @@ class TextVO extends ValueObject<String> {
   @override
   Result<TextVO, String> validate([Object? object]) {
     if (value.isEmpty) {
-      return '$runtimeType cannot be empty'.toFailure();
+      return '$runtimeType não pode ser vazio'.toFailure();
     }
     return Success(this);
   }
