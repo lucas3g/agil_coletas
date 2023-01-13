@@ -1,7 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'dart:convert';
 
+import 'package:agil_coletas/app/core_module/services/device_info/device_info_interface.dart';
 import 'package:agil_coletas/app/core_module/services/shared_preferences/local_storage_interface.dart';
 import 'package:agil_coletas/app/modules/auth/domain/entities/funcionario.dart';
 import 'package:agil_coletas/app/modules/auth/infra/adapters/funcionario_adapter.dart';
@@ -22,5 +21,17 @@ class GlobalFuncionario {
 
     return FuncionarioAdapter.fromMap(
         jsonDecode(shared.getData('funcionario')));
+  }
+}
+
+class GlobalDevice {
+  GlobalDevice._();
+
+  static GlobalDevice instance = GlobalDevice._();
+
+  DeviceInfo get deviceInfo {
+    final shared = Modular.get<ILocalStorage>();
+
+    return DeviceInfo(deviceID: shared.getData('DEVICE_ID'));
   }
 }

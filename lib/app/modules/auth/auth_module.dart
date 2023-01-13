@@ -1,3 +1,4 @@
+import 'package:agil_coletas/app/core_module/services/device_info/device_info_interface.dart';
 import 'package:agil_coletas/app/modules/auth/domain/repositories/auth_repository.dart';
 import 'package:agil_coletas/app/modules/auth/domain/usecases/signin_user_usecase.dart';
 import 'package:agil_coletas/app/modules/auth/external/datasources/auth_datasource.dart';
@@ -33,6 +34,7 @@ class AuthModule extends Module {
       '/',
       child: (context, args) => AuthPage(
         authBloc: Modular.get<AuthBloc>(),
+        deviceInfo: Modular.get<IDeviceInfo>(),
       ),
     )
   ];

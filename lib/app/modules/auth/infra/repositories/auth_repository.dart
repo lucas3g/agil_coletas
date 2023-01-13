@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:agil_coletas/app/modules/auth/domain/entities/funcionario.dart';
 import 'package:agil_coletas/app/modules/auth/infra/adapters/funcionario_adapter.dart';
 import 'package:dio/dio.dart';
@@ -21,7 +23,7 @@ class AuthRepository implements IAuthRepository {
     try {
       final result = await datasource.signInUser(user);
 
-      return FuncionarioAdapter.fromMap(result).toSuccess();
+      return FuncionarioAdapter.fromMap(jsonDecode(result)).toSuccess();
     } on IMyException catch (e) {
       return MyException(message: e.message).toFailure();
     } on DioError catch (e) {

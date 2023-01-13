@@ -4,10 +4,10 @@ import 'package:agil_coletas/app/modules/auth/domain/entities/funcionario.dart';
 class FuncionarioAdapter {
   static Funcionario fromMap(dynamic map) {
     return Funcionario(
-      id: IdVO(map['id']),
-      name: map['nome'],
-      ccusto: map['ccusto'],
-      empresa: map['empresa'],
+      id: const IdVO(1),
+      name: map['NOME'],
+      ccusto: map['CCUSTO'],
+      empresa: map['DESC_EMPRESA'],
     );
   }
 }

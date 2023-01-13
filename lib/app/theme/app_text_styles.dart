@@ -4,28 +4,29 @@ import 'package:google_fonts/google_fonts.dart';
 
 abstract class AppTextStyles {
   TextStyle get labelLogin;
-  TextStyle get titleSnackBar;
-  TextStyle get subTitleSnackBar;
+  TextStyle get titleAlertDialog;
+  TextStyle get contentAlertDialog;
 }
 
 class AppTextStylesDefault implements AppTextStyles {
   @override
   TextStyle get labelLogin => GoogleFonts.montserrat(
         fontSize: 14,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.bold,
         color: AppTheme.colors.labelLogin,
       );
 
   @override
-  TextStyle get titleSnackBar => GoogleFonts.montserrat(
-        fontSize: 18,
-        fontWeight: FontWeight.w700,
-        color: Colors.white,
+  TextStyle get titleAlertDialog => GoogleFonts.montserrat(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: AppTheme.colors.primary,
       );
 
   @override
-  TextStyle get subTitleSnackBar => GoogleFonts.montserrat(
-        fontSize: 12,
-        color: Colors.white,
+  TextStyle get contentAlertDialog => GoogleFonts.montserrat(
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
       );
 }

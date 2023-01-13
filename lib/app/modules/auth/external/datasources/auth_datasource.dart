@@ -5,6 +5,7 @@ import 'package:agil_coletas/app/core_module/types/my_exception.dart';
 import 'package:agil_coletas/app/modules/auth/domain/entities/user.dart';
 import 'package:agil_coletas/app/modules/auth/infra/adapters/user_adapter.dart';
 import 'package:agil_coletas/app/modules/auth/infra/datasources/auth_datasource.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 
 class AuthDatasource implements IAuthDatasource {
   final IClientHttp clientHttp;
@@ -14,14 +15,19 @@ class AuthDatasource implements IAuthDatasource {
   });
 
   @override
-  Future<Map<String, dynamic>> signInUser(User user) async {
+  Future<dynamic> signInUser(User user) async {
+    final cnpj =
+        UtilBrasilFields.removeCaracteres(user.cnpj.value).substring(0, 8);
+
     final response = await clientHttp.post(
-      '$baseUrl/login',
+      '$baseUrl/login/$cnpj',
       data: UserAdapter.toJson(user),
     );
 
-    if (response.data['erro'] != null) {
-      throw MyException(message: response.data['erro']);
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    if (response.data.toString().trim() == '') {
+      throw const MyException(message: 'Usuário ou Senha incorretos.');
     }
 
     if (response.statusCode != 200) {

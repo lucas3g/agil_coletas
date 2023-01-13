@@ -1,3 +1,5 @@
+import 'package:agil_coletas/app/core_module/services/device_info/device_info_interface.dart';
+import 'package:agil_coletas/app/core_module/services/device_info/platform_device_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'services/shared_preferences/local_storage_interface.dart';
@@ -37,6 +39,11 @@ class CoreModule extends Module {
     //LOCAL STORAGE
     Bind<ILocalStorage>(
       ((i) => SharedPreferencesService(sharedPreferences: i())),
+      export: true,
+    ),
+
+    Bind.factory<IDeviceInfo>(
+      (i) => PlatformDeviceInfo(),
       export: true,
     ),
   ];
