@@ -5,11 +5,13 @@ abstract class AppColors {
   MaterialColor get primary;
   MaterialColor get swatch;
 
+  Color get labelLogin;
+
   final String hex = '0xff';
-  final String colorFinal = '700391';
+  final String colorFinal = 'cf1f36';
   final int hexFinal = 0;
 
-  final String colorSwatch = '700391';
+  final String colorSwatch = 'cf1f36';
   final int hexSwatch = 0;
 }
 
@@ -33,7 +35,7 @@ class AppColorDefault implements AppColors {
   //009342 - PAPAGAIO - cf1f36 BIO //004357 Cor legal
   //246EE9 Royal Blue //FF2400 Scarlet Red //3EB489 Mint Green
   @override
-  String get colorFinal => '002C4D';
+  String get colorFinal => 'cf1f36';
 
   @override
   String get colorSwatch => 'FFFFFF';
@@ -49,4 +51,7 @@ class AppColorDefault implements AppColors {
 
   @override
   MaterialColor get swatch => MaterialColor(hexSwatch, color);
+
+  @override
+  Color get labelLogin => Colors.black;
 }

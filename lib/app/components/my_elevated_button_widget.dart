@@ -5,11 +5,13 @@ class MyElevatedButtonWidget extends StatefulWidget {
   final Widget label;
   final IconData icon;
   final Function() onPressed;
+  final double height;
   const MyElevatedButtonWidget({
     Key? key,
     required this.label,
     required this.icon,
     required this.onPressed,
+    this.height = 35,
   }) : super(key: key);
 
   @override
@@ -19,16 +21,19 @@ class MyElevatedButtonWidget extends StatefulWidget {
 class _MyElevatedButtonWidgetState extends State<MyElevatedButtonWidget> {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      onPressed: widget.onPressed,
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+    return SizedBox(
+      height: widget.height,
+      child: ElevatedButton.icon(
+        onPressed: widget.onPressed,
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          padding: EdgeInsets.zero,
         ),
-        padding: EdgeInsets.zero,
+        icon: Icon(widget.icon),
+        label: widget.label,
       ),
-      icon: Icon(widget.icon),
-      label: widget.label,
     );
   }
 }

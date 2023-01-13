@@ -1,7 +1,7 @@
-import 'package:agil_coletas/app/modules/auth/presenter/auth_page.dart';
+import 'package:agil_coletas/app/modules/splash/presenter/splash_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class AuthModule extends Module {
+class SplashModule extends Module {
   @override
   final List<Module> imports = [];
 
@@ -12,7 +12,7 @@ class AuthModule extends Module {
   final List<ModularRoute> routes = [
     ChildRoute(
       '/',
-      child: (context, args) => const AuthPage(),
+      child: (context, args) => const SplashPage(),
     )
   ];
 }

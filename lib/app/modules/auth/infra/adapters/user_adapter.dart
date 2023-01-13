@@ -18,4 +18,8 @@ class UserAdapter {
       'SENHA': user.password,
     };
   }
+
+  static User empty() {
+    return User(id: const IdVO(1), cnpj: '', login: '', password: '');
+  }
 }

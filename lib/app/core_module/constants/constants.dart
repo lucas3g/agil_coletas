@@ -10,6 +10,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 const baseUrl = String.fromEnvironment('BASE_URL');
 const baseUrlLicense = String.fromEnvironment('BASE_URL_LICENSE');
 
+const pathLogo = 'assets/images/logo.svg';
+
 class GlobalFuncionario {
   GlobalFuncionario._();
 
