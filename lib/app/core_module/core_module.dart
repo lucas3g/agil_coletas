@@ -1,5 +1,10 @@
 import 'package:agil_coletas/app/core_module/services/device_info/device_info_interface.dart';
 import 'package:agil_coletas/app/core_module/services/device_info/platform_device_info.dart';
+import 'package:agil_coletas/app/core_module/services/license/domain/repositories/license_repository.dart';
+import 'package:agil_coletas/app/core_module/services/license/domain/usecases/verify_license_usecase.dart';
+import 'package:agil_coletas/app/core_module/services/license/external/license_datasource.dart';
+import 'package:agil_coletas/app/core_module/services/license/infra/datasources/license_datasource.dart';
+import 'package:agil_coletas/app/core_module/services/license/infra/repositories/license_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'services/shared_preferences/local_storage_interface.dart';
@@ -44,6 +49,30 @@ class CoreModule extends Module {
 
     Bind.factory<IDeviceInfo>(
       (i) => PlatformDeviceInfo(),
+      export: true,
+    ),
+
+    //DATASOURCES
+    Bind.singleton<ILicenseDatasource>(
+      (i) => LicenseDatasource(
+        clientHttp: i(),
+      ),
+      export: true,
+    ),
+
+    //REPOSITORIES
+    Bind.singleton<ILicenseRepository>(
+      (i) => LicenseRepository(
+        datasource: i(),
+      ),
+      export: true,
+    ),
+
+    //USECASES
+    Bind.singleton<IVerifyLicenseUseCase>(
+      (i) => VerifyLicenseUseCase(
+        repository: i(),
+      ),
       export: true,
     ),
   ];

@@ -5,9 +5,8 @@ import 'package:agil_coletas/app/modules/auth/infra/adapters/user_adapter.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../../../../mocks.dart';
 import '../../domain/usecases/signin_user_usecase_test.dart';
-
-class IClientHttpMock extends Mock implements IClientHttp {}
 
 void main() {
   late IClientHttp clientHttp;

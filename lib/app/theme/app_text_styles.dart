@@ -25,7 +25,7 @@ class AppTextStylesDefault implements AppTextStyles {
 
   @override
   TextStyle get contentAlertDialog => GoogleFonts.montserrat(
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: FontWeight.bold,
         color: Colors.black,
       );

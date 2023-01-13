@@ -22,3 +22,9 @@ class ErrorAuth extends AuthStates {
     required this.message,
   });
 }
+
+class LicenseActiveAuth extends AuthStates {}
+
+class LicenseNotActiveAuth extends AuthStates {}
+
+class LicenseNotFoundAuth extends AuthStates {}

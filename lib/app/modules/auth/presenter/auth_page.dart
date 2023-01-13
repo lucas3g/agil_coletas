@@ -77,13 +77,26 @@ class _AuthPageState extends State<AuthPage> {
         );
       }
 
-      if (state is SuccessAuth) {
+      if (state is LicenseActiveAuth) {
+        widget.authBloc.add(SignInAuthEvent(user: user));
+      }
+
+      if (state is LicenseNotActiveAuth) {
         MySnackBar(
-          title: 'Sucesso',
-          message: 'Usuário encontrado.',
-          type: ContentType.success,
+          title: 'Atenção',
+          message:
+              'Licença não ativa. Por favor, entre em contato com o suporte.',
+          type: ContentType.help,
         );
-        // Modular.to.navigate('/home/');
+      }
+
+      if (state is LicenseNotFoundAuth) {
+        MySnackBar(
+          title: 'Atenção',
+          message:
+              'Licença não encontrada. Por favor, entre em contato com o suporte.',
+          type: ContentType.warning,
+        );
       }
     });
   }
@@ -102,6 +115,7 @@ class _AuthPageState extends State<AuthPage> {
         padding: const EdgeInsets.symmetric(horizontal: kPadding, vertical: 10),
         child: Column(
           children: [
+            const SizedBox(height: 20),
             Expanded(
               flex: 4,
               child: Column(
@@ -115,7 +129,7 @@ class _AuthPageState extends State<AuthPage> {
               ),
             ),
             Expanded(
-              flex: 6,
+              flex: 10,
               child: ListView(
                 children: [
                   Text(
@@ -128,6 +142,7 @@ class _AuthPageState extends State<AuthPage> {
                     focusNode: fCNPJ,
                     label: 'CNPJ',
                     hintText: 'Digite o CNPJ da empresa',
+                    keyboardType: TextInputType.number,
                     value: user.cnpj.value,
                     validator: (v) => user.cnpj.validate().exceptionOrNull(),
                     onChanged: (e) => user.setCNPJ(e),
@@ -182,6 +197,7 @@ class _AuthPageState extends State<AuthPage> {
                     bloc: widget.authBloc,
                     builder: (context, state) {
                       return MyElevatedButtonWidget(
+                        height: 40,
                         label: state is LoadingAuth
                             ? const Center(
                                 child: SizedBox(
@@ -199,7 +215,11 @@ class _AuthPageState extends State<AuthPage> {
                                 ],
                               ),
                         onPressed: () {
-                          widget.authBloc.add(SignInAuthEvent(user: user));
+                          widget.authBloc.add(
+                            VerifyLicenseEvent(
+                              deviceInfo: GlobalDevice.instance.deviceInfo,
+                            ),
+                          );
                         },
                       );
                     },

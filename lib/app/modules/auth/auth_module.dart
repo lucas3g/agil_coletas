@@ -25,7 +25,12 @@ class AuthModule extends Module {
     Bind.factory<ISignInUserUseCase>((i) => SignInUserUseCase(repository: i())),
 
     //BLOC
-    BlocBind.factory<AuthBloc>((i) => AuthBloc(useCase: i())),
+    BlocBind.factory<AuthBloc>(
+      (i) => AuthBloc(
+        signInUserUseCase: i(),
+        verifyLicenseUseCase: i(),
+      ),
+    ),
   ];
 
   @override
