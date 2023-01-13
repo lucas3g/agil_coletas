@@ -1,5 +1,5 @@
+import 'package:agil_coletas/app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 class MyAppBarWidget extends StatefulWidget {
   final String titleAppbar;
@@ -24,14 +24,11 @@ class _MyAppBarWidgetState extends State<MyAppBarWidget> {
           bottomRight: Radius.circular(10),
         ),
       ),
-      title: Text(widget.titleAppbar),
-      leading: IconButton(
-        onPressed: () {
-          Modular.to.pop();
-        },
-        icon: const Icon(Icons.arrow_back),
-        color: Colors.white,
+      title: Text(
+        widget.titleAppbar,
+        style: AppTheme.textStyles.titleAppBar,
       ),
+      centerTitle: true,
     );
   }
 }

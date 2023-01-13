@@ -2,6 +2,6 @@ import 'package:agil_coletas/app/core_module/services/license/domain/entities/li
 
 class LicenseAdapter {
   static License fromMap(dynamic map) {
-    return License(ativa: map['ATIVO']);
+    return License(ativa: map['ATIVO'] ?? '');
   }
 }

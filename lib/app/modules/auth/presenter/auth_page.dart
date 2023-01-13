@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:agil_coletas/app/components/my_alert_dialog_widget.dart';
 import 'package:agil_coletas/app/core_module/services/shared_preferences/adapters/shared_params.dart';
 import 'package:agil_coletas/app/core_module/services/shared_preferences/local_storage_interface.dart';
+import 'package:agil_coletas/app/modules/auth/infra/adapters/funcionario_adapter.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
@@ -41,19 +42,21 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
+  final shared = Modular.get<ILocalStorage>();
+
   late User user;
 
   final fCNPJ = FocusNode();
   final fLogin = FocusNode();
   final fPassword = FocusNode();
 
+  final gkForm = GlobalKey<FormState>();
+
   late bool visiblePass = true;
 
   late StreamSubscription sub;
 
   Future getDeviceInfo() async {
-    final shared = Modular.get<ILocalStorage>();
-
     final result = await widget.deviceInfo.getDeviceInfo();
 
     await shared.setData(
@@ -69,6 +72,17 @@ class _AuthPageState extends State<AuthPage> {
     user = UserAdapter.empty();
 
     sub = widget.authBloc.stream.listen((state) {
+      if (state is SuccessAuth) {
+        shared.setData(
+          params: SharedParams(
+            key: 'funcionario',
+            value: FuncionarioAdapter.toJson(state.funcionario),
+          ),
+        );
+
+        Modular.to.navigate('/home/');
+      }
+
       if (state is ErrorAuth) {
         MySnackBar(
           title: 'Atenção',
@@ -130,141 +144,149 @@ class _AuthPageState extends State<AuthPage> {
             ),
             Expanded(
               flex: 10,
-              child: ListView(
-                children: [
-                  Text(
-                    'Faça o login agora com sua conta',
-                    style: AppTheme.textStyles.labelLogin,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 10),
-                  MyInputWidget(
-                    focusNode: fCNPJ,
-                    label: 'CNPJ',
-                    hintText: 'Digite o CNPJ da empresa',
-                    keyboardType: TextInputType.number,
-                    value: user.cnpj.value,
-                    validator: (v) => user.cnpj.validate().exceptionOrNull(),
-                    onChanged: (e) => user.setCNPJ(e),
-                    inputFormaters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      CnpjInputFormatter(),
-                    ],
-                    onFieldSubmitted: (v) => fLogin.requestFocus(),
-                  ),
-                  const SizedBox(height: 10),
-                  MyInputWidget(
-                    focusNode: fLogin,
-                    label: 'Usuário',
-                    hintText: 'Digite o seu usuário',
-                    value: user.login.value,
-                    validator: (v) => user.login.validate().exceptionOrNull(),
-                    onChanged: (e) => user.setLogin(e),
-                    inputFormaters: [UpperCaseTextFormatter()],
-                    onFieldSubmitted: (v) => fPassword.requestFocus(),
-                  ),
-                  const SizedBox(height: 10),
-                  MyInputWidget(
-                    focusNode: fPassword,
-                    label: 'Senha',
-                    hintText: 'Digite a sua senha',
-                    obscureText: visiblePass,
-                    maxLines: 1,
-                    value: user.password.value,
-                    validator: (v) =>
-                        user.password.validate().exceptionOrNull(),
-                    onChanged: (e) => user.setPassword(e),
-                    inputFormaters: [UpperCaseTextFormatter()],
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          visiblePass = !visiblePass;
-                        });
-                      },
-                      icon: !visiblePass
-                          ? Icon(
-                              Icons.visibility,
-                              color: AppTheme.colors.primary,
-                            )
-                          : const Icon(
-                              Icons.visibility_off,
-                              color: Colors.grey,
-                            ),
+              child: Form(
+                key: gkForm,
+                child: ListView(
+                  children: [
+                    Text(
+                      'Faça o login agora com sua conta',
+                      style: AppTheme.textStyles.labelLogin,
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  BlocBuilder<AuthBloc, AuthStates>(
-                    bloc: widget.authBloc,
-                    builder: (context, state) {
-                      return MyElevatedButtonWidget(
-                        height: 40,
-                        label: state is LoadingAuth
-                            ? const Center(
-                                child: SizedBox(
-                                  height: 25,
-                                  width: 25,
-                                  child: CircularProgressIndicator(),
-                                ),
-                              )
-                            : Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(Icons.check_circle_rounded),
-                                  SizedBox(width: 10),
-                                  Text('Entrar')
-                                ],
-                              ),
+                    const SizedBox(height: 10),
+                    MyInputWidget(
+                      focusNode: fCNPJ,
+                      label: 'CNPJ',
+                      hintText: 'Digite o CNPJ da empresa',
+                      keyboardType: TextInputType.number,
+                      value: user.cnpj.value,
+                      validator: (v) => user.cnpj.validate().exceptionOrNull(),
+                      onChanged: (e) => user.setCNPJ(e),
+                      inputFormaters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        CnpjInputFormatter(),
+                      ],
+                      onFieldSubmitted: (v) => fLogin.requestFocus(),
+                    ),
+                    const SizedBox(height: 10),
+                    MyInputWidget(
+                      focusNode: fLogin,
+                      label: 'Usuário',
+                      hintText: 'Digite o seu usuário',
+                      value: user.login.value,
+                      validator: (v) => user.login.validate().exceptionOrNull(),
+                      onChanged: (e) => user.setLogin(e),
+                      inputFormaters: [UpperCaseTextFormatter()],
+                      onFieldSubmitted: (v) => fPassword.requestFocus(),
+                    ),
+                    const SizedBox(height: 10),
+                    MyInputWidget(
+                      focusNode: fPassword,
+                      label: 'Senha',
+                      hintText: 'Digite a sua senha',
+                      obscureText: visiblePass,
+                      maxLines: 1,
+                      value: user.password.value,
+                      validator: (v) =>
+                          user.password.validate().exceptionOrNull(),
+                      onChanged: (e) => user.setPassword(e),
+                      inputFormaters: [UpperCaseTextFormatter()],
+                      suffixIcon: IconButton(
                         onPressed: () {
-                          widget.authBloc.add(
-                            VerifyLicenseEvent(
-                              deviceInfo: GlobalDevice.instance.deviceInfo,
-                            ),
-                          );
+                          setState(() {
+                            visiblePass = !visiblePass;
+                          });
                         },
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  TextButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return MyAlertDialogWidget(
-                            title: 'Código de Autenticação',
-                            content: GlobalDevice.instance.deviceInfo.deviceID,
-                            okButton: MyElevatedButtonWidget(
-                              label: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(Icons.whatsapp),
-                                  SizedBox(width: 10),
-                                  Text('Whatsapp'),
-                                ],
+                        icon: !visiblePass
+                            ? Icon(
+                                Icons.visibility,
+                                color: AppTheme.colors.primary,
+                              )
+                            : const Icon(
+                                Icons.visibility_off,
+                                color: Colors.grey,
                               ),
-                              onPressed: () {},
-                            ),
-                            cancelButton: MyElevatedButtonWidget(
-                              label: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(Icons.close),
-                                  SizedBox(width: 10),
-                                  Text('Fechar'),
-                                ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    BlocBuilder<AuthBloc, AuthStates>(
+                      bloc: widget.authBloc,
+                      builder: (context, state) {
+                        return MyElevatedButtonWidget(
+                          height: 40,
+                          label: state is LoadingAuth
+                              ? const Center(
+                                  child: SizedBox(
+                                    height: 25,
+                                    width: 25,
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(Icons.check_circle_rounded),
+                                    SizedBox(width: 10),
+                                    Text('Entrar')
+                                  ],
+                                ),
+                          onPressed: () {
+                            if (!gkForm.currentState!.validate()) {
+                              return;
+                            }
+
+                            widget.authBloc.add(
+                              VerifyLicenseEvent(
+                                deviceInfo: GlobalDevice.instance.deviceInfo,
                               ),
-                              onPressed: () {
-                                Navigator.of(context, rootNavigator: true)
-                                    .pop('dialog');
-                              },
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    child: const Text('Licença para acessar'),
-                  ),
-                ],
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    TextButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return MyAlertDialogWidget(
+                              title: 'Código de Autenticação',
+                              content:
+                                  GlobalDevice.instance.deviceInfo.deviceID,
+                              okButton: MyElevatedButtonWidget(
+                                label: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(Icons.whatsapp),
+                                    SizedBox(width: 10),
+                                    Text('Whatsapp'),
+                                  ],
+                                ),
+                                onPressed: () {},
+                              ),
+                              cancelButton: MyElevatedButtonWidget(
+                                label: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(Icons.close),
+                                    SizedBox(width: 10),
+                                    Text('Fechar'),
+                                  ],
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop('dialog');
+                                },
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: const Text('Licença para acessar'),
+                    ),
+                  ],
+                ),
               ),
             ),
             Expanded(

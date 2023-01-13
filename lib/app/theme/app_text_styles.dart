@@ -6,6 +6,9 @@ abstract class AppTextStyles {
   TextStyle get labelLogin;
   TextStyle get titleAlertDialog;
   TextStyle get contentAlertDialog;
+  TextStyle get titleAppBar;
+  TextStyle get titleDrawer;
+  TextStyle get subtitleDrawer;
 }
 
 class AppTextStylesDefault implements AppTextStyles {
@@ -27,6 +30,27 @@ class AppTextStylesDefault implements AppTextStyles {
   TextStyle get contentAlertDialog => GoogleFonts.montserrat(
         fontSize: 16,
         fontWeight: FontWeight.bold,
+        color: Colors.black,
+      );
+
+  @override
+  TextStyle get titleAppBar => GoogleFonts.montserrat(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      );
+
+  @override
+  TextStyle get titleDrawer => GoogleFonts.montserrat(
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      );
+
+  @override
+  TextStyle get subtitleDrawer => GoogleFonts.montserrat(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
         color: Colors.black,
       );
 }

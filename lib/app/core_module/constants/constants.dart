@@ -16,7 +16,7 @@ class GlobalFuncionario {
 
   static GlobalFuncionario instance = GlobalFuncionario._();
 
-  Funcionario get user {
+  Funcionario get funcionario {
     final shared = Modular.get<ILocalStorage>();
 
     return FuncionarioAdapter.fromMap(
