@@ -1,8 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:agil_coletas/app/core_module/types/entity.dart';
 import 'package:agil_coletas/app/modules/home/domain/vos/km_coleta.dart';
 import 'package:agil_coletas/app/modules/home/domain/vos/rota_coleta.dart';
 
-class Coletas {
+class Coletas extends Entity {
   RotaColeta _rota;
   String _dataMov;
   KMColeta _km;
@@ -35,6 +36,7 @@ class Coletas {
   void setEnviada(bool value) => _enviada = value;
 
   Coletas({
+    required super.id,
     required RotaColeta rota,
     required String dataMov,
     required KMColeta km,
