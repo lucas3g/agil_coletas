@@ -1,11 +1,11 @@
+import 'dart:async';
+import 'package:path/path.dart';
 import 'package:agil_coletas/app/core_module/services/sqflite/adapters/sqflite_adapter.dart';
 import 'package:agil_coletas/app/core_module/services/sqflite/adapters/table_entity.dart';
 import 'package:agil_coletas/app/core_module/services/sqflite/helpers/sqlflite_helper.dart';
 import 'package:agil_coletas/app/core_module/services/sqflite/sqflite_storage_interface.dart';
-import 'dart:async';
 
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 
 class SQLFliteService implements ISQLFliteStorage {
   late Set<TableEntity> _tables;
@@ -33,20 +33,15 @@ class SQLFliteService implements ISQLFliteStorage {
 
   @override
   Future<List<Map<String, dynamic>>> getAll(SQLFliteGetAllParam param) async {
-    try {
-      List<Map<String, dynamic>> result = [];
+    List<Map<String, dynamic>> result = [];
 
-      await _db!.transaction((txn) async {
-        result = await txn.query(
-          param.table.name,
-        );
-      });
+    await _db!.transaction((txn) async {
+      result = await txn.query(
+        param.table.name,
+      );
+    });
 
-      return List<Map<String, dynamic>>.from(result);
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
+    return List<Map<String, dynamic>>.from(result);
   }
 
   @override
