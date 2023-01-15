@@ -88,6 +88,7 @@ class CoreModule extends Module {
           fileName: 'agil.db',
           tables: {
             MakeTables.coletas(),
+            MakeTables.tiket(),
           },
         );
 
