@@ -3,21 +3,36 @@ import 'package:agil_coletas/app/modules/home/domain/vos/km_coleta.dart';
 import 'package:agil_coletas/app/modules/home/domain/vos/rota_coleta.dart';
 
 class Coletas {
-  final RotaColeta _rota;
-  final String _dataMov;
-  final KMColeta _km;
-  final String _placa;
-  final int _totalColeta;
-  final bool _finalizada;
-  final bool _enviada;
+  RotaColeta _rota;
+  String _dataMov;
+  KMColeta _km;
+  String _placa;
+  int _totalColeta;
+  bool _finalizada;
+  bool _enviada;
 
   RotaColeta get rota => _rota;
+  void setRota(int codRota, String nomeRota) =>
+      _rota = RotaColeta(rota: codRota, nome: nomeRota);
+
   String get dataMov => _dataMov;
+  void setDataMov(String value) => _dataMov = value;
+
   KMColeta get km => _km;
+  void setKM(int kmIni, int kmFim) =>
+      _km = KMColeta(inicial: kmIni, ffinal: kmFim);
+
   String get placa => _placa;
+  void setPlaca(String value) => _placa = value;
+
   int get totalColetado => _totalColeta;
+  void setTotalColetado(int value) => _totalColeta = value;
+
   bool get finalizada => _finalizada;
+  void setFinalizada(bool value) => _finalizada = value;
+
   bool get enviada => _enviada;
+  void setEnviada(bool value) => _enviada = value;
 
   Coletas({
     required RotaColeta rota,
