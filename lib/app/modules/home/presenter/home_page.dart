@@ -11,6 +11,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final funcionario = GlobalFuncionario.instance.funcionario;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +24,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         title: Text(
-          '..: ${GlobalFuncionario.instance.funcionario.empresa.value} :..',
+          '..: ${funcionario.empresa.value} :..',
           style: AppTheme.textStyles.titleAppBar,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
@@ -62,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Motorista: ${GlobalFuncionario.instance.funcionario.name.value}',
+                        'Motorista: ${funcionario.name.value}',
                         style: AppTheme.textStyles.titleDrawer,
                       ),
                     ],

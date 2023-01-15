@@ -19,7 +19,17 @@ class AppModule extends Module {
   @override
   final List<ModularRoute> routes = [
     ModuleRoute('/', module: SplashModule()),
-    ModuleRoute('/auth', module: AuthModule()),
-    ModuleRoute('/home', module: HomeModule()),
+    ModuleRoute(
+      '/auth',
+      module: AuthModule(),
+      transition: TransitionType.fadeIn,
+      duration: const Duration(milliseconds: 600),
+    ),
+    ModuleRoute(
+      '/home',
+      module: HomeModule(),
+      transition: TransitionType.fadeIn,
+      duration: const Duration(milliseconds: 600),
+    ),
   ];
 }

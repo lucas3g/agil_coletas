@@ -32,8 +32,8 @@ void main() {
 final User user = User(
     id: const IdVO(1),
     cnpj: '97.305.890/0001-81',
-    login: 'login',
-    password: 'password');
+    login: 'ADM',
+    password: 'EL');
 
 final Funcionario funcionario = Funcionario(
     id: const IdVO(1), name: 'lucas', ccusto: 101, empresa: 'el sistemas');

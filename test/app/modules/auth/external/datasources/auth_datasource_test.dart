@@ -25,7 +25,11 @@ void main() {
         )).thenAnswer(
       (_) async => BaseResponse(
         jsonFuncionaro,
-        BaseRequest(url: '$baseUrl/login', method: 'POST'),
+        BaseRequest(
+          url: '$baseUrl/login',
+          method: 'POST',
+          data: UserAdapter.toJson(user),
+        ),
       ),
     );
 
@@ -36,8 +40,8 @@ void main() {
 }
 
 final Map<String, dynamic> jsonFuncionaro = {
-  'id': 1,
-  'nome': 'Lucas',
-  'ccusto': 101,
-  'empresa': 'EL Sistemas',
+  'ID': 1,
+  'NOME': 'Lucas',
+  'CCUSTO': 101,
+  'DESC_EMPRESA': 'EL Sistemas',
 };
