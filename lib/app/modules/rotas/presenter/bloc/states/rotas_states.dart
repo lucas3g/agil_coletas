@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:agil_coletas/app/modules/rotas/domain/entities/rotas.dart';
+import 'package:agil_coletas/app/utils/formatters.dart';
 
 abstract class RotasStates {
   final List<Rotas> rotas;
@@ -23,6 +24,20 @@ abstract class RotasStates {
 
   ErrorRotas error(String message) {
     return ErrorRotas(message: message, rotas: rotas, filtro: filtro);
+  }
+
+  List<Rotas> get rotasFilteradas {
+    if (filtro.isEmpty) {
+      return rotas;
+    }
+
+    return rotas
+        .where(
+          (rota) => (rota.descricao.toLowerCase().removeAcentos().contains(
+                filtro.toLowerCase().removeAcentos(),
+              )),
+        )
+        .toList();
   }
 }
 
