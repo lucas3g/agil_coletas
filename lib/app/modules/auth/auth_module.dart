@@ -29,6 +29,7 @@ class AuthModule extends Module {
       (i) => AuthBloc(
         signInUserUseCase: i(),
         verifyLicenseUseCase: i(),
+        saveLicenseUseCase: i(),
       ),
     ),
   ];

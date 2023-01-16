@@ -61,6 +61,8 @@ class SqFliteHelpers {
         return 'INTEGER';
       case FieldType.string:
         return 'TEXT';
+      case FieldType.real:
+        return 'REAL';
     }
   }
 }

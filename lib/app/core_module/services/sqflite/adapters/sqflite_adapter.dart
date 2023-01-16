@@ -32,6 +32,14 @@ class SQLFliteDeleteParam {
   });
 }
 
+class SQLFliteDeleteAllParam {
+  final Tables table;
+
+  SQLFliteDeleteAllParam({
+    required this.table,
+  });
+}
+
 class SQLFliteUpdateParam {
   final Tables table;
   final int id;

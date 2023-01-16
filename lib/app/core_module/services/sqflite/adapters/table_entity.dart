@@ -30,4 +30,4 @@ class TableFieldEntity extends Equatable {
   List<Object?> get props => [name];
 }
 
-enum FieldType { integer, string }
+enum FieldType { integer, string, real }

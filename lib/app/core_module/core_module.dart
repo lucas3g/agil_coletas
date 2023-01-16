@@ -1,6 +1,7 @@
 import 'package:agil_coletas/app/core_module/services/device_info/device_info_interface.dart';
 import 'package:agil_coletas/app/core_module/services/device_info/platform_device_info.dart';
 import 'package:agil_coletas/app/core_module/services/license/domain/repositories/license_repository.dart';
+import 'package:agil_coletas/app/core_module/services/license/domain/usecases/save_license_usecase.dart';
 import 'package:agil_coletas/app/core_module/services/license/domain/usecases/verify_license_usecase.dart';
 import 'package:agil_coletas/app/core_module/services/license/external/license_datasource.dart';
 import 'package:agil_coletas/app/core_module/services/license/infra/datasources/license_datasource.dart';
@@ -56,6 +57,7 @@ class CoreModule extends Module {
     Bind.singleton<ILicenseDatasource>(
       (i) => LicenseDatasource(
         clientHttp: i(),
+        storage: i(),
       ),
       export: true,
     ),
@@ -75,6 +77,12 @@ class CoreModule extends Module {
       ),
       export: true,
     ),
+    Bind.singleton<ISaveLicenseUseCase>(
+      (i) => SaveLicenseUseCase(
+        repository: i(),
+      ),
+      export: true,
+    ),
 
     // AsyncBind<ISQLFliteStorage>(
     //   (i) async {
@@ -85,6 +93,10 @@ class CoreModule extends Module {
     //       tables: {
     //         MakeTables.coletas(),
     //         MakeTables.tiket(),
+    //         MakeTables.rotas(),
+    //         MakeTables.caminhoes(),
+    //         MakeTables.produtores(),
+    //         MakeTables.license(),
     //       },
     //     );
 
