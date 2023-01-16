@@ -57,6 +57,7 @@ class MakeTables {
 
   static TableEntity license() {
     final fields = {
+      const TableFieldEntity(name: 'ID', type: FieldType.integer, pk: true),
       const TableFieldEntity(name: 'DATA', type: FieldType.string),
     };
 
@@ -80,6 +81,7 @@ class MakeTables {
 
   static TableEntity caminhoes() {
     final fields = {
+      const TableFieldEntity(name: 'ID', type: FieldType.integer, pk: true),
       const TableFieldEntity(name: 'PLACA', type: FieldType.string),
       const TableFieldEntity(name: 'DESCRICAO', type: FieldType.string),
       const TableFieldEntity(name: 'TANQUES', type: FieldType.integer),

@@ -1,8 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
+
 import 'package:agil_coletas/app/modules/rotas/presenter/bloc/events/rotas_events.dart';
 import 'package:agil_coletas/app/modules/rotas/presenter/bloc/states/rotas_states.dart';
 import 'package:agil_coletas/app/utils/constants.dart';
 import 'package:agil_coletas/app/utils/loading_widget.dart';
+import 'package:agil_coletas/app/utils/my_snackbar.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 
 import 'package:agil_coletas/app/components/my_app_bar_widget.dart';
@@ -22,11 +26,30 @@ class RotasPage extends StatefulWidget {
 }
 
 class _RotasPageState extends State<RotasPage> {
+  late StreamSubscription sub;
+
   @override
   void initState() {
     super.initState();
 
     widget.rotasBloc.add(GetRotasEvent());
+
+    sub = widget.rotasBloc.stream.listen((state) {
+      if (state is ErrorRotas) {
+        MySnackBar(
+          title: 'Ops...',
+          message: state.message,
+          type: ContentType.failure,
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    sub.cancel();
+
+    super.dispose();
   }
 
   @override
@@ -34,7 +57,12 @@ class _RotasPageState extends State<RotasPage> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(double.infinity, AppBar().preferredSize.height),
-        child: const MyAppBarWidget(titleAppbar: 'Rotas'),
+        child: const MyAppBarWidget(
+          titleAppbar: 'Rotas',
+          backButton: BackButton(
+            color: Colors.white,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(kPadding),
@@ -42,10 +70,20 @@ class _RotasPageState extends State<RotasPage> {
             bloc: widget.rotasBloc,
             builder: (context, state) {
               if (state is! SuccessGetRotas) {
-                return const Center(
-                  child: LoadingWidget(
-                    size: Size(double.infinity, 45),
-                    radius: 10,
+                return Center(
+                  child: Column(
+                    children: List.generate(
+                      10,
+                      (index) => Column(
+                        children: const [
+                          LoadingWidget(
+                            size: Size(double.infinity, 45),
+                            radius: 10,
+                          ),
+                          SizedBox(height: 10),
+                        ],
+                      ),
+                    ),
                   ),
                 );
               }
@@ -65,10 +103,35 @@ class _RotasPageState extends State<RotasPage> {
                     decoration: BoxDecoration(
                       border: Border.all(),
                       borderRadius: BorderRadius.circular(10),
+                      color:
+                          rota.finalizada ? Colors.white : Colors.grey.shade400,
                     ),
                     child: ListTile(
-                      title: Text(rota.descricao),
-                      subtitle: Text(rota.transportador),
+                      onTap: () {
+                        if (!rota.finalizada) {
+                          MySnackBar(
+                            title: 'Atenção',
+                            message: 'Rota pendente de finalização',
+                            type: ContentType.warning,
+                          );
+
+                          return;
+                        }
+                      },
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 10),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.room_outlined,
+                            color: Colors.black,
+                          ),
+                          const SizedBox(width: 10),
+                          Text('${rota.id.value} - ${rota.descricao}'),
+                        ],
+                      ),
                     ),
                   );
                 },

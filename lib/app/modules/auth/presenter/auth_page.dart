@@ -71,7 +71,7 @@ class _AuthPageState extends State<AuthPage> {
 
     user = UserAdapter.empty();
 
-    sub = widget.authBloc.stream.listen((state) {
+    sub = widget.authBloc.stream.listen((state) async {
       if (state is SuccessAuth) {
         shared.setData(
           params: SharedParams(
@@ -79,6 +79,8 @@ class _AuthPageState extends State<AuthPage> {
             value: FuncionarioAdapter.toJson(state.funcionario),
           ),
         );
+
+        widget.authBloc.add(SaveLicenseEvent());
 
         Modular.to.navigate('/home/');
       }

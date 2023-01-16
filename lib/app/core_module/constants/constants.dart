@@ -20,7 +20,10 @@ class GlobalFuncionario {
     final shared = Modular.get<ILocalStorage>();
 
     return FuncionarioAdapter.fromMap(
-        jsonDecode(shared.getData('funcionario')));
+      jsonDecode(
+        shared.getData('funcionario'),
+      ),
+    );
   }
 }
 

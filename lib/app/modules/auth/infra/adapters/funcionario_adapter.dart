@@ -11,8 +11,8 @@ class FuncionarioAdapter {
       name: map['NOME'],
       ccusto: map['CCUSTO'],
       empresa: FunEmpresa(
-        cnpj: map['CNPJ'],
-        nome: map['DESC_EMPRESA'],
+        cnpj: '97.305.890/0001-81',
+        nome: map['EMPRESA']['DESC_EMPRESA'],
       ),
     );
   }
@@ -23,7 +23,7 @@ class FuncionarioAdapter {
       'CCUSTO': fun.ccusto.value,
       'EMPRESA': {
         'CNPJ': fun.empresa.cnpj,
-        'NOME': fun.empresa.nome,
+        'DESC_EMPRESA': fun.empresa.nome,
       },
     };
   }

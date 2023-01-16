@@ -13,7 +13,6 @@ class AppWidget extends StatelessWidget {
     return MaterialApp.router(
       theme: ThemeData(
         useMaterial3: true,
-        brightness: Brightness.dark,
         scaffoldBackgroundColor: Colors.white,
         primarySwatch: AppTheme.colors.primary,
         appBarTheme: AppBarTheme(

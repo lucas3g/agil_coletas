@@ -18,3 +18,5 @@ class VerifyLicenseEvent extends AuthEvents {
     required this.deviceInfo,
   });
 }
+
+class SaveLicenseEvent extends AuthEvents {}

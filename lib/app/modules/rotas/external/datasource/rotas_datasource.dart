@@ -29,7 +29,8 @@ class RotasDatasource implements IRotasDatasource {
   @override
   Future<String> getRotasOnline() async {
     final cnpj = UtilBrasilFields.removeCaracteres(
-        GlobalFuncionario.instance.funcionario.empresa.cnpj);
+            GlobalFuncionario.instance.funcionario.empresa.cnpj)
+        .substring(0, 8);
 
     final result = await clientHttp.get('$baseUrl/getJson/$cnpj/rotas/rotas');
 

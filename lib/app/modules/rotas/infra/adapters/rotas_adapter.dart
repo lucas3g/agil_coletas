@@ -7,6 +7,7 @@ class RotasAdapter {
       id: IdVO(map['ID']),
       descricao: map['DESCRICAO'],
       transportador: map['TRANSPORTADOR'],
+      finalizada: true,
     );
   }
 }

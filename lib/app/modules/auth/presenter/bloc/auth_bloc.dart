@@ -19,6 +19,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
   }) : super(InitialAuth()) {
     on<SignInAuthEvent>(_signIn);
     on<VerifyLicenseEvent>(_verifyLicense);
+    on<SaveLicenseEvent>(_saveLicense);
   }
 
   Future _signIn(SignInAuthEvent event, emit) async {
@@ -38,9 +39,8 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
     final result = await verifyLicenseUseCase(event.deviceInfo);
 
     result.fold(
-      (success) async {
+      (success) {
         if (success.ativa == 'S') {
-          await saveLicenseUseCase();
           return emit(LicenseActiveAuth());
         }
 
@@ -52,5 +52,9 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
       },
       (failure) => emit(ErrorAuth(message: failure.message)),
     );
+  }
+
+  Future _saveLicense(SaveLicenseEvent event, emit) async {
+    await saveLicenseUseCase();
   }
 }
