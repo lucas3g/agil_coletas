@@ -1,5 +1,16 @@
-import 'package:agil_coletas/app/core_module/vos/text_vo.dart';
+class FunEmpresa {
+  String _cnpj;
+  String _nome;
 
-class FunDescEmpresa extends TextVO {
-  FunDescEmpresa(super.value);
+  String get cnpj => _cnpj;
+  void setCnpj(String value) => _cnpj = value;
+
+  String get nome => _nome;
+  void setNome(String value) => _nome = value;
+
+  FunEmpresa({
+    required String cnpj,
+    required String nome,
+  })  : _cnpj = cnpj,
+        _nome = nome;
 }

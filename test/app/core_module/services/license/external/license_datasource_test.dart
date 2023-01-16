@@ -17,7 +17,9 @@ void main() {
   setUp(() {
     clientHttp = IClientHttpMock();
     storage = IStorgeServiceMock();
-    datasource = LicenseDatasource(clientHttp: clientHttp, storage: storage);
+    datasource = LicenseDatasource(
+      clientHttp: clientHttp,
+    );
   });
 
   test('deve retornar uma instancia de Map', () async {

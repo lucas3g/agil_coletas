@@ -6,7 +6,7 @@ import 'package:agil_coletas/app/modules/auth/domain/vos/fun_name.dart';
 class Funcionario extends Entity {
   FunName _name;
   FunCCUSTO _ccusto;
-  FunDescEmpresa _empresa;
+  FunEmpresa _empresa;
 
   FunName get name => _name;
   void setName(String value) => _name = FunName(value);
@@ -14,15 +14,16 @@ class Funcionario extends Entity {
   FunCCUSTO get ccusto => _ccusto;
   void setCCusto(int value) => _ccusto = FunCCUSTO(value);
 
-  FunDescEmpresa get empresa => _empresa;
-  void setEmpresa(String value) => _empresa = FunDescEmpresa(value);
+  FunEmpresa get empresa => _empresa;
+  void setEmpresa(String cnpj, String nome) =>
+      _empresa = FunEmpresa(cnpj: cnpj, nome: nome);
 
   Funcionario({
     required super.id,
     required name,
     required ccusto,
-    required empresa,
+    required FunEmpresa empresa,
   })  : _name = FunName(name),
         _ccusto = FunCCUSTO(ccusto),
-        _empresa = FunDescEmpresa(empresa);
+        _empresa = FunEmpresa(cnpj: empresa.cnpj, nome: empresa.nome);
 }

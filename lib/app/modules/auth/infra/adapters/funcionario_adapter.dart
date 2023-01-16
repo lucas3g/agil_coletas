@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:agil_coletas/app/core_module/vos/id_vo.dart';
 import 'package:agil_coletas/app/modules/auth/domain/entities/funcionario.dart';
+import 'package:agil_coletas/app/modules/auth/domain/vos/fun_desc_empresa.dart';
 
 class FuncionarioAdapter {
   static Funcionario fromMap(dynamic map) {
@@ -9,7 +10,10 @@ class FuncionarioAdapter {
       id: const IdVO(1),
       name: map['NOME'],
       ccusto: map['CCUSTO'],
-      empresa: map['DESC_EMPRESA'],
+      empresa: FunEmpresa(
+        cnpj: map['CNPJ'],
+        nome: map['DESC_EMPRESA'],
+      ),
     );
   }
 
@@ -17,7 +21,10 @@ class FuncionarioAdapter {
     return {
       'NOME': fun.name.value,
       'CCUSTO': fun.ccusto.value,
-      'DESC_EMPRESA': fun.empresa.value,
+      'EMPRESA': {
+        'CNPJ': fun.empresa.cnpj,
+        'NOME': fun.empresa.nome,
+      },
     };
   }
 

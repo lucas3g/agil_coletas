@@ -3,6 +3,7 @@ import 'package:agil_coletas/app/modules/auth/domain/entities/funcionario.dart';
 import 'package:agil_coletas/app/modules/auth/domain/entities/user.dart';
 import 'package:agil_coletas/app/modules/auth/domain/repositories/auth_repository.dart';
 import 'package:agil_coletas/app/modules/auth/domain/usecases/signin_user_usecase.dart';
+import 'package:agil_coletas/app/modules/auth/domain/vos/fun_desc_empresa.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:result_dart/functions.dart';
@@ -36,4 +37,11 @@ final User user = User(
     password: 'EL');
 
 final Funcionario funcionario = Funcionario(
-    id: const IdVO(1), name: 'lucas', ccusto: 101, empresa: 'el sistemas');
+  id: const IdVO(1),
+  name: 'lucas',
+  ccusto: 101,
+  empresa: FunEmpresa(
+    cnpj: '97.305.890/0001-81',
+    nome: 'ENIO',
+  ),
+);

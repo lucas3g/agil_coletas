@@ -2,6 +2,7 @@ import 'package:agil_coletas/app/core_module/constants/constants.dart';
 import 'package:agil_coletas/app/theme/app_theme.dart';
 import 'package:agil_coletas/app/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,7 +25,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         title: Text(
-          '..: ${funcionario.empresa.value} :..',
+          '..: ${funcionario.empresa.nome} :..',
           style: AppTheme.textStyles.titleAppBar,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
@@ -43,74 +44,103 @@ class _HomePageState extends State<HomePage> {
           );
         }),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            SizedBox(
-              height: context.screenHeight * .10,
-              child: Theme(
-                data: ThemeData().copyWith(dividerColor: Colors.transparent),
-                child: DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: AppTheme.colors.primary,
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
-                    ),
+      drawer: Theme(
+        data: ThemeData().copyWith(
+          dividerColor: Colors.white,
+        ),
+        child: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              Container(
+                height: context.screenHeight * .10,
+                color: Colors.white,
+                child: Theme(
+                  data: ThemeData().copyWith(
+                    dividerColor: Colors.white,
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Motorista: ${funcionario.name.value}',
-                        style: AppTheme.textStyles.titleDrawer,
+                  child: DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: AppTheme.colors.primary,
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
                       ),
-                    ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Motorista: ${funcionario.name.value}',
+                          style: AppTheme.textStyles.titleDrawer,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: context.screenHeight * .90,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      ListTile(
-                        title: Text(
-                          'Configuração',
-                          style: AppTheme.textStyles.subtitleDrawer,
+              Container(
+                height: context.screenHeight * .90,
+                color: Colors.white,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        ListTile(
+                          title: Text(
+                            'Configuração',
+                            style: AppTheme.textStyles.subtitleDrawer,
+                          ),
+                          onTap: () {},
                         ),
-                        onTap: () {},
-                      ),
-                      ListTile(
-                        title: Text(
-                          'Impressora',
-                          style: AppTheme.textStyles.subtitleDrawer,
+                        ListTile(
+                          title: Text(
+                            'Impressora',
+                            style: AppTheme.textStyles.subtitleDrawer,
+                          ),
+                          onTap: () {},
                         ),
-                        onTap: () {},
-                      ),
-                      ListTile(
-                        title: Text(
-                          'Sair',
-                          style: AppTheme.textStyles.subtitleDrawer,
+                        ListTile(
+                          title: Text(
+                            'Sair',
+                            style: AppTheme.textStyles.subtitleDrawer,
+                          ),
+                          onTap: () {},
                         ),
-                        onTap: () {},
-                      ),
-                    ],
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Versão 1.0.0',
-                      textAlign: TextAlign.end,
-                      style: AppTheme.textStyles.subtitleDrawer,
+                      ],
                     ),
-                  ),
-                ],
+                    ListTile(
+                      title: Text(
+                        'Versão 1.0.0',
+                        textAlign: TextAlign.end,
+                        style: AppTheme.textStyles.subtitleDrawer,
+                      ),
+                    ),
+                  ],
+                ),
               ),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(left: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            FloatingActionButton(
+              heroTag: 'botao1',
+              onPressed: () {},
+              child: const Icon(Icons.cloud_upload_rounded),
+            ),
+            FloatingActionButton(
+              heroTag: 'botao2',
+              onPressed: () {
+                Modular.to.pushNamed('/home/rotas/');
+              },
+              child: const Icon(Icons.add),
             ),
           ],
         ),
