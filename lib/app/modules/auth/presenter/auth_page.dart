@@ -275,8 +275,7 @@ class _AuthPageState extends State<AuthPage> {
                                   ],
                                 ),
                                 onPressed: () {
-                                  Navigator.of(context, rootNavigator: true)
-                                      .pop('dialog');
+                                  Modular.to.pop('dialog');
                                 },
                               ),
                             );

@@ -5,10 +5,6 @@ import 'package:agil_coletas/app/core_module/services/license/domain/usecases/ve
 import 'package:agil_coletas/app/core_module/services/license/external/license_datasource.dart';
 import 'package:agil_coletas/app/core_module/services/license/infra/datasources/license_datasource.dart';
 import 'package:agil_coletas/app/core_module/services/license/infra/repositories/license_repository.dart';
-import 'package:agil_coletas/app/core_module/services/sqflite/adapters/sqflite_adapter.dart';
-import 'package:agil_coletas/app/core_module/services/sqflite/make_tables/make_tables.dart';
-import 'package:agil_coletas/app/core_module/services/sqflite/sqflite_service.dart';
-import 'package:agil_coletas/app/core_module/services/sqflite/sqflite_storage_interface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'services/shared_preferences/local_storage_interface.dart';
@@ -80,23 +76,23 @@ class CoreModule extends Module {
       export: true,
     ),
 
-    AsyncBind<ISQLFliteStorage>(
-      (i) async {
-        final service = SQLFliteService();
+    // AsyncBind<ISQLFliteStorage>(
+    //   (i) async {
+    //     final service = SQLFliteService();
 
-        final param = SQLFliteInitParam(
-          fileName: 'agil.db',
-          tables: {
-            MakeTables.coletas(),
-            MakeTables.tiket(),
-          },
-        );
+    //     final param = SQLFliteInitParam(
+    //       fileName: 'agil.db',
+    //       tables: {
+    //         MakeTables.coletas(),
+    //         MakeTables.tiket(),
+    //       },
+    //     );
 
-        await service.init(param);
+    //     await service.init(param);
 
-        return service;
-      },
-      export: true,
-    ),
+    //     return service;
+    //   },
+    //   export: true,
+    // ),
   ];
 }
