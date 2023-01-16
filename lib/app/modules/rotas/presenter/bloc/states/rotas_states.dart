@@ -32,11 +32,10 @@ abstract class RotasStates {
     }
 
     return rotas
-        .where(
-          (rota) => (rota.descricao.toLowerCase().removeAcentos().contains(
-                filtro.toLowerCase().removeAcentos(),
-              )),
-        )
+        .where((rota) => (rota.descricao
+            .toLowerCase()
+            .removeAcentos()
+            .contains(filtro.toLowerCase().removeAcentos())))
         .toList();
   }
 }
