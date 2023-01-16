@@ -34,7 +34,9 @@ class RotasRepository implements IRotasRepository {
       final finalizadas = await datasource.getRotasNaoFinalizadas();
 
       for (var rota in finalizadas) {
-        rotas[rotas.indexOf(rota)].setFinalizada(false);
+        rotas
+            .firstWhere((e) => e.id.value == rota['COD_ROTA'])
+            .setFinalizada(false);
       }
 
       return rotas.toSuccess();
