@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:agil_coletas/app/core_module/constants/constants.dart';
 import 'package:agil_coletas/app/core_module/services/client_http/client_http_interface.dart';
+import 'package:agil_coletas/app/core_module/services/sqflite/adapters/filter_entity.dart';
 import 'package:agil_coletas/app/core_module/services/sqflite/adapters/sqflite_adapter.dart';
 import 'package:agil_coletas/app/core_module/services/sqflite/adapters/tables.dart';
 import 'package:agil_coletas/app/core_module/services/sqflite/sqflite_storage_interface.dart';
@@ -41,5 +42,23 @@ class RotasDatasource implements IRotasDatasource {
     }
 
     return result.data;
+  }
+
+  @override
+  Future<List> getRotasNaoFinalizadas() async {
+    const filters = FilterEntity(
+      name: 'FINALIZADA',
+      value: 1, //NÃO
+      type: FilterType.equal,
+    );
+
+    final param = SQLFliteGetPerFilterParam(
+      table: Tables.coletas,
+      filters: {filters},
+    );
+
+    final result = await storage.getPerFilter(param);
+
+    return result;
   }
 }

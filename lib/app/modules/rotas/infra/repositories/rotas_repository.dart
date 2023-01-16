@@ -29,7 +29,15 @@ class RotasRepository implements IRotasRepository {
         result = await datasource.getRotasOffline();
       }
 
-      return result.map(RotasAdapter.fromMap).toList().toSuccess();
+      final rotas = result.map(RotasAdapter.fromMap).toList();
+
+      final finalizadas = await datasource.getRotasNaoFinalizadas();
+
+      for (var rota in finalizadas) {
+        rotas[rotas.indexOf(rota)].setFinalizada(false);
+      }
+
+      return rotas.toSuccess();
     } on DioError catch (e) {
       return MyException(message: e.message).toFailure();
     } on IMyException catch (e) {
