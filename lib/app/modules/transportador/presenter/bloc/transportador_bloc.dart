@@ -9,6 +9,7 @@ class TransportadorBloc extends Bloc<TransportadorEvents, TransportadorStates> {
   TransportadorBloc({required this.getTransportadorUseCase})
       : super(InitialTransportador()) {
     on<GetTransportadorEvent>(_getTransportadores);
+    on<FiltraTransportadorEvent>(_serachTransp);
   }
 
   Future _getTransportadores(GetTransportadorEvent event, emit) async {
@@ -17,8 +18,12 @@ class TransportadorBloc extends Bloc<TransportadorEvents, TransportadorStates> {
     final result = await getTransportadorUseCase();
 
     result.fold(
-      (success) => emit(state.success(success, '')),
+      (success) => emit(state.success(transportadores: success, filtro: '')),
       (failure) => emit(state.error(failure.message)),
     );
+  }
+
+  void _serachTransp(FiltraTransportadorEvent event, emit) {
+    emit(state.success(filtro: event.value));
   }
 }

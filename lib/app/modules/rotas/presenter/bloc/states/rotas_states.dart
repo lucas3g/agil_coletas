@@ -11,7 +11,7 @@ abstract class RotasStates {
     required this.filtro,
   });
 
-  SuccessGetRotas succcess({List<Rotas>? rotas, String? filtro}) {
+  SuccessGetRotas success({List<Rotas>? rotas, String? filtro}) {
     return SuccessGetRotas(
       rotas: rotas ?? this.rotas,
       filtro: filtro ?? this.filtro,
@@ -33,9 +33,14 @@ abstract class RotasStates {
 
     return rotas
         .where((rota) => (rota.descricao
-            .toLowerCase()
-            .removeAcentos()
-            .contains(filtro.toLowerCase().removeAcentos())))
+                .toLowerCase()
+                .removeAcentos()
+                .contains(filtro.toLowerCase().removeAcentos()) ||
+            rota.id
+                .toString()
+                .toLowerCase()
+                .removeAcentos()
+                .contains(filtro.toLowerCase().removeAcentos())))
         .toList();
   }
 }

@@ -8,7 +8,7 @@ abstract class TransportadorStates {
   TransportadorStates({required this.transportadores, required this.filtro});
 
   SuccessGetTransportador success(
-      List<Transportador>? transportadores, String? filtro) {
+      {List<Transportador>? transportadores, String? filtro}) {
     return SuccessGetTransportador(
       transportadores: transportadores ?? this.transportadores,
       filtro: filtro ?? this.filtro,

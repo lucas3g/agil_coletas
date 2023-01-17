@@ -25,7 +25,7 @@ class MyInputWidget extends StatelessWidget {
   final TextInputAction? textInputAction;
   final TextAlignVertical? textAlignVertical;
   final String? Function(String?)? validator;
-  final String value;
+  final String? value;
 
   const MyInputWidget({
     Key? key,
@@ -49,7 +49,7 @@ class MyInputWidget extends StatelessWidget {
     this.textInputAction,
     this.textAlignVertical = TextAlignVertical.center,
     this.validator,
-    required this.value,
+    this.value,
   }) : super(key: key);
 
   @override

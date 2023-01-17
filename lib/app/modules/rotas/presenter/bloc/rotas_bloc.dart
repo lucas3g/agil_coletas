@@ -12,6 +12,7 @@ class RotasBloc extends Bloc<RotasEvents, RotasStates> {
     required this.getRotasUseCase,
   }) : super(InitialRotas()) {
     on<GetRotasEvent>(_getRotas);
+    on<FiltraRotasEvent>(_searchRotas);
   }
 
   Future _getRotas(GetRotasEvent event, emit) async {
@@ -20,8 +21,12 @@ class RotasBloc extends Bloc<RotasEvents, RotasStates> {
     final result = await getRotasUseCase();
 
     result.fold(
-      (success) => emit(state.succcess(rotas: success)),
+      (success) => emit(state.success(rotas: success)),
       (failure) => emit(state.error(failure.message)),
     );
+  }
+
+  void _searchRotas(FiltraRotasEvent event, emit) {
+    emit(state.success(filtro: event.value));
   }
 }

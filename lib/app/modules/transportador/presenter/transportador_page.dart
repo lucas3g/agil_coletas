@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:agil_coletas/app/components/my_app_bar_widget.dart';
+import 'package:agil_coletas/app/components/my_input_widget.dart';
 import 'package:agil_coletas/app/components/my_list_shimmer_widget.dart';
 import 'package:agil_coletas/app/modules/transportador/presenter/bloc/events/transportador_event.dart';
 import 'package:agil_coletas/app/modules/transportador/presenter/bloc/states/transportador_states.dart';
 import 'package:agil_coletas/app/modules/transportador/presenter/bloc/transportador_bloc.dart';
 import 'package:agil_coletas/app/theme/app_theme.dart';
 import 'package:agil_coletas/app/utils/constants.dart';
+import 'package:agil_coletas/app/utils/formatters.dart';
 import 'package:agil_coletas/app/utils/my_snackbar.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
@@ -69,56 +71,77 @@ class _TransportadorPageState extends State<TransportadorPage> {
               );
             }
 
-            return ListView.separated(
-              itemBuilder: (context, index) {
-                final transp = transps[index];
+            return Column(
+              children: [
+                MyInputWidget(
+                  label: 'Pesquisa',
+                  hintText: 'Digite o nome ou placa do transportador',
+                  onChanged: (String? value) {
+                    widget.transportadorBloc
+                        .add(FiltraTransportadorEvent(value: value!));
+                  },
+                  inputFormaters: [UpperCaseTextFormatter()],
+                ),
+                const Divider(),
+                Expanded(
+                  child: ListView.separated(
+                    itemBuilder: (context, index) {
+                      final transp = transps[index];
 
-                return Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(10),
-                    color: transp.ultimo ? Colors.green.shade400 : Colors.white,
-                  ),
-                  child: ListTile(
-                    onTap: () {
-                      MySnackBar(
-                          title: 'O CARAI',
-                          message: 'PARA DE CLICAR EM MIM',
-                          type: ContentType.failure);
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                          color: transp.ultimo
+                              ? Colors.green.shade400
+                              : Colors.white,
+                        ),
+                        child: ListTile(
+                          onTap: () {
+                            MySnackBar(
+                                title: 'O CARAI',
+                                message: 'PARA DE CLICAR EM MIM',
+                                type: ContentType.failure);
+                          },
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 10),
+                          minLeadingWidth: 10,
+                          leading: const SizedBox(
+                            height: double.maxFinite,
+                            child: Icon(
+                              Icons.local_shipping_outlined,
+                              color: Colors.black,
+                            ),
+                          ),
+                          title: Text(
+                            transp.descricao,
+                            style: AppTheme.textStyles.titleCardTransp,
+                          ),
+                          subtitle: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Placa: ',
+                                  style: AppTheme
+                                      .textStyles.subTitleCardTranspBold,
+                                ),
+                                TextSpan(
+                                  text: transp.placa,
+                                  style: AppTheme.textStyles.subTitleCardTransp,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
                     },
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                    minLeadingWidth: 10,
-                    leading: const SizedBox(
-                      height: double.maxFinite,
-                      child: Icon(
-                        Icons.local_shipping_outlined,
-                        color: Colors.black,
-                      ),
-                    ),
-                    title: Text(
-                      transp.descricao,
-                      style: AppTheme.textStyles.titleCardTransp,
-                    ),
-                    subtitle: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Placa: ',
-                            style: AppTheme.textStyles.subTitleCardTranspBold,
-                          ),
-                          TextSpan(
-                            text: transp.placa,
-                            style: AppTheme.textStyles.subTitleCardTransp,
-                          ),
-                        ],
-                      ),
-                    ),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 10),
+                    itemCount: transps.length,
                   ),
-                );
-              },
-              separatorBuilder: (context, index) => const SizedBox(height: 10),
-              itemCount: transps.length,
+                ),
+              ],
             );
           },
         ),
