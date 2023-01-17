@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:agil_coletas/app/core_module/services/connectivity/connectivity_service.dart';
+import 'package:agil_coletas/app/modules/home/domain/entities/coletas.dart';
 import 'package:agil_coletas/app/modules/tikets/domain/vos/produtor.dart';
 import 'package:agil_coletas/app/modules/tikets/infra/adapters/produtor_adapter.dart';
 import 'package:agil_coletas/app/modules/tikets/infra/adapters/tiket_adapter.dart';
@@ -20,10 +21,10 @@ class TiketRepository implements ITiketRepository {
   });
 
   @override
-  Future<Result<bool, IMyException>> createTikets(
-      List<Produtor> produtores) async {
+  Future<Result<int, IMyException>> createTikets(
+      List<Produtor> produtores, Coletas coleta) async {
     try {
-      final result = await datasource.createTikets(produtores);
+      final result = await datasource.createTikets(produtores, coleta);
 
       return result.toSuccess();
     } on IMyException catch (e) {
@@ -52,7 +53,7 @@ class TiketRepository implements ITiketRepository {
     try {
       late List result = [];
 
-      if (await ConnectivityService.hasWiFi()) {
+      if (await ConnectivityService.hasWiFi() && codRota == 0) {
         result = jsonDecode(await datasource.getProdutoresOnline());
       } else {
         result = await datasource.getProdutoresOffline(codRota);

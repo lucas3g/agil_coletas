@@ -6,6 +6,7 @@ import 'package:agil_coletas/app/core_module/services/sqflite/adapters/sqflite_a
 import 'package:agil_coletas/app/core_module/services/sqflite/adapters/tables.dart';
 import 'package:agil_coletas/app/core_module/services/sqflite/sqflite_storage_interface.dart';
 import 'package:agil_coletas/app/core_module/types/my_exception.dart';
+import 'package:agil_coletas/app/modules/home/domain/entities/coletas.dart';
 import 'package:agil_coletas/app/modules/tikets/domain/vos/produtor.dart';
 import 'package:agil_coletas/app/modules/tikets/infra/adapters/produtor_adapter.dart';
 import 'package:agil_coletas/app/modules/tikets/infra/adapters/tiket_adapter.dart';
@@ -21,15 +22,17 @@ class TiketDatasource implements ITiketDatasource {
   });
 
   @override
-  Future<bool> createTikets(List<Produtor> produtores) async {
+  Future<int> createTikets(List<Produtor> produtores, Coletas coleta) async {
     for (var produtor in produtores) {
       final param = SQLFliteInsertParam(
-          table: Tables.produtores, data: TiketAdapter.toMapSQLFlite(produtor));
+        table: Tables.produtores,
+        data: TiketAdapter.toMapSQLFlite(produtor, coleta),
+      );
 
       await storage.create(param);
     }
 
-    return true;
+    return coleta.id;
   }
 
   @override

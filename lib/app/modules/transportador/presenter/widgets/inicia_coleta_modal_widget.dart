@@ -2,6 +2,7 @@
 import 'package:agil_coletas/app/modules/home/domain/entities/coletas.dart';
 import 'package:agil_coletas/app/modules/home/infra/adapters/coletas_adapter.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/events/home_events.dart';
+import 'package:agil_coletas/app/modules/home/presenter/bloc/states/home_states.dart';
 import 'package:agil_coletas/app/utils/formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -54,6 +55,17 @@ class _IniciaColetaModalWidgetState extends State<IniciaColetaModalWidget> {
     coleta.setParticoes(widget.transp.particoes);
     coleta.setPlaca(widget.transp.placa);
     coleta.setCCusto(fun.ccusto.value);
+
+    widget.homeBloc.stream.listen((state) {
+      if (state is SuccessCreateColetaHome) {
+        coleta.setID(state.coleta.id);
+
+        Modular.to.navigate(
+          '/home/tikets/',
+          arguments: {'codRota': widget.rota.id.value, 'coleta': coleta},
+        );
+      }
+    });
   }
 
   @override

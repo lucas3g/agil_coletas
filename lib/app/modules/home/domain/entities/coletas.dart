@@ -1,10 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:agil_coletas/app/core_module/types/entity.dart';
 import 'package:agil_coletas/app/modules/home/domain/vos/datas_coleta.dart';
 import 'package:agil_coletas/app/modules/home/domain/vos/km_coleta.dart';
 import 'package:agil_coletas/app/modules/home/domain/vos/rota_coleta.dart';
 
-class Coletas extends Entity {
+class Coletas {
+  int _id;
   RotaColeta _rota;
   String _dataMov;
   DatasColeta _datasColeta;
@@ -16,6 +16,9 @@ class Coletas extends Entity {
   bool _finalizada;
   bool _enviada;
   int _totalColeta;
+
+  int get id => _id;
+  void setID(int value) => _id = value;
 
   RotaColeta get rota => _rota;
   void setRota(int codRota, String nomeRota) =>
@@ -56,7 +59,7 @@ class Coletas extends Entity {
   void setEnviada(bool value) => _enviada = value;
 
   Coletas({
-    required super.id,
+    required int id,
     required RotaColeta rota,
     required String dataMov,
     required DatasColeta dataColeta,
@@ -68,7 +71,8 @@ class Coletas extends Entity {
     required bool finalizada,
     required bool enviada,
     required int totalColetado,
-  })  : _rota = rota,
+  })  : _id = id,
+        _rota = rota,
         _dataMov = dataMov,
         _datasColeta = dataColeta,
         _motorista = motorista,
