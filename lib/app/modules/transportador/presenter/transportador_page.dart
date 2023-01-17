@@ -55,68 +55,73 @@ class _TransportadorPageState extends State<TransportadorPage> {
       body: Padding(
         padding: const EdgeInsets.all(kPadding),
         child: BlocBuilder<TransportadorBloc, TransportadorStates>(
-            bloc: widget.transportadorBloc,
-            builder: (context, state) {
-              if (state is! SuccessGetTransportador) {
-                return const MyListShimmerWidget();
-              }
+          bloc: widget.transportadorBloc,
+          builder: (context, state) {
+            if (state is! SuccessGetTransportador) {
+              return const MyListShimmerWidget();
+            }
 
-              final transps = state.transpFiltrados;
+            final transps = state.transpFiltrados;
 
-              if (transps.isEmpty) {
-                return const Center(
-                  child: Text('Lista de transportadores está vazia.'),
-                );
-              }
+            if (transps.isEmpty) {
+              return const Center(
+                child: Text('Lista de transportadores está vazia.'),
+              );
+            }
 
-              return ListView.separated(
-                itemBuilder: (context, index) {
-                  final transp = transps[index];
+            return ListView.separated(
+              itemBuilder: (context, index) {
+                final transp = transps[index];
 
-                  return Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(10),
-                      color:
-                          transp.ultimo ? Colors.green.shade400 : Colors.white,
+                return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    border: Border.all(),
+                    borderRadius: BorderRadius.circular(10),
+                    color: transp.ultimo ? Colors.green.shade400 : Colors.white,
+                  ),
+                  child: ListTile(
+                    onTap: () {
+                      MySnackBar(
+                          title: 'O CARAI',
+                          message: 'PARA DE CLICAR EM MIM',
+                          type: ContentType.failure);
+                    },
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                    minLeadingWidth: 10,
+                    leading: const SizedBox(
+                      height: double.maxFinite,
+                      child: Icon(
+                        Icons.local_shipping_outlined,
+                        color: Colors.black,
+                      ),
                     ),
-                    child: ListTile(
-                      onTap: () {
-                        MySnackBar(
-                            title: 'O CARAI',
-                            message: 'PARA DE CLICAR EM MIM',
-                            type: ContentType.failure);
-                      },
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 10),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                    title: Text(
+                      transp.descricao,
+                      style: AppTheme.textStyles.titleCardTransp,
+                    ),
+                    subtitle: RichText(
+                      text: TextSpan(
                         children: [
-                          const Icon(
-                            Icons.local_shipping_outlined,
-                            color: Colors.black,
+                          TextSpan(
+                            text: 'Placa: ',
+                            style: AppTheme.textStyles.subTitleCardTranspBold,
                           ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                              child: Text(
-                            transp.descricao,
-                            style: AppTheme.textStyles.titleCardTransp,
-                          )),
+                          TextSpan(
+                            text: transp.placa,
+                            style: AppTheme.textStyles.subTitleCardTransp,
+                          ),
                         ],
                       ),
-                      subtitle: Text(
-                        'Placa: ${transp.placa}',
-                        style: AppTheme.textStyles.subTitleCardTransp,
-                      ),
                     ),
-                  );
-                },
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 10),
-                itemCount: transps.length,
-              );
-            }),
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) => const SizedBox(height: 10),
+              itemCount: transps.length,
+            );
+          },
+        ),
       ),
     );
   }
