@@ -1,3 +1,4 @@
+import 'package:agil_coletas/app/modules/home/presenter/bloc/home_bloc.dart';
 import 'package:agil_coletas/app/modules/transportador/domain/repositories/transportador_repository.dart';
 import 'package:agil_coletas/app/modules/transportador/domain/usecases/get_transportador_usecase.dart';
 import 'package:agil_coletas/app/modules/transportador/external/datasources/transportador_datasource.dart';
@@ -38,6 +39,7 @@ class TransportadorModule extends Module {
       '/',
       child: (context, args) => TransportadorPage(
         transportadorBloc: Modular.get<TransportadorBloc>(),
+        homeBloc: Modular.get<HomeBloc>(),
       ),
     ),
   ];

@@ -4,6 +4,7 @@ import 'package:agil_coletas/app/core_module/services/device_info/device_info_in
 import 'package:agil_coletas/app/core_module/services/shared_preferences/local_storage_interface.dart';
 import 'package:agil_coletas/app/modules/auth/domain/entities/funcionario.dart';
 import 'package:agil_coletas/app/modules/auth/infra/adapters/funcionario_adapter.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 const baseUrl = String.fromEnvironment('BASE_URL');
@@ -38,3 +39,7 @@ class GlobalDevice {
     return DeviceInfo(deviceID: shared.getData('DEVICE_ID'));
   }
 }
+
+final cnpjSemCaracter = UtilBrasilFields.removeCaracteres(
+        GlobalFuncionario.instance.funcionario.empresa.cnpj)
+    .substring(0, 8);

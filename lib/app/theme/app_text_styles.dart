@@ -5,6 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 abstract class AppTextStyles {
   TextStyle get labelLogin;
   TextStyle get titleAlertDialog;
+  TextStyle get titleListaColetas;
+  TextStyle get titleCardListaColetas;
+  TextStyle get subTitleCardListaColetas;
   TextStyle get contentAlertDialog;
   TextStyle get titleAppBar;
   TextStyle get titleDrawer;
@@ -13,6 +16,8 @@ abstract class AppTextStyles {
   TextStyle get titleCardTranspBold;
   TextStyle get subTitleCardTransp;
   TextStyle get subTitleCardTranspBold;
+  TextStyle get titleAlertTransp;
+  TextStyle get subTitleAlertTransp;
 }
 
 class AppTextStylesDefault implements AppTextStyles {
@@ -82,6 +87,41 @@ class AppTextStylesDefault implements AppTextStyles {
   TextStyle get subTitleCardTransp => GoogleFonts.montserrat(
         fontSize: 14,
         fontWeight: FontWeight.w500,
+        color: Colors.black,
+      );
+
+  @override
+  TextStyle get titleAlertTransp => GoogleFonts.montserrat(
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      );
+
+  @override
+  TextStyle get subTitleAlertTransp => GoogleFonts.montserrat(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        color: Colors.black,
+      );
+
+  @override
+  TextStyle get titleListaColetas => GoogleFonts.montserrat(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: AppTheme.colors.primary,
+      );
+
+  @override
+  TextStyle get subTitleCardListaColetas => GoogleFonts.montserrat(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        color: Colors.black,
+      );
+
+  @override
+  TextStyle get titleCardListaColetas => GoogleFonts.montserrat(
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
         color: Colors.black,
       );
 }

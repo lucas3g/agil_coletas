@@ -15,6 +15,14 @@ class SuccessGetColetasHome extends HomeStates {
   });
 }
 
+class SuccessCreateColetaHome extends HomeStates {
+  final Coletas coleta;
+
+  SuccessCreateColetaHome({
+    required this.coleta,
+  });
+}
+
 class ErrorHome extends HomeStates {
   final String message;
 

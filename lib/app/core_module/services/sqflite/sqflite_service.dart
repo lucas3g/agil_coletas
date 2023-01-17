@@ -14,14 +14,14 @@ class SQLFliteService implements ISQLFliteStorage {
   SQLFliteService();
 
   @override
-  Future<bool> create(SQLFliteInsertParam param) async {
-    late int gravou = 0;
+  Future<int> create(SQLFliteInsertParam param) async {
+    late int id = 0;
 
     await _db!.transaction((txn) async {
-      gravou = await txn.insert(param.table.name, param.data);
+      id = await txn.insert(param.table.name, param.data);
     });
 
-    return gravou > 0;
+    return id;
   }
 
   @override

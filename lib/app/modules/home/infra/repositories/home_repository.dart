@@ -25,9 +25,26 @@ class HomeRepository implements IHomeRepository {
         coletas.add(ColetasAdapter.fromMap(coleta));
       }
 
+      coletas.sort((a, b) => ("${a.finalizada}${a.enviada}${b.dataMov}")
+          .toString()
+          .compareTo(("${b.finalizada}${b.enviada}${a.dataMov}").toString()));
+
       return coletas.toSuccess();
     } on DioError catch (e) {
       return MyException(message: e.message).toFailure();
+    } on MyException catch (e) {
+      return MyException(message: e.message).toFailure();
+    } catch (e) {
+      return MyException(message: e.toString()).toFailure();
+    }
+  }
+
+  @override
+  Future<Result<Coletas, IMyException>> createColeta(Coletas coleta) async {
+    try {
+      final result = await datasource.createColeta(coleta);
+
+      return ColetasAdapter.fromMap(result).toSuccess();
     } on MyException catch (e) {
       return MyException(message: e.message).toFailure();
     } catch (e) {

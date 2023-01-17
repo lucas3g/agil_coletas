@@ -1,16 +1,21 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:agil_coletas/app/core_module/types/entity.dart';
+import 'package:agil_coletas/app/modules/home/domain/vos/datas_coleta.dart';
 import 'package:agil_coletas/app/modules/home/domain/vos/km_coleta.dart';
 import 'package:agil_coletas/app/modules/home/domain/vos/rota_coleta.dart';
 
 class Coletas extends Entity {
   RotaColeta _rota;
   String _dataMov;
+  DatasColeta _datasColeta;
+  String _motorista;
   KMColeta _km;
+  int _ccusto;
+  int _particoes;
   String _placa;
-  int _totalColeta;
   bool _finalizada;
   bool _enviada;
+  int _totalColeta;
 
   RotaColeta get rota => _rota;
   void setRota(int codRota, String nomeRota) =>
@@ -19,9 +24,24 @@ class Coletas extends Entity {
   String get dataMov => _dataMov;
   void setDataMov(String value) => _dataMov = value;
 
+  DatasColeta get datasColeta => _datasColeta;
+  void setDatasColeta({String? dataHoraInicial, String? dataHoraFinal}) =>
+      _datasColeta = DatasColeta(
+          dataHoraInicial: dataHoraInicial ?? _datasColeta.dataHoraInicial,
+          dataHoraFinal: dataHoraFinal ?? _datasColeta.dataHoraFinal);
+
   KMColeta get km => _km;
-  void setKM(int kmIni, int kmFim) =>
-      _km = KMColeta(inicial: kmIni, ffinal: kmFim);
+  void setKM({int? kmIni, int? kmFim}) =>
+      _km = KMColeta(inicial: kmIni ?? _km.inical, ffinal: kmFim ?? _km.ffinal);
+
+  String get motorista => _motorista;
+  void setMotorista(String value) => _motorista = value;
+
+  int get particoes => _particoes;
+  void setParticoes(int value) => _particoes = value;
+
+  int get ccusto => _ccusto;
+  void setCCusto(int value) => _ccusto = value;
 
   String get placa => _placa;
   void setPlaca(String value) => _placa = value;
@@ -39,14 +59,22 @@ class Coletas extends Entity {
     required super.id,
     required RotaColeta rota,
     required String dataMov,
+    required DatasColeta dataColeta,
+    required String motorista,
     required KMColeta km,
+    required int ccusto,
+    required int particoes,
     required String placa,
-    required int totalColetado,
     required bool finalizada,
     required bool enviada,
+    required int totalColetado,
   })  : _rota = rota,
         _dataMov = dataMov,
+        _datasColeta = dataColeta,
+        _motorista = motorista,
         _km = km,
+        _ccusto = ccusto,
+        _particoes = particoes,
         _placa = placa,
         _totalColeta = totalColetado,
         _finalizada = finalizada,

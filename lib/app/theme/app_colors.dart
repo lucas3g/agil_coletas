@@ -6,6 +6,7 @@ abstract class AppColors {
   MaterialColor get swatch;
 
   Color get labelLogin;
+  Color get verde;
 
   final String hex = '0xff';
   final String colorFinal = 'cf1f36';
@@ -54,4 +55,7 @@ class AppColorDefault implements AppColors {
 
   @override
   Color get labelLogin => Colors.black;
+
+  @override
+  Color get verde => Colors.green;
 }

@@ -7,7 +7,6 @@ import 'package:agil_coletas/app/core_module/services/sqflite/adapters/tables.da
 import 'package:agil_coletas/app/core_module/services/sqflite/sqflite_storage_interface.dart';
 import 'package:agil_coletas/app/core_module/types/my_exception.dart';
 import 'package:agil_coletas/app/modules/rotas/infra/datasources/rotas_datasource.dart';
-import 'package:brasil_fields/brasil_fields.dart';
 
 class RotasDatasource implements IRotasDatasource {
   final IClientHttp clientHttp;
@@ -29,11 +28,8 @@ class RotasDatasource implements IRotasDatasource {
 
   @override
   Future<String> getRotasOnline() async {
-    final cnpj = UtilBrasilFields.removeCaracteres(
-            GlobalFuncionario.instance.funcionario.empresa.cnpj)
-        .substring(0, 8);
-
-    final result = await clientHttp.get('$baseUrl/getJson/$cnpj/rotas/rotas');
+    final result =
+        await clientHttp.get('$baseUrl/getJson/$cnpjSemCaracter/rotas/rotas');
 
     if (result.statusCode != 200) {
       throw const MyException(
@@ -48,7 +44,7 @@ class RotasDatasource implements IRotasDatasource {
   Future<List> getRotasNaoFinalizadas() async {
     const filters = FilterEntity(
       name: 'FINALIZADA',
-      value: 1, //NÃO
+      value: 0, //NÃO
       type: FilterType.equal,
     );
 

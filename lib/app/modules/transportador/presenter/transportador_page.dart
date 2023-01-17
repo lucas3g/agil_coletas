@@ -1,22 +1,35 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
+
+import 'package:agil_coletas/app/modules/home/presenter/bloc/states/home_states.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import 'package:agil_coletas/app/components/my_app_bar_widget.dart';
 import 'package:agil_coletas/app/components/my_input_widget.dart';
 import 'package:agil_coletas/app/components/my_list_shimmer_widget.dart';
+import 'package:agil_coletas/app/modules/home/presenter/bloc/home_bloc.dart';
+import 'package:agil_coletas/app/modules/rotas/domain/entities/rotas.dart';
 import 'package:agil_coletas/app/modules/transportador/presenter/bloc/events/transportador_event.dart';
 import 'package:agil_coletas/app/modules/transportador/presenter/bloc/states/transportador_states.dart';
 import 'package:agil_coletas/app/modules/transportador/presenter/bloc/transportador_bloc.dart';
+import 'package:agil_coletas/app/modules/transportador/presenter/widgets/inicia_coleta_modal_widget.dart';
 import 'package:agil_coletas/app/theme/app_theme.dart';
 import 'package:agil_coletas/app/utils/constants.dart';
 import 'package:agil_coletas/app/utils/formatters.dart';
 import 'package:agil_coletas/app/utils/my_snackbar.dart';
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TransportadorPage extends StatefulWidget {
   final TransportadorBloc transportadorBloc;
-  const TransportadorPage({super.key, required this.transportadorBloc});
+  final HomeBloc homeBloc;
+
+  const TransportadorPage({
+    Key? key,
+    required this.transportadorBloc,
+    required this.homeBloc,
+  }) : super(key: key);
 
   @override
   State<TransportadorPage> createState() => _TransportadorPageState();
@@ -24,6 +37,9 @@ class TransportadorPage extends StatefulWidget {
 
 class _TransportadorPageState extends State<TransportadorPage> {
   late StreamSubscription sub;
+  late StreamSubscription subColeta;
+
+  final Rotas rota = Modular.args.data['ROTA'];
 
   @override
   void initState() {
@@ -40,6 +56,24 @@ class _TransportadorPageState extends State<TransportadorPage> {
         );
       }
     });
+
+    subColeta = widget.homeBloc.stream.listen((state) {
+      if (state is ErrorHome) {
+        MySnackBar(
+          title: 'Opss...',
+          message: state.message,
+          type: ContentType.failure,
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    sub.cancel();
+    subColeta.cancel();
+
+    super.dispose();
   }
 
   @override
@@ -99,10 +133,14 @@ class _TransportadorPageState extends State<TransportadorPage> {
                         ),
                         child: ListTile(
                           onTap: () {
-                            MySnackBar(
-                                title: 'O CARAI',
-                                message: 'PARA DE CLICAR EM MIM',
-                                type: ContentType.failure);
+                            showDialog(
+                              context: context,
+                              builder: (context) => IniciaColetaModalWidget(
+                                rota: rota,
+                                transp: transp,
+                                homeBloc: widget.homeBloc,
+                              ),
+                            );
                           },
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 10),

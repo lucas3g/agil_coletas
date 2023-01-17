@@ -2,7 +2,7 @@ import 'package:agil_coletas/app/core_module/services/sqflite/adapters/sqflite_a
 
 abstract class ISQLFliteStorage {
   Future<void> init(SQLFliteInitParam param);
-  Future<bool> create(SQLFliteInsertParam params);
+  Future<int> create(SQLFliteInsertParam params);
   Future<List<Map<String, dynamic>>> getPerFilter(
       SQLFliteGetPerFilterParam param);
   Future<List<Map<String, dynamic>>> getAll(SQLFliteGetAllParam param);

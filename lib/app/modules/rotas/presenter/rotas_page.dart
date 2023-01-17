@@ -119,8 +119,8 @@ class _RotasPageState extends State<RotasPage> {
                                 return;
                               }
 
-                              Modular.to
-                                  .pushNamed('/home/rotas/transportador/');
+                              Modular.to.pushNamed('/home/rotas/transportador/',
+                                  arguments: {'ROTA': rota});
                             },
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 10),
