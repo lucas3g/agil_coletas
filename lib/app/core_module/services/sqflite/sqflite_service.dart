@@ -64,6 +64,11 @@ class SQLFliteService implements ISQLFliteStorage {
         whereArgs: param.filters
             ?.map(SqFliteHelpers.convertFilterToSqlWhereArgs)
             .toList(),
+        orderBy: param.orderByID ? 'id desc' : null,
+        columns: param.columns.isNotEmpty
+            ? param.columns.map((e) => e).toList()
+            : null,
+        limit: param.limit > 0 ? param.limit : null,
       );
     });
 

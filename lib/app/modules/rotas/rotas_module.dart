@@ -5,12 +5,15 @@ import 'package:agil_coletas/app/modules/rotas/infra/datasources/rotas_datasourc
 import 'package:agil_coletas/app/modules/rotas/infra/repositories/rotas_repository.dart';
 import 'package:agil_coletas/app/modules/rotas/presenter/bloc/rotas_bloc.dart';
 import 'package:agil_coletas/app/modules/rotas/presenter/rotas_page.dart';
+import 'package:agil_coletas/app/modules/transportador/transportador_module.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:modular_bloc_bind/modular_bloc_bind.dart';
 
 class RotasModules extends Module {
   @override
-  final List<Module> imports = [];
+  final List<Module> imports = [
+    TransportadorModule(),
+  ];
 
   @override
   final List<Bind> binds = [
@@ -36,6 +39,10 @@ class RotasModules extends Module {
       child: (context, args) => RotasPage(
         rotasBloc: Modular.get<RotasBloc>(),
       ),
+    ),
+    ModuleRoute(
+      '/transportador',
+      module: TransportadorModule(),
     )
   ];
 }

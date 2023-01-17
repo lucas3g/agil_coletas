@@ -9,6 +9,8 @@ abstract class AppTextStyles {
   TextStyle get titleAppBar;
   TextStyle get titleDrawer;
   TextStyle get subtitleDrawer;
+  TextStyle get titleCardTransp;
+  TextStyle get subTitleCardTransp;
 }
 
 class AppTextStylesDefault implements AppTextStyles {
@@ -50,6 +52,20 @@ class AppTextStylesDefault implements AppTextStyles {
   @override
   TextStyle get subtitleDrawer => GoogleFonts.montserrat(
         fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: Colors.black,
+      );
+
+  @override
+  TextStyle get titleCardTransp => GoogleFonts.montserrat(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      );
+
+  @override
+  TextStyle get subTitleCardTransp => GoogleFonts.montserrat(
+        fontSize: 14,
         fontWeight: FontWeight.w500,
         color: Colors.black,
       );

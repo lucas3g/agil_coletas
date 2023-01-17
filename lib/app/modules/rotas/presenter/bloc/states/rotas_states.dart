@@ -26,7 +26,7 @@ abstract class RotasStates {
     return ErrorRotas(message: message, rotas: rotas, filtro: filtro);
   }
 
-  List<Rotas> get rotasFilteradas {
+  List<Rotas> get rotasFiltradas {
     if (filtro.isEmpty) {
       return rotas;
     }

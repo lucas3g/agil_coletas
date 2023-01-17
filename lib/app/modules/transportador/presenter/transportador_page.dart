@@ -1,45 +1,38 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
+import 'package:agil_coletas/app/components/my_app_bar_widget.dart';
 import 'package:agil_coletas/app/components/my_list_shimmer_widget.dart';
-import 'package:agil_coletas/app/modules/rotas/presenter/bloc/events/rotas_events.dart';
-import 'package:agil_coletas/app/modules/rotas/presenter/bloc/states/rotas_states.dart';
+import 'package:agil_coletas/app/modules/transportador/presenter/bloc/events/transportador_event.dart';
+import 'package:agil_coletas/app/modules/transportador/presenter/bloc/states/transportador_states.dart';
+import 'package:agil_coletas/app/modules/transportador/presenter/bloc/transportador_bloc.dart';
+import 'package:agil_coletas/app/theme/app_theme.dart';
 import 'package:agil_coletas/app/utils/constants.dart';
-import 'package:agil_coletas/app/utils/loading_widget.dart';
 import 'package:agil_coletas/app/utils/my_snackbar.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
-
-import 'package:agil_coletas/app/components/my_app_bar_widget.dart';
-import 'package:agil_coletas/app/modules/rotas/presenter/bloc/rotas_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
-class RotasPage extends StatefulWidget {
-  final RotasBloc rotasBloc;
-
-  const RotasPage({
-    Key? key,
-    required this.rotasBloc,
-  }) : super(key: key);
+class TransportadorPage extends StatefulWidget {
+  final TransportadorBloc transportadorBloc;
+  const TransportadorPage({super.key, required this.transportadorBloc});
 
   @override
-  State<RotasPage> createState() => _RotasPageState();
+  State<TransportadorPage> createState() => _TransportadorPageState();
 }
 
-class _RotasPageState extends State<RotasPage> {
+class _TransportadorPageState extends State<TransportadorPage> {
   late StreamSubscription sub;
 
   @override
   void initState() {
     super.initState();
 
-    widget.rotasBloc.add(GetRotasEvent());
+    widget.transportadorBloc.add(GetTransportadorEvent());
 
-    sub = widget.rotasBloc.stream.listen((state) {
-      if (state is ErrorRotas) {
+    sub = widget.transportadorBloc.stream.listen((state) {
+      if (state is ErrorTransportador) {
         MySnackBar(
-          title: 'Ops...',
+          title: 'Opss...',
           message: state.message,
           type: ContentType.failure,
         );
@@ -48,19 +41,12 @@ class _RotasPageState extends State<RotasPage> {
   }
 
   @override
-  void dispose() {
-    sub.cancel();
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(double.infinity, AppBar().preferredSize.height),
         child: const MyAppBarWidget(
-          titleAppbar: 'Rotas',
+          titleAppbar: 'Transportador',
           backButton: BackButton(
             color: Colors.white,
           ),
@@ -68,44 +54,38 @@ class _RotasPageState extends State<RotasPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(kPadding),
-        child: BlocBuilder<RotasBloc, RotasStates>(
-            bloc: widget.rotasBloc,
+        child: BlocBuilder<TransportadorBloc, TransportadorStates>(
+            bloc: widget.transportadorBloc,
             builder: (context, state) {
-              if (state is! SuccessGetRotas) {
+              if (state is! SuccessGetTransportador) {
                 return const MyListShimmerWidget();
               }
 
-              final rotas = state.rotasFiltradas;
+              final transps = state.transpFiltrados;
 
-              if (rotas.isEmpty) {
+              if (transps.isEmpty) {
                 return const Center(
-                  child: Text('Lista de rotas está vazia'),
+                  child: Text('Lista de transportadores está vazia.'),
                 );
               }
 
               return ListView.separated(
                 itemBuilder: (context, index) {
-                  final rota = rotas[index];
+                  final transp = transps[index];
+
                   return Container(
                     decoration: BoxDecoration(
                       border: Border.all(),
                       borderRadius: BorderRadius.circular(10),
                       color:
-                          rota.finalizada ? Colors.white : Colors.grey.shade400,
+                          transp.ultimo ? Colors.green.shade400 : Colors.white,
                     ),
                     child: ListTile(
                       onTap: () {
-                        if (!rota.finalizada) {
-                          MySnackBar(
-                            title: 'Atenção',
-                            message: 'Rota pendente de finalização',
-                            type: ContentType.warning,
-                          );
-
-                          return;
-                        }
-
-                        Modular.to.pushNamed('/home/rotas/transportador/');
+                        MySnackBar(
+                            title: 'O CARAI',
+                            message: 'PARA DE CLICAR EM MIM',
+                            type: ContentType.failure);
                       },
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 10),
@@ -114,19 +94,27 @@ class _RotasPageState extends State<RotasPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const Icon(
-                            Icons.room_outlined,
+                            Icons.local_shipping_outlined,
                             color: Colors.black,
                           ),
                           const SizedBox(width: 10),
-                          Text('${rota.id.value} - ${rota.descricao}'),
+                          Expanded(
+                              child: Text(
+                            transp.descricao,
+                            style: AppTheme.textStyles.titleCardTransp,
+                          )),
                         ],
+                      ),
+                      subtitle: Text(
+                        'Placa: ${transp.placa}',
+                        style: AppTheme.textStyles.subTitleCardTransp,
                       ),
                     ),
                   );
                 },
                 separatorBuilder: (context, index) =>
                     const SizedBox(height: 10),
-                itemCount: rotas.length,
+                itemCount: transps.length,
               );
             }),
       ),

@@ -13,6 +13,7 @@ class MakeTables {
       const TableFieldEntity(name: 'KM_INI', type: FieldType.integer),
       const TableFieldEntity(name: 'KM_FIM', type: FieldType.integer),
       const TableFieldEntity(name: 'CCUSTO', type: FieldType.integer),
+      const TableFieldEntity(name: 'PARTICOES', type: FieldType.integer),
       const TableFieldEntity(name: 'PLACA', type: FieldType.string),
       const TableFieldEntity(name: 'FINALIZADA', type: FieldType.integer),
       const TableFieldEntity(name: 'ENVIADA', type: FieldType.integer),

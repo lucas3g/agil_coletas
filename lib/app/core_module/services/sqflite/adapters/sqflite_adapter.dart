@@ -65,9 +65,15 @@ class SQLFliteGetAllParam {
 class SQLFliteGetPerFilterParam {
   final Tables table;
   final Set<FilterEntity>? filters;
+  final bool orderByID;
+  final List<String> columns;
+  final int limit;
 
   SQLFliteGetPerFilterParam({
     required this.table,
     this.filters,
+    this.orderByID = false,
+    required this.columns,
+    this.limit = 0,
   });
 }
