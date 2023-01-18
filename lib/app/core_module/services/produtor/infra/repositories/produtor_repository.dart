@@ -21,7 +21,13 @@ class ProdutorRepository implements IProdutorRepository {
     try {
       final result = jsonDecode(await datasource.getProdutores());
 
-      return result.map(ProdutorAdapter.fromMap).toList().toSuccess();
+      late List<Produtor> produtores = [];
+
+      for (var produtor in result) {
+        produtores.add(ProdutorAdapter.fromMap(produtor));
+      }
+
+      return produtores.toSuccess();
     } on DioError catch (e) {
       return MyException(message: e.message).toFailure();
     } on IMyException catch (e) {

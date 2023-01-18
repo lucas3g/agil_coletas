@@ -1,5 +1,3 @@
-import 'package:agil_coletas/app/core_module/services/produtor/domain/entities/produtor.dart';
-import 'package:agil_coletas/app/modules/home/domain/entities/coletas.dart';
 import 'package:agil_coletas/app/modules/tikets/infra/adapters/tiket_adapter.dart';
 import 'package:result_dart/result_dart.dart';
 
@@ -16,10 +14,9 @@ class TiketRepository implements ITiketRepository {
   });
 
   @override
-  Future<Result<int, IMyException>> createTikets(
-      List<Produtor> produtores, Coletas coleta) async {
+  Future<Result<int, IMyException>> createTikets(int codRota) async {
     try {
-      final result = await datasource.createTikets(produtores, coleta);
+      final result = await datasource.createTikets(codRota);
 
       return result.toSuccess();
     } on IMyException catch (e) {

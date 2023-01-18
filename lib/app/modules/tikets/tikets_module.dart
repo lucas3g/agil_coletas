@@ -1,5 +1,6 @@
 import 'package:agil_coletas/app/modules/rotas/rotas_module.dart';
 import 'package:agil_coletas/app/modules/tikets/domain/repositories/tiket_repository.dart';
+import 'package:agil_coletas/app/modules/tikets/domain/usecases/create_tikets_by_coleta_usecase.dart';
 import 'package:agil_coletas/app/modules/tikets/domain/usecases/get_tikets_by_coleta_usecase.dart';
 import 'package:agil_coletas/app/modules/tikets/external/tiket_datasource.dart';
 import 'package:agil_coletas/app/modules/tikets/infra/datasources/tiket_datasource.dart';
@@ -23,16 +24,23 @@ class TiketsModule extends Module {
     ),
 
     //REPOSITORIES
-    Bind.factory<ITiketRepository>((i) => TiketRepository(datasource: i())),
+    Bind.factory<ITiketRepository>(
+      (i) => TiketRepository(datasource: i()),
+    ),
 
     //USECASES
     Bind.factory<IGetTiketByColetaUseCase>(
-        (i) => GetTiketByColetaUseCase(repository: i())),
+      (i) => GetTiketByColetaUseCase(repository: i()),
+    ),
+    Bind.factory<ICreateTiketByColetaUseCase>(
+      (i) => CreateTiketByColetaUseCase(repository: i()),
+    ),
 
     //BLOCS
     BlocBind.factory<TiketBloc>(
       (i) => TiketBloc(
         getTiketByColetaUseCase: i(),
+        createTiketByColetaUseCase: i(),
       ),
     ),
   ];

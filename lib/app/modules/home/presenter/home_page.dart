@@ -242,7 +242,10 @@ class _HomePageState extends State<HomePage> {
 
                                       break;
                                     default:
-                                      Modular.to.pushNamed('/home/tikets/');
+                                      Modular.to.pushNamed(
+                                        '/home/tikets/',
+                                        arguments: {'coleta': coleta},
+                                      );
                                   }
                                 },
                                 trailing: Container(

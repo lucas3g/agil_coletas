@@ -30,16 +30,15 @@ class TiketsPage extends StatefulWidget {
 class _TiketsPageState extends State<TiketsPage> {
   late StreamSubscription sub;
 
-  final int codRota = Modular.args.data['codRota'];
   final Coletas coleta = Modular.args.data['coleta'];
 
   @override
   void initState() {
     super.initState();
 
-    widget.tiketBloc.add(GetProdutoresEvent(codRota: codRota));
+    widget.tiketBloc.add(CreateTiketsEvent(codRota: coleta.id));
 
-    widget.tiketBloc.add(GetTiketsEvent(codColeta: coleta.id));
+    //widget.tiketBloc.add(GetTiketsEvent(codColeta: coleta.id));
 
     sub = widget.tiketBloc.stream.listen((state) {
       if (state is ErrorTiket) {
@@ -66,6 +65,9 @@ class _TiketsPageState extends State<TiketsPage> {
         preferredSize: Size(double.infinity, AppBar().preferredSize.height),
         child: const MyAppBarWidget(
           titleAppbar: 'Tikets',
+          backButton: BackButton(
+            color: Colors.white,
+          ),
         ),
       ),
       body: Padding(
@@ -78,6 +80,12 @@ class _TiketsPageState extends State<TiketsPage> {
             }
 
             final tikets = state.tikets;
+
+            if (tikets.isEmpty) {
+              return const Center(
+                child: Text('Nenhum tiket encontrado'),
+              );
+            }
 
             return ListView.separated(
               itemBuilder: (context, index) {

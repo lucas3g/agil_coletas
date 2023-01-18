@@ -99,7 +99,7 @@ class MakeTables {
       const TableFieldEntity(name: 'CLIFOR', type: FieldType.integer),
       const TableFieldEntity(name: 'ROTA', type: FieldType.integer),
       const TableFieldEntity(name: 'NOME', type: FieldType.string),
-      const TableFieldEntity(name: 'MUNICIPIO', type: FieldType.string),
+      const TableFieldEntity(name: 'MUNICIPIOS', type: FieldType.string),
       const TableFieldEntity(name: 'UF', type: FieldType.string),
     };
 

@@ -1,10 +1,9 @@
 import 'package:agil_coletas/app/core_module/services/produtor/domain/entities/produtor.dart';
-import 'package:agil_coletas/app/modules/home/domain/entities/coletas.dart';
 import 'package:agil_coletas/app/modules/tikets/domain/entities/tiket.dart';
 import 'package:agil_coletas/app/utils/formatters.dart';
 
 class TiketAdapter {
-  static Map<String, dynamic> toMapSQLFlite(Produtor produtor, Coletas coleta) {
+  static Map<String, dynamic> toMapSQLFlite(Produtor produtor, int codRota) {
     return {
       'CLIFOR': produtor.id.value,
       'UF': produtor.uf,
@@ -17,7 +16,7 @@ class TiketAdapter {
       'PER_DESCONTO': 0.0,
       'CCUSTO': 0,
       'ROTA_COLETA': 0,
-      'ID_COLETA': coleta.id,
+      'ID_COLETA': codRota,
       'CRIOSCOPIA': 0,
       'ALIZAROL': 0,
       'HORA':

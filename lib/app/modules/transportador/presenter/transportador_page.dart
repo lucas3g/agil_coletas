@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
-import 'package:agil_coletas/app/modules/home/presenter/bloc/states/home_states.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +10,7 @@ import 'package:agil_coletas/app/components/my_app_bar_widget.dart';
 import 'package:agil_coletas/app/components/my_input_widget.dart';
 import 'package:agil_coletas/app/components/my_list_shimmer_widget.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/home_bloc.dart';
+import 'package:agil_coletas/app/modules/home/presenter/bloc/states/home_states.dart';
 import 'package:agil_coletas/app/modules/rotas/domain/entities/rotas.dart';
 import 'package:agil_coletas/app/modules/transportador/presenter/bloc/events/transportador_event.dart';
 import 'package:agil_coletas/app/modules/transportador/presenter/bloc/states/transportador_states.dart';

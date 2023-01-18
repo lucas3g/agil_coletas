@@ -18,10 +18,7 @@ class BaixaTudo {
   BaixaTudo({
     required this.rotasBloc,
     required this.produtorBloc,
-    required this.subProdutor,
   }) {
-    baixaTudo();
-
     subProdutor = produtorBloc.stream.listen((state) {
       if (state is SuccessGetProdutor) {
         produtorBloc.add(SaveProdutoresEvent(produtores: state.produtores));

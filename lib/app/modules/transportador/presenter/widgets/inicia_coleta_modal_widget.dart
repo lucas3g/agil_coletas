@@ -62,7 +62,7 @@ class _IniciaColetaModalWidgetState extends State<IniciaColetaModalWidget> {
 
         Modular.to.navigate(
           '/home/tikets/',
-          arguments: {'codRota': widget.rota.id.value, 'coleta': coleta},
+          arguments: {'coleta': coleta},
         );
       }
     });

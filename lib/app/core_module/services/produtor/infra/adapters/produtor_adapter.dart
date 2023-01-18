@@ -1,9 +1,10 @@
 import 'package:agil_coletas/app/core_module/services/produtor/domain/entities/produtor.dart';
+import 'package:agil_coletas/app/core_module/vos/id_vo.dart';
 
 class ProdutorAdapter {
   static Produtor fromMap(dynamic map) {
     return Produtor(
-      id: map['CLIFOR'],
+      id: IdVO(map['CLIFOR']),
       nome: map['NOME'],
       municipio: map['MUNICIPIOS'],
       uf: map['UF'],
@@ -15,7 +16,7 @@ class ProdutorAdapter {
     return {
       'CLIFOR': produtor.id.value,
       'UF': produtor.uf,
-      'MUNICIPIO': produtor.municipio,
+      'MUNICIPIOS': produtor.municipio,
       'NOME': produtor.nome,
       'ROTA': produtor.codRota,
     };
