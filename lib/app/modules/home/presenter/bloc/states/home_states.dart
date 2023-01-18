@@ -23,6 +23,8 @@ class SuccessCreateColetaHome extends HomeStates {
   });
 }
 
+class SuccessUpdateColetaHome extends HomeStates {}
+
 class ErrorHome extends HomeStates {
   final String message;
 

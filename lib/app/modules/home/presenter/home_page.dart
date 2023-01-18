@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:agil_coletas/app/components/my_list_shimmer_widget.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/events/home_events.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/states/home_states.dart';
+import 'package:agil_coletas/app/modules/home/presenter/widgets/my_drawer_widget.dart';
 import 'package:agil_coletas/app/utils/my_snackbar.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,10 @@ class _HomePageState extends State<HomePage> {
           message: state.message,
           type: ContentType.failure,
         );
+      }
+
+      if (state is SuccessUpdateColetaHome) {
+        widget.homeBloc.add(GetColetasEvent());
       }
     });
   }
@@ -100,87 +105,7 @@ class _HomePageState extends State<HomePage> {
           );
         }),
       ),
-      drawer: Theme(
-        data: ThemeData().copyWith(
-          dividerColor: Colors.white,
-        ),
-        child: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              Container(
-                height: context.screenHeight * .15,
-                color: Colors.white,
-                child: Theme(
-                  data: ThemeData().copyWith(
-                    dividerColor: Colors.white,
-                  ),
-                  child: DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: AppTheme.colors.primary,
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Motorista: ${funcionario.name.value}',
-                          style: AppTheme.textStyles.titleDrawer,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                height: context.screenHeight * .85,
-                color: Colors.white,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: [
-                        ListTile(
-                          title: Text(
-                            'Configuração',
-                            style: AppTheme.textStyles.subtitleDrawer,
-                          ),
-                          onTap: () {},
-                        ),
-                        ListTile(
-                          title: Text(
-                            'Impressora',
-                            style: AppTheme.textStyles.subtitleDrawer,
-                          ),
-                          onTap: () {},
-                        ),
-                        ListTile(
-                          title: Text(
-                            'Sair',
-                            style: AppTheme.textStyles.subtitleDrawer,
-                          ),
-                          onTap: () {},
-                        ),
-                      ],
-                    ),
-                    ListTile(
-                      title: Text(
-                        'Versão 1.0.0',
-                        textAlign: TextAlign.end,
-                        style: AppTheme.textStyles.subtitleDrawer,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      drawer: MyDrawerWidget(funcionario: funcionario),
       body: Padding(
         padding: const EdgeInsets.all(kPadding),
         child: BlocBuilder<HomeBloc, HomeStates>(
@@ -276,7 +201,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     contentListTile(
                                       'KM: ',
-                                      '${coleta.km.inical} / ${coleta.km.ffinal}',
+                                      '${coleta.km.inicial} / ${coleta.km.ffinal}',
                                     ),
                                     contentListTile(
                                       'Placa: ',

@@ -5,6 +5,7 @@ import 'package:agil_coletas/app/modules/home/presenter/bloc/events/home_events.
 import 'package:agil_coletas/app/modules/home/presenter/bloc/states/home_states.dart';
 import 'package:agil_coletas/app/utils/formatters.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'package:agil_coletas/app/components/my_elevated_button_widget.dart';
@@ -136,8 +137,10 @@ class _IniciaColetaModalWidgetState extends State<IniciaColetaModalWidget> {
             child: MyInputWidget(
               label: 'KM Inicial',
               hintText: 'Digite o KM inicial',
-              validator: (v) => coleta.km.validate().exceptionOrNull(),
+              validator: (v) => coleta.km.validateInicial().exceptionOrNull(),
               onChanged: (e) => coleta.km.setInicial(int.tryParse(e) ?? 0),
+              keyboardType: TextInputType.number,
+              inputFormaters: [FilteringTextInputFormatter.digitsOnly],
             ),
           ),
           const SizedBox(height: 10),

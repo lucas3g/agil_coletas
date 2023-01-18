@@ -40,4 +40,17 @@ class HomeDatasource implements IHomeDatasource {
 
     return result.first;
   }
+
+  @override
+  Future<bool> updateColeta(Coletas coleta) async {
+    final param = SQLFliteUpdateParam(
+      table: Tables.coletas,
+      id: coleta.id,
+      fieldsWithValues: ColetasAdapter.toMapSQL(coleta),
+    );
+
+    final result = await storage.update(param);
+
+    return result;
+  }
 }

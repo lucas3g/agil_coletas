@@ -34,8 +34,8 @@ class Coletas {
           dataHoraFinal: dataHoraFinal ?? _datasColeta.dataHoraFinal);
 
   KMColeta get km => _km;
-  void setKM({int? kmIni, int? kmFim}) =>
-      _km = KMColeta(inicial: kmIni ?? _km.inical, ffinal: kmFim ?? _km.ffinal);
+  void setKM({int? kmIni, int? kmFim}) => _km =
+      KMColeta(inicial: kmIni ?? _km.inicial, ffinal: kmFim ?? _km.ffinal);
 
   String get motorista => _motorista;
   void setMotorista(String value) => _motorista = value;

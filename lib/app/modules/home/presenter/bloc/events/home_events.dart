@@ -12,3 +12,11 @@ class CreateColetaEvent extends HomeEvents {
     required this.coleta,
   });
 }
+
+class UpdateColetaEvent extends HomeEvents {
+  final Coletas coleta;
+
+  UpdateColetaEvent({
+    required this.coleta,
+  });
+}

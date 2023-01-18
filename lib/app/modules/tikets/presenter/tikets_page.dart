@@ -6,7 +6,10 @@ import 'package:agil_coletas/app/components/my_elevated_button_widget.dart';
 import 'package:agil_coletas/app/components/my_input_widget.dart';
 import 'package:agil_coletas/app/components/my_list_shimmer_widget.dart';
 import 'package:agil_coletas/app/modules/home/domain/entities/coletas.dart';
+import 'package:agil_coletas/app/modules/home/presenter/bloc/events/home_events.dart';
+import 'package:agil_coletas/app/modules/home/presenter/bloc/home_bloc.dart';
 import 'package:agil_coletas/app/modules/tikets/domain/entities/tiket.dart';
+import 'package:agil_coletas/app/modules/tikets/presenter/widgets/tiket_modal_finalizar_widget.dart';
 import 'package:agil_coletas/app/modules/tikets/presenter/widgets/tiket_modal_widget.dart';
 import 'package:agil_coletas/app/theme/app_theme.dart';
 import 'package:agil_coletas/app/utils/constants.dart';
@@ -34,6 +37,8 @@ class TiketsPage extends StatefulWidget {
 }
 
 class _TiketsPageState extends State<TiketsPage> {
+  final homeBloc = Modular.get<HomeBloc>();
+
   late StreamSubscription sub;
 
   final Coletas coleta = Modular.args.data['coleta'];
@@ -135,6 +140,18 @@ class _TiketsPageState extends State<TiketsPage> {
     );
   }
 
+  int totalColetado(List<Tiket> tikets) {
+    final result = tikets
+        .map((e) => e.quantidade.value)
+        .reduce((value, element) => value + element);
+
+    coleta.setTotalColetado(result);
+
+    homeBloc.add(UpdateColetaEvent(coleta: coleta));
+
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,6 +200,22 @@ class _TiketsPageState extends State<TiketsPage> {
                 return Expanded(
                   child: Column(
                     children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Total Coletado: ',
+                            style: AppTheme.textStyles.labelTotalColetadoRed,
+                          ),
+                          Expanded(
+                            child: Text(
+                              totalColetado(tikets).toString(),
+                              style:
+                                  AppTheme.textStyles.labelTotalColetadoBlack,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 5),
                       Expanded(
                         child: ListView.separated(
                           itemBuilder: (context, index) {
@@ -209,8 +242,6 @@ class _TiketsPageState extends State<TiketsPage> {
                                       tiketBloc: widget.tiketBloc,
                                     ),
                                   );
-
-                                  setState(() {});
                                 },
                                 leading: SizedBox(
                                   height: double.maxFinite,
@@ -251,7 +282,13 @@ class _TiketsPageState extends State<TiketsPage> {
                                 'Finalizar Rota',
                                 style: AppTheme.textStyles.labelButtonFinalizar,
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) =>
+                                      TiketModalFinalizarWidget(coleta: coleta),
+                                );
+                              },
                             ),
                           ),
                         ],

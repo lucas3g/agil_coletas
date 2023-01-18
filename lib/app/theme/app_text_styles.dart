@@ -21,6 +21,8 @@ abstract class AppTextStyles {
   TextStyle get titleListTikets;
   TextStyle get subTitleListTikets;
   TextStyle get labelButtonFinalizar;
+  TextStyle get labelTotalColetadoRed;
+  TextStyle get labelTotalColetadoBlack;
 }
 
 class AppTextStylesDefault implements AppTextStyles {
@@ -54,14 +56,14 @@ class AppTextStylesDefault implements AppTextStyles {
 
   @override
   TextStyle get titleDrawer => GoogleFonts.montserrat(
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: FontWeight.bold,
         color: Colors.white,
       );
 
   @override
   TextStyle get subtitleDrawer => GoogleFonts.montserrat(
-        fontSize: 12,
+        fontSize: 14,
         fontWeight: FontWeight.w500,
         color: Colors.black,
       );
@@ -144,7 +146,22 @@ class AppTextStylesDefault implements AppTextStyles {
 
   @override
   TextStyle get labelButtonFinalizar => GoogleFonts.montserrat(
-      fontSize: 16,
-      fontWeight: FontWeight.bold,
-      color: AppTheme.colors.primary);
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: AppTheme.colors.primary,
+      );
+
+  @override
+  TextStyle get labelTotalColetadoBlack => GoogleFonts.montserrat(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      );
+
+  @override
+  TextStyle get labelTotalColetadoRed => GoogleFonts.montserrat(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: AppTheme.colors.primary,
+      );
 }

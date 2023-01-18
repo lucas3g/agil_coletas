@@ -1,6 +1,7 @@
 import 'package:agil_coletas/app/modules/home/domain/repositories/home_repository.dart';
 import 'package:agil_coletas/app/modules/home/domain/usecases/create_coleta_usecase.dart';
 import 'package:agil_coletas/app/modules/home/domain/usecases/get_coletas_usecase.dart';
+import 'package:agil_coletas/app/modules/home/domain/usecases/update_coleta_usecase.dart';
 import 'package:agil_coletas/app/modules/home/external/datasources/home_datasource.dart';
 import 'package:agil_coletas/app/modules/home/infra/datasources/home_datasource.dart';
 import 'package:agil_coletas/app/modules/home/infra/repositories/home_repository.dart';
@@ -37,12 +38,16 @@ class HomeModule extends Module {
     Bind.factory<ICreateColetasUseCase>(
       (i) => CreateColetasUseCase(repository: i()),
     ),
+    Bind.factory<IUpdateColetasUseCase>(
+      (i) => UpdateColetasUseCase(repository: i()),
+    ),
 
     //BLOCS
     BlocBind.factory<HomeBloc>(
       (i) => HomeBloc(
         getColetasUseCase: i(),
         createColetasUseCase: i(),
+        updateColetasUseCase: i(),
       ),
     ),
   ];

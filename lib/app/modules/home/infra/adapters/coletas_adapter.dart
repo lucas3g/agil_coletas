@@ -49,7 +49,7 @@ class ColetasAdapter {
       'DT_HORA_INI': coleta.datasColeta.dataHoraInicial,
       'DT_HORA_FIM': coleta.datasColeta.dataHoraFinal,
       'MOTORISTA': coleta.motorista,
-      'KM_INI': coleta.km.inical,
+      'KM_INI': coleta.km.inicial,
       'KM_FIM': coleta.km.ffinal,
       'CCUSTO': coleta.ccusto,
       'PARTICOES': coleta.particoes,
@@ -57,6 +57,14 @@ class ColetasAdapter {
       'FINALIZADA': coleta.finalizada ? 1 : 0,
       'ENVIADA': coleta.enviada ? 1 : 0,
       'TOTAL_COLETADO': coleta.totalColetado,
+    };
+  }
+
+  static Map<String, dynamic> toMapSQL(Coletas coleta) {
+    return {
+      'TOTAL_COLETADO': coleta.totalColetado,
+      'KM_FIM': coleta.km.ffinal,
+      'FINALIZADA': coleta.finalizada ? 1 : 0,
     };
   }
 }

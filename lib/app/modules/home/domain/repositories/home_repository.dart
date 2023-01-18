@@ -5,4 +5,5 @@ import 'package:result_dart/result_dart.dart';
 abstract class IHomeRepository {
   Future<Result<List<Coletas>, IMyException>> getColetas();
   Future<Result<Coletas, IMyException>> createColeta(Coletas coleta);
+  Future<Result<bool, IMyException>> updateColeta(Coletas coleta);
 }
