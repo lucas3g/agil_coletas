@@ -10,6 +10,7 @@ import 'package:agil_coletas/app/theme/app_theme.dart';
 import 'package:agil_coletas/app/utils/my_snackbar.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class TiketModalFinalizarWidget extends StatefulWidget {
@@ -67,13 +68,18 @@ class _TiketModalFinalizarWidgetState extends State<TiketModalFinalizarWidget> {
             const Divider(),
             const SizedBox(height: 5),
             MyInputWidget(
+              autofocus: true,
               label: 'KM Final',
               hintText: 'Digite o KM final',
-              value: widget.coleta.km.ffinal.toString(),
+              value: widget.coleta.km.ffinal > 0
+                  ? widget.coleta.km.ffinal.toString()
+                  : '',
               validator: (v) =>
                   widget.coleta.km.validateFinal().exceptionOrNull(),
               onChanged: (e) =>
                   widget.coleta.setKM(kmFim: int.tryParse(e) ?? 0),
+              keyboardType: TextInputType.number,
+              inputFormaters: [FilteringTextInputFormatter.digitsOnly],
             ),
             const SizedBox(height: 5),
             const Divider(),

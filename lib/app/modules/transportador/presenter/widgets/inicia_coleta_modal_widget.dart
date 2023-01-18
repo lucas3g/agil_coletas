@@ -135,6 +135,7 @@ class _IniciaColetaModalWidgetState extends State<IniciaColetaModalWidget> {
           Form(
             key: gkForm,
             child: MyInputWidget(
+              autofocus: true,
               label: 'KM Inicial',
               hintText: 'Digite o KM inicial',
               validator: (v) => coleta.km.validateInicial().exceptionOrNull(),
