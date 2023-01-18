@@ -7,7 +7,7 @@ class ColetasAdapter {
   static Coletas fromMap(dynamic map) {
     return Coletas(
       id: map['ID'],
-      rota: RotaColeta(rota: map['COD_ROTA'], nome: map['NOME_ROTA']),
+      rota: RotaColeta(codigo: map['COD_ROTA'], nome: map['NOME_ROTA']),
       dataMov: map['DATA_MOV'],
       dataColeta: DatasColeta(
         dataHoraInicial: map['DT_HORA_INI'],
@@ -27,7 +27,7 @@ class ColetasAdapter {
   static Coletas empty() {
     return Coletas(
       id: 0,
-      rota: RotaColeta(rota: 0, nome: ''),
+      rota: RotaColeta(codigo: 0, nome: ''),
       dataMov: '',
       motorista: '',
       dataColeta: DatasColeta(dataHoraInicial: '', dataHoraFinal: ''),
@@ -43,7 +43,7 @@ class ColetasAdapter {
 
   static Map<String, dynamic> toMap(Coletas coleta) {
     return {
-      'COD_ROTA': coleta.rota.rota,
+      'COD_ROTA': coleta.rota.codigo,
       'NOME_ROTA': coleta.rota.nome,
       'DATA_MOV': coleta.dataMov,
       'DT_HORA_INI': coleta.datasColeta.dataHoraInicial,

@@ -54,6 +54,7 @@ class HomeModule extends Module {
       child: (context, args) => HomePage(
         homeBloc: Modular.get<HomeBloc>(),
       ),
+      transition: TransitionType.noTransition,
     ),
     ModuleRoute(
       '/rotas',

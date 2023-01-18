@@ -1,11 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:agil_coletas/app/modules/home/domain/entities/coletas.dart';
 import 'package:result_dart/result_dart.dart';
 
 import 'package:agil_coletas/app/core_module/types/my_exception.dart';
 import 'package:agil_coletas/app/modules/tikets/domain/repositories/tiket_repository.dart';
 
 abstract class ICreateTiketByColetaUseCase {
-  Future<Result<int, IMyException>> call(int codRota);
+  Future<Result<int, IMyException>> call(Coletas coleta);
 }
 
 class CreateTiketByColetaUseCase implements ICreateTiketByColetaUseCase {
@@ -16,7 +17,7 @@ class CreateTiketByColetaUseCase implements ICreateTiketByColetaUseCase {
   });
 
   @override
-  Future<Result<int, IMyException>> call(int codRota) async {
-    return await repository.createTikets(codRota);
+  Future<Result<int, IMyException>> call(Coletas coleta) async {
+    return await repository.createTikets(coleta);
   }
 }

@@ -36,9 +36,7 @@ class _TiketsPageState extends State<TiketsPage> {
   void initState() {
     super.initState();
 
-    widget.tiketBloc.add(CreateTiketsEvent(codRota: coleta.id));
-
-    //widget.tiketBloc.add(GetTiketsEvent(codColeta: coleta.id));
+    widget.tiketBloc.add(CreateTiketsEvent(coleta: coleta));
 
     sub = widget.tiketBloc.stream.listen((state) {
       if (state is ErrorTiket) {
@@ -47,6 +45,10 @@ class _TiketsPageState extends State<TiketsPage> {
           message: state.message,
           type: ContentType.failure,
         );
+      }
+
+      if (state is SuccessCreateTiket) {
+        widget.tiketBloc.add(GetTiketsEvent(codColeta: coleta.id));
       }
     });
   }
@@ -63,10 +65,13 @@ class _TiketsPageState extends State<TiketsPage> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(double.infinity, AppBar().preferredSize.height),
-        child: const MyAppBarWidget(
+        child: MyAppBarWidget(
           titleAppbar: 'Tikets',
           backButton: BackButton(
             color: Colors.white,
+            onPressed: () {
+              Modular.to.navigate('/home/');
+            },
           ),
         ),
       ),

@@ -32,7 +32,7 @@ class TiketBloc extends Bloc<TiketEvents, TiketStates> {
   Future _createTikets(CreateTiketsEvent event, emit) async {
     emit(LoadingTiket());
 
-    final result = await createTiketByColetaUseCase(event.codRota);
+    final result = await createTiketByColetaUseCase(event.coleta);
 
     result.fold(
       (success) => emit(SuccessCreateTiket(codColeta: success)),

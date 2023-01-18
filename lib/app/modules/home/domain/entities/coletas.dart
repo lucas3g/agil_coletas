@@ -22,7 +22,7 @@ class Coletas {
 
   RotaColeta get rota => _rota;
   void setRota(int codRota, String nomeRota) =>
-      _rota = RotaColeta(rota: codRota, nome: nomeRota);
+      _rota = RotaColeta(codigo: codRota, nome: nomeRota);
 
   String get dataMov => _dataMov;
   void setDataMov(String value) => _dataMov = value;

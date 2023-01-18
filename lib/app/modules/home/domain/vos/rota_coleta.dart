@@ -1,15 +1,13 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 class RotaColeta {
-  final int _rota;
+  final int _codigo;
   final String _nome;
 
-  int get rota => _rota;
-
+  int get codigo => _codigo;
   String get nome => _nome;
 
   RotaColeta({
-    required rota,
+    required codigo,
     required nome,
-  })  : _rota = rota,
+  })  : _codigo = codigo,
         _nome = nome;
 }

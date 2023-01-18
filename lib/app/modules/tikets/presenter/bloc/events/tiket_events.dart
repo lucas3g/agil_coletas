@@ -1,3 +1,5 @@
+import 'package:agil_coletas/app/modules/home/domain/entities/coletas.dart';
+
 abstract class TiketEvents {}
 
 class GetProdutoresEvent extends TiketEvents {
@@ -9,10 +11,10 @@ class GetProdutoresEvent extends TiketEvents {
 }
 
 class CreateTiketsEvent extends TiketEvents {
-  final int codRota;
+  final Coletas coleta;
 
   CreateTiketsEvent({
-    required this.codRota,
+    required this.coleta,
   });
 }
 

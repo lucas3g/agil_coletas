@@ -109,15 +109,15 @@ class _RotasPageState extends State<RotasPage> {
                           ),
                           child: ListTile(
                             onTap: () {
-                              if (!rota.finalizada) {
-                                MySnackBar(
-                                  title: 'Atenção',
-                                  message: 'Rota pendente de finalização',
-                                  type: ContentType.warning,
-                                );
+                              // if (!rota.finalizada) {
+                              //   MySnackBar(
+                              //     title: 'Atenção',
+                              //     message: 'Rota pendente de finalização',
+                              //     type: ContentType.warning,
+                              //   );
 
-                                return;
-                              }
+                              //   return;
+                              // }
 
                               Modular.to.pushNamed('/home/rotas/transportador/',
                                   arguments: {'ROTA': rota});

@@ -24,7 +24,7 @@ class Tiket extends Entity {
 
   RotaColeta get rota => _rota;
   void setRota(int cod, String nome) =>
-      _rota = RotaColeta(rota: cod, nome: nome);
+      _rota = RotaColeta(codigo: cod, nome: nome);
 
   Produtor get produtor => _produtor;
   void setProdutor(
@@ -106,7 +106,7 @@ class Tiket extends Entity {
     required temperatura,
     required idColeta,
     required qtdVezesEditado,
-  })  : _rota = RotaColeta(rota: rota.rota, nome: rota.nome),
+  })  : _rota = RotaColeta(codigo: rota.codigo, nome: rota.nome),
         _produtor = Produtor(
           id: produtor.id,
           nome: produtor.nome,

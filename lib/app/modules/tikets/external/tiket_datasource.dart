@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:agil_coletas/app/core_module/services/client_http/client_http_interface.dart';
 import 'package:agil_coletas/app/core_module/services/produtor/domain/entities/produtor.dart';
 import 'package:agil_coletas/app/core_module/services/produtor/infra/adapters/produtor_adapter.dart';
@@ -6,6 +5,7 @@ import 'package:agil_coletas/app/core_module/services/sqflite/adapters/filter_en
 import 'package:agil_coletas/app/core_module/services/sqflite/adapters/sqflite_adapter.dart';
 import 'package:agil_coletas/app/core_module/services/sqflite/adapters/tables.dart';
 import 'package:agil_coletas/app/core_module/services/sqflite/sqflite_storage_interface.dart';
+import 'package:agil_coletas/app/modules/home/domain/entities/coletas.dart';
 import 'package:agil_coletas/app/modules/tikets/infra/adapters/tiket_adapter.dart';
 import 'package:agil_coletas/app/modules/tikets/infra/datasources/tiket_datasource.dart';
 
@@ -19,14 +19,14 @@ class TiketDatasource implements ITiketDatasource {
   });
 
   @override
-  Future<int> createTikets(int codRota) async {
-    final filter =
-        FilterEntity(name: 'ROTA', value: codRota, type: FilterType.equal);
+  Future<int> createTikets(Coletas coleta) async {
+    final filter = FilterEntity(
+        name: 'ROTA', value: coleta.rota.codigo, type: FilterType.equal);
 
-    final param = SQLFliteGetPerFilterParam(
+    final paramGet = SQLFliteGetPerFilterParam(
         table: Tables.produtores, columns: [], filters: {filter});
 
-    final result = await storage.getPerFilter(param);
+    final result = await storage.getPerFilter(paramGet);
 
     late List<Produtor> produtores = [];
 
@@ -36,14 +36,14 @@ class TiketDatasource implements ITiketDatasource {
 
     for (var produtor in produtores) {
       final param = SQLFliteInsertParam(
-        table: Tables.produtores,
-        data: TiketAdapter.toMapSQLFlite(produtor, codRota),
+        table: Tables.tikets,
+        data: TiketAdapter.toMapSQLFlite(produtor, coleta),
       );
 
       await storage.create(param);
     }
 
-    return codRota;
+    return coleta.id;
   }
 
   @override
