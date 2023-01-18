@@ -1,4 +1,4 @@
-import 'package:agil_coletas/app/modules/tikets/domain/vos/produtor.dart';
+import 'package:agil_coletas/app/core_module/services/produtor/domain/entities/produtor.dart';
 
 class ProdutorAdapter {
   static Produtor fromMap(dynamic map) {

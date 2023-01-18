@@ -10,4 +10,13 @@ class RotasAdapter {
       finalizada: true,
     );
   }
+
+  static Map<String, dynamic> toMapSQL(Rotas rotas) {
+    return {
+      'ID': rotas.id.value,
+      'DESCRICAO': rotas.descricao,
+      'TRANSPORTADORA': rotas.transportador,
+      'ROTA_FINALIZADA': rotas.finalizada ? 1 : 0,
+    };
+  }
 }

@@ -1,13 +1,21 @@
-import 'package:agil_coletas/app/app_module.dart';
-import 'package:agil_coletas/app/core_module/constants/constants.dart';
-import 'package:agil_coletas/app/core_module/services/shared_preferences/local_storage_interface.dart';
-import 'package:agil_coletas/app/utils/constants.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/svg.dart';
 
+import 'package:agil_coletas/app/app_module.dart';
+import 'package:agil_coletas/app/core_module/constants/constants.dart';
+import 'package:agil_coletas/app/core_module/services/produtor/bloc/produtor_bloc.dart';
+import 'package:agil_coletas/app/core_module/services/shared_preferences/local_storage_interface.dart';
+import 'package:agil_coletas/app/utils/constants.dart';
+
 class SplashPage extends StatefulWidget {
-  const SplashPage({super.key});
+  final ProdutorBloc produtorBloc;
+
+  const SplashPage({
+    Key? key,
+    required this.produtorBloc,
+  }) : super(key: key);
 
   @override
   State<SplashPage> createState() => _SplashPageState();

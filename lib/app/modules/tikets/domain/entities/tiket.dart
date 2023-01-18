@@ -1,7 +1,7 @@
+import 'package:agil_coletas/app/core_module/services/produtor/domain/entities/produtor.dart';
 import 'package:agil_coletas/app/core_module/types/entity.dart';
 import 'package:agil_coletas/app/core_module/vos/id_vo.dart';
 import 'package:agil_coletas/app/modules/home/domain/vos/rota_coleta.dart';
-import 'package:agil_coletas/app/modules/tikets/domain/vos/produtor.dart';
 
 class Tiket extends Entity {
   RotaColeta _rota;

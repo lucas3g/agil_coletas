@@ -11,8 +11,15 @@ abstract class RotasStates {
     required this.filtro,
   });
 
-  SuccessGetRotas success({List<Rotas>? rotas, String? filtro}) {
+  SuccessGetRotas successGet({List<Rotas>? rotas, String? filtro}) {
     return SuccessGetRotas(
+      rotas: rotas ?? this.rotas,
+      filtro: filtro ?? this.filtro,
+    );
+  }
+
+  SuccessSaveRotas successSave({List<Rotas>? rotas, String? filtro}) {
+    return SuccessSaveRotas(
       rotas: rotas ?? this.rotas,
       filtro: filtro ?? this.filtro,
     );
@@ -55,6 +62,10 @@ class LoadingRotas extends RotasStates {
 
 class SuccessGetRotas extends RotasStates {
   SuccessGetRotas({required super.rotas, required super.filtro});
+}
+
+class SuccessSaveRotas extends RotasStates {
+  SuccessSaveRotas({required super.rotas, required super.filtro});
 }
 
 class ErrorRotas extends RotasStates {

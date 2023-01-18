@@ -42,16 +42,6 @@ class _TiketsPageState extends State<TiketsPage> {
     widget.tiketBloc.add(GetTiketsEvent(codColeta: coleta.id));
 
     sub = widget.tiketBloc.stream.listen((state) {
-      if (state is SuccessGetProdutoresTiket) {
-        widget.tiketBloc.add(SaveProdutoresEvent(produtores: state.produtores));
-        widget.tiketBloc.add(
-          CreateTiketsEvent(
-            produtores: state.produtores,
-            coleta: coleta,
-          ),
-        );
-      }
-
       if (state is ErrorTiket) {
         MySnackBar(
           title: 'Ops...',

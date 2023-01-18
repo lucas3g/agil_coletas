@@ -1,8 +1,6 @@
 import 'package:agil_coletas/app/modules/rotas/rotas_module.dart';
 import 'package:agil_coletas/app/modules/tikets/domain/repositories/tiket_repository.dart';
-import 'package:agil_coletas/app/modules/tikets/domain/usecases/get_produtores_usecase.dart';
 import 'package:agil_coletas/app/modules/tikets/domain/usecases/get_tikets_by_coleta_usecase.dart';
-import 'package:agil_coletas/app/modules/tikets/domain/usecases/save_produtores_usecase.dart';
 import 'package:agil_coletas/app/modules/tikets/external/tiket_datasource.dart';
 import 'package:agil_coletas/app/modules/tikets/infra/datasources/tiket_datasource.dart';
 import 'package:agil_coletas/app/modules/tikets/infra/repositories/tiket_repository.dart';
@@ -30,17 +28,12 @@ class TiketsModule extends Module {
     //USECASES
     Bind.factory<IGetTiketByColetaUseCase>(
         (i) => GetTiketByColetaUseCase(repository: i())),
-    Bind.factory<IGetProdutoresUseCase>(
-        (i) => GetProdutoresUseCase(repository: i())),
-    Bind.factory<ISaveProdutoresUseCase>(
-        (i) => SaveProdutoresUseCase(repository: i())),
 
     //BLOCS
     BlocBind.factory<TiketBloc>(
       (i) => TiketBloc(
-          getTiketByColetaUseCase: i(),
-          getProdutoresUseCase: i(),
-          saveProdutoresUseCase: i()),
+        getTiketByColetaUseCase: i(),
+      ),
     ),
   ];
 

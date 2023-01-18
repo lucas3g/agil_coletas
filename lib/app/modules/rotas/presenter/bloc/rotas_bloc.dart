@@ -21,12 +21,12 @@ class RotasBloc extends Bloc<RotasEvents, RotasStates> {
     final result = await getRotasUseCase();
 
     result.fold(
-      (success) => emit(state.success(rotas: success)),
+      (success) => emit(state.successGet(rotas: success)),
       (failure) => emit(state.error(failure.message)),
     );
   }
 
   void _searchRotas(FiltraRotasEvent event, emit) {
-    emit(state.success(filtro: event.value));
+    emit(state.successGet(filtro: event.value));
   }
 }
