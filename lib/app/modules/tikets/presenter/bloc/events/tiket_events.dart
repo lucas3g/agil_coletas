@@ -35,3 +35,11 @@ class UpdateTiketEvent extends TiketEvents {
     required this.tiket,
   });
 }
+
+class FilterTiketsEvent extends TiketEvents {
+  final String filtro;
+
+  FilterTiketsEvent({
+    required this.filtro,
+  });
+}

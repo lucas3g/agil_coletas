@@ -90,98 +90,109 @@ class _TransportadorPageState extends State<TransportadorPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(kPadding),
-        child: BlocBuilder<TransportadorBloc, TransportadorStates>(
-          bloc: widget.transportadorBloc,
-          builder: (context, state) {
-            if (state is! SuccessGetTransportador) {
-              return const MyListShimmerWidget();
-            }
+        child: Column(
+          children: [
+            MyInputWidget(
+              label: 'Pesquisa',
+              hintText: 'Digite o nome ou placa do transportador',
+              onChanged: (String? value) {
+                widget.transportadorBloc
+                    .add(FiltraTransportadorEvent(value: value!));
+              },
+              inputFormaters: [UpperCaseTextFormatter()],
+            ),
+            const Divider(),
+            BlocBuilder<TransportadorBloc, TransportadorStates>(
+              bloc: widget.transportadorBloc,
+              builder: (context, state) {
+                if (state is! SuccessGetTransportador) {
+                  return const MyListShimmerWidget();
+                }
 
-            final transps = state.transpFiltrados;
+                final transps = state.transpFiltrados;
 
-            if (transps.isEmpty) {
-              return const Center(
-                child: Text('Lista de transportadores está vazia.'),
-              );
-            }
+                if (transps.isEmpty) {
+                  return const Expanded(
+                    child: Center(
+                      child: Text('Lista de transportadores está vazia.'),
+                    ),
+                  );
+                }
 
-            return Column(
-              children: [
-                MyInputWidget(
-                  label: 'Pesquisa',
-                  hintText: 'Digite o nome ou placa do transportador',
-                  onChanged: (String? value) {
-                    widget.transportadorBloc
-                        .add(FiltraTransportadorEvent(value: value!));
-                  },
-                  inputFormaters: [UpperCaseTextFormatter()],
-                ),
-                const Divider(),
-                Expanded(
-                  child: ListView.separated(
-                    itemBuilder: (context, index) {
-                      final transp = transps[index];
+                return Expanded(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView.separated(
+                          itemBuilder: (context, index) {
+                            final transp = transps[index];
 
-                      return Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(10),
-                          color: transp.ultimo
-                              ? Colors.green.shade400
-                              : Colors.white,
-                        ),
-                        child: ListTile(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => IniciaColetaModalWidget(
-                                rota: rota,
-                                transp: transp,
-                                homeBloc: widget.homeBloc,
+                            return Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                border: Border.all(),
+                                borderRadius: BorderRadius.circular(10),
+                                color: transp.ultimo
+                                    ? Colors.green.shade400
+                                    : Colors.white,
+                              ),
+                              child: ListTile(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        IniciaColetaModalWidget(
+                                      rota: rota,
+                                      transp: transp,
+                                      homeBloc: widget.homeBloc,
+                                    ),
+                                  );
+                                },
+                                contentPadding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                minLeadingWidth: 10,
+                                leading: const SizedBox(
+                                  height: double.maxFinite,
+                                  child: Icon(
+                                    Icons.local_shipping_outlined,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                title: Text(
+                                  transp.descricao,
+                                  style: AppTheme.textStyles.titleCardTransp,
+                                ),
+                                subtitle: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Placa: ',
+                                        style: AppTheme
+                                            .textStyles.subTitleCardTranspBold,
+                                      ),
+                                      TextSpan(
+                                        text: transp.placa,
+                                        style: AppTheme
+                                            .textStyles.subTitleCardTransp,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             );
                           },
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 10),
-                          minLeadingWidth: 10,
-                          leading: const SizedBox(
-                            height: double.maxFinite,
-                            child: Icon(
-                              Icons.local_shipping_outlined,
-                              color: Colors.black,
-                            ),
-                          ),
-                          title: Text(
-                            transp.descricao,
-                            style: AppTheme.textStyles.titleCardTransp,
-                          ),
-                          subtitle: RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Placa: ',
-                                  style: AppTheme
-                                      .textStyles.subTitleCardTranspBold,
-                                ),
-                                TextSpan(
-                                  text: transp.placa,
-                                  style: AppTheme.textStyles.subTitleCardTransp,
-                                ),
-                              ],
-                            ),
-                          ),
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 10),
+                          itemCount: transps.length,
                         ),
-                      );
-                    },
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 10),
-                    itemCount: transps.length,
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            );
-          },
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

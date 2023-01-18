@@ -10,6 +10,7 @@ import 'package:agil_coletas/app/modules/tikets/domain/entities/tiket.dart';
 import 'package:agil_coletas/app/modules/tikets/presenter/widgets/tiket_modal_widget.dart';
 import 'package:agil_coletas/app/theme/app_theme.dart';
 import 'package:agil_coletas/app/utils/constants.dart';
+import 'package:agil_coletas/app/utils/formatters.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 
@@ -151,100 +152,116 @@ class _TiketsPageState extends State<TiketsPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(kPadding),
-        child: BlocBuilder(
-          bloc: widget.tiketBloc,
-          builder: (context, state) {
-            if (state is! SuccessGetTikets) {
-              return const MyListShimmerWidget();
-            }
+        child: Column(
+          children: [
+            MyInputWidget(
+              label: 'Pesquisa',
+              hintText: 'Digite o nome do produtor',
+              onChanged: (e) {
+                widget.tiketBloc.add(FilterTiketsEvent(filtro: e));
+              },
+              inputFormaters: [UpperCaseTextFormatter()],
+            ),
+            const Divider(),
+            BlocBuilder(
+              bloc: widget.tiketBloc,
+              builder: (context, state) {
+                if (state is! SuccessGetTikets) {
+                  return const MyListShimmerWidget();
+                }
 
-            final tikets = state.tikets;
+                final tikets = state.tiketsFiltrados;
 
-            if (tikets.isEmpty) {
-              return const Center(
-                child: Text('Nenhum tiket encontrado'),
-              );
-            }
+                if (tikets.isEmpty) {
+                  return const Expanded(
+                    child: Center(
+                      child: Text('Nenhum tiket encontrado'),
+                    ),
+                  );
+                }
 
-            return Column(
-              children: [
-                const MyInputWidget(label: 'Pesquisa'),
-                const Divider(),
-                Expanded(
-                  child: ListView.separated(
-                    itemBuilder: (context, index) {
-                      final tiket = tikets[index];
+                return Expanded(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView.separated(
+                          itemBuilder: (context, index) {
+                            final tiket = tikets[index];
 
-                      return Container(
-                        decoration: BoxDecoration(
-                            color: retornaCorDoCard(tiket),
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: retornaCorDoCard(tiket),
-                                blurRadius: 3,
-                                offset: const Offset(0, 5),
-                              )
-                            ]),
-                        child: ListTile(
-                          onTap: () async {
-                            await showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (context) => TiketModalWidget(
-                                tiket: tiket,
-                                tiketBloc: widget.tiketBloc,
+                            return Container(
+                              decoration: BoxDecoration(
+                                  color: retornaCorDoCard(tiket),
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: retornaCorDoCard(tiket),
+                                      blurRadius: 3,
+                                      offset: const Offset(0, 5),
+                                    )
+                                  ]),
+                              child: ListTile(
+                                onTap: () async {
+                                  await showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (context) => TiketModalWidget(
+                                      tiket: tiket,
+                                      tiketBloc: widget.tiketBloc,
+                                    ),
+                                  );
+
+                                  setState(() {});
+                                },
+                                leading: SizedBox(
+                                  height: double.maxFinite,
+                                  child: retornaIconeCard(tiket),
+                                ),
+                                title: Text(
+                                  tiket.produtor.nome,
+                                  style: AppTheme.textStyles.titleListTikets,
+                                ),
+                                subtitle: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Município: ',
+                                      style: AppTheme
+                                          .textStyles.subTitleListTikets,
+                                    ),
+                                    Expanded(
+                                      child: Text(tiket.produtor.municipio),
+                                    )
+                                  ],
+                                ),
                               ),
                             );
-
-                            setState(() {});
                           },
-                          leading: SizedBox(
-                            height: double.maxFinite,
-                            child: retornaIconeCard(tiket),
-                          ),
-                          title: Text(
-                            tiket.produtor.nome,
-                            style: AppTheme.textStyles.titleListTikets,
-                          ),
-                          subtitle: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Município: ',
-                                style: AppTheme.textStyles.subTitleListTikets,
-                              ),
-                              Expanded(
-                                child: Text(tiket.produtor.municipio),
-                              )
-                            ],
-                          ),
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 15),
+                          itemCount: tikets.length,
                         ),
-                      );
-                    },
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 15),
-                    itemCount: tikets.length,
-                  ),
-                ),
-                const Divider(),
-                Row(
-                  children: [
-                    Expanded(
-                      child: MyElevatedButtonWidget(
-                        height: 50,
-                        label: Text(
-                          'Finalizar Rota',
-                          style: AppTheme.textStyles.labelButtonFinalizar,
-                        ),
-                        onPressed: () {},
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            );
-          },
+                      const Divider(),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: MyElevatedButtonWidget(
+                              height: 50,
+                              label: Text(
+                                'Finalizar Rota',
+                                style: AppTheme.textStyles.labelButtonFinalizar,
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

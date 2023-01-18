@@ -69,84 +69,95 @@ class _RotasPageState extends State<RotasPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(kPadding),
-        child: BlocBuilder<RotasBloc, RotasStates>(
-            bloc: widget.rotasBloc,
-            builder: (context, state) {
-              if (state is! SuccessGetRotas) {
-                return const MyListShimmerWidget();
-              }
+        child: Column(
+          children: [
+            MyInputWidget(
+              label: 'Pesquisa',
+              hintText: 'Digite o nome ou código da rota',
+              onChanged: (String? value) {
+                widget.rotasBloc.add(FiltraRotasEvent(value: value!));
+              },
+              inputFormaters: [UpperCaseTextFormatter()],
+            ),
+            const Divider(),
+            BlocBuilder<RotasBloc, RotasStates>(
+                bloc: widget.rotasBloc,
+                builder: (context, state) {
+                  if (state is! SuccessGetRotas) {
+                    return const MyListShimmerWidget();
+                  }
 
-              final rotas = state.rotasFiltradas;
+                  final rotas = state.rotasFiltradas;
 
-              if (rotas.isEmpty) {
-                return const Center(
-                  child: Text('Lista de rotas está vazia'),
-                );
-              }
+                  if (rotas.isEmpty) {
+                    return const Expanded(
+                      child: Center(
+                        child: Text('Lista de rotas está vazia'),
+                      ),
+                    );
+                  }
 
-              return Column(
-                children: [
-                  MyInputWidget(
-                    label: 'Pesquisa',
-                    hintText: 'Digite o nome ou código da rota',
-                    onChanged: (String? value) {
-                      widget.rotasBloc.add(FiltraRotasEvent(value: value!));
-                    },
-                    inputFormaters: [UpperCaseTextFormatter()],
-                  ),
-                  const Divider(),
-                  Expanded(
-                    child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        final rota = rotas[index];
-                        return Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(10),
-                            color: rota.finalizada
-                                ? Colors.white
-                                : Colors.grey.shade400,
-                          ),
-                          child: ListTile(
-                            onTap: () {
-                              // if (!rota.finalizada) {
-                              //   MySnackBar(
-                              //     title: 'Atenção',
-                              //     message: 'Rota pendente de finalização',
-                              //     type: ContentType.warning,
-                              //   );
-
-                              //   return;
-                              // }
-
-                              Modular.to.pushNamed('/home/rotas/transportador/',
-                                  arguments: {'ROTA': rota});
-                            },
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 10),
-                            title: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.room_outlined,
-                                  color: Colors.black,
+                  return Expanded(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ListView.separated(
+                            itemBuilder: (context, index) {
+                              final rota = rotas[index];
+                              return Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(),
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: rota.finalizada
+                                      ? Colors.white
+                                      : Colors.grey.shade400,
                                 ),
-                                const SizedBox(width: 10),
-                                Text('${rota.id.value} - ${rota.descricao}'),
-                              ],
-                            ),
+                                child: ListTile(
+                                  onTap: () {
+                                    // if (!rota.finalizada) {
+                                    //   MySnackBar(
+                                    //     title: 'Atenção',
+                                    //     message: 'Rota pendente de finalização',
+                                    //     type: ContentType.warning,
+                                    //   );
+
+                                    //   return;
+                                    // }
+
+                                    Modular.to.pushNamed(
+                                        '/home/rotas/transportador/',
+                                        arguments: {'ROTA': rota});
+                                  },
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  title: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.room_outlined,
+                                        color: Colors.black,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                          '${rota.id.value} - ${rota.descricao}'),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 10),
+                            itemCount: rotas.length,
                           ),
-                        );
-                      },
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 10),
-                      itemCount: rotas.length,
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              );
-            }),
+                  );
+                }),
+          ],
+        ),
       ),
     );
   }

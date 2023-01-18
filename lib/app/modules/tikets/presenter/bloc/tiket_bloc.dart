@@ -20,6 +20,7 @@ class TiketBloc extends Bloc<TiketEvents, TiketStates> {
     on<GetTiketsEvent>(_getTikets);
     on<CreateTiketsEvent>(_createTikets);
     on<UpdateTiketEvent>(_updateTiket);
+    on<FilterTiketsEvent>(_searchTikets);
   }
 
   Future _getTikets(GetTiketsEvent event, emit) async {
@@ -53,5 +54,9 @@ class TiketBloc extends Bloc<TiketEvents, TiketStates> {
       (success) => emit(state.successUpdate()),
       (failure) => emit(state.error(failure.message)),
     );
+  }
+
+  void _searchTikets(FilterTiketsEvent event, emit) {
+    emit(state.successGet(filtro: event.filtro));
   }
 }

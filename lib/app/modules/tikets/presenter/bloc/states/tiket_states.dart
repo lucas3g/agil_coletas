@@ -40,7 +40,7 @@ abstract class TiketStates {
     return ErrorTiket(message: message, tikets: tikets, filtro: filtro);
   }
 
-  List<Tiket> get rotasFiltradas {
+  List<Tiket> get tiketsFiltrados {
     if (filtro.isEmpty) {
       return tikets;
     }
