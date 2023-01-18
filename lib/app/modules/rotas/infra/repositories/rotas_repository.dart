@@ -48,4 +48,19 @@ class RotasRepository implements IRotasRepository {
       return MyException(message: e.toString()).toFailure();
     }
   }
+
+  @override
+  Future<Result<bool, IMyException>> saveRotas(List<Rotas> rotas) async {
+    try {
+      final result = jsonDecode(await datasource.getRotasOnline());
+
+      return result.toSuccess();
+    } on DioError catch (e) {
+      return MyException(message: e.message).toFailure();
+    } on IMyException catch (e) {
+      return MyException(message: e.message).toFailure();
+    } catch (e) {
+      return MyException(message: e.toString()).toFailure();
+    }
+  }
 }
