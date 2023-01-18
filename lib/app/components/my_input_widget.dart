@@ -26,6 +26,9 @@ class MyInputWidget extends StatelessWidget {
   final TextAlignVertical? textAlignVertical;
   final String? Function(String?)? validator;
   final String? value;
+  final Function(String?)? onSaved;
+  final TextEditingController? controller;
+  final bool autofocus;
 
   const MyInputWidget({
     Key? key,
@@ -50,13 +53,18 @@ class MyInputWidget extends StatelessWidget {
     this.textAlignVertical = TextAlignVertical.center,
     this.validator,
     this.value,
+    this.onSaved,
+    this.controller,
+    this.autofocus = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofocus: autofocus,
+      controller: controller,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      initialValue: value,
+      initialValue: controller == null ? value : null,
       textAlignVertical: textAlignVertical!,
       expands: expands,
       maxLines: maxLines,
@@ -74,6 +82,7 @@ class MyInputWidget extends StatelessWidget {
       inputFormatters: inputFormaters,
       onFieldSubmitted: onFieldSubmitted,
       maxLength: maxLength,
+      onSaved: onSaved,
       decoration: InputDecoration(
         counterText: '',
         hintText: hintText,

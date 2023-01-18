@@ -62,7 +62,10 @@ class _IniciaColetaModalWidgetState extends State<IniciaColetaModalWidget> {
 
         Modular.to.navigate(
           '/home/tikets/',
-          arguments: {'coleta': coleta},
+          arguments: {
+            'coleta': coleta,
+            'editando': false,
+          },
         );
       }
     });

@@ -18,6 +18,9 @@ abstract class AppTextStyles {
   TextStyle get subTitleCardTranspBold;
   TextStyle get titleAlertTransp;
   TextStyle get subTitleAlertTransp;
+  TextStyle get titleListTikets;
+  TextStyle get subTitleListTikets;
+  TextStyle get labelButtonFinalizar;
 }
 
 class AppTextStylesDefault implements AppTextStyles {
@@ -124,4 +127,24 @@ class AppTextStylesDefault implements AppTextStyles {
         fontWeight: FontWeight.bold,
         color: Colors.black,
       );
+
+  @override
+  TextStyle get subTitleListTikets => GoogleFonts.montserrat(
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      );
+
+  @override
+  TextStyle get titleListTikets => GoogleFonts.montserrat(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      );
+
+  @override
+  TextStyle get labelButtonFinalizar => GoogleFonts.montserrat(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: AppTheme.colors.primary);
 }

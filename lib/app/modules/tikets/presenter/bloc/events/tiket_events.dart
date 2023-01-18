@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:agil_coletas/app/modules/home/domain/entities/coletas.dart';
+import 'package:agil_coletas/app/modules/tikets/domain/entities/tiket.dart';
 
 abstract class TiketEvents {}
 
@@ -23,5 +25,13 @@ class GetTiketsEvent extends TiketEvents {
 
   GetTiketsEvent({
     required this.codColeta,
+  });
+}
+
+class UpdateTiketEvent extends TiketEvents {
+  final Tiket tiket;
+
+  UpdateTiketEvent({
+    required this.tiket,
   });
 }

@@ -6,6 +6,7 @@ import 'package:agil_coletas/app/core_module/services/sqflite/adapters/sqflite_a
 import 'package:agil_coletas/app/core_module/services/sqflite/adapters/tables.dart';
 import 'package:agil_coletas/app/core_module/services/sqflite/sqflite_storage_interface.dart';
 import 'package:agil_coletas/app/modules/home/domain/entities/coletas.dart';
+import 'package:agil_coletas/app/modules/tikets/domain/entities/tiket.dart';
 import 'package:agil_coletas/app/modules/tikets/infra/adapters/tiket_adapter.dart';
 import 'package:agil_coletas/app/modules/tikets/infra/datasources/tiket_datasource.dart';
 
@@ -55,6 +56,19 @@ class TiketDatasource implements ITiketDatasource {
         table: Tables.tikets, columns: [], filters: {filters});
 
     final result = await storage.getPerFilter(param);
+
+    return result;
+  }
+
+  @override
+  Future<bool> updateTiket(Tiket tiket) async {
+    final param = SQLFliteUpdateParam(
+      table: Tables.tikets,
+      id: tiket.id.value,
+      fieldsWithValues: TiketAdapter.toMapUpdate(tiket),
+    );
+
+    final result = await storage.update(param);
 
     return result;
   }

@@ -43,14 +43,12 @@ class SQLFliteDeleteAllParam {
 class SQLFliteUpdateParam {
   final Tables table;
   final int id;
-  final String field;
-  final dynamic value;
+  final Map<String, dynamic> fieldsWithValues;
 
   SQLFliteUpdateParam({
     required this.table,
     required this.id,
-    required this.field,
-    required this.value,
+    required this.fieldsWithValues,
   });
 }
 

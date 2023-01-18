@@ -32,7 +32,30 @@ class TiketRepository implements ITiketRepository {
     try {
       final result = await datasource.getTikets(idColeta);
 
-      return result.map(TiketAdapter.fromMap).toList().toSuccess();
+      final List<Tiket> tikets = [];
+
+      for (var tiket in result) {
+        tikets.add(TiketAdapter.fromMap(tiket));
+      }
+
+      tikets.sort((a, b) => ("${a.quantidade}${a.temperatura}")
+          .toString()
+          .compareTo(("${b.quantidade}${b.temperatura}").toString()));
+
+      return tikets.toSuccess();
+    } on IMyException catch (e) {
+      return MyException(message: e.message).toFailure();
+    } catch (e) {
+      return MyException(message: e.toString()).toFailure();
+    }
+  }
+
+  @override
+  Future<Result<bool, IMyException>> updateTiket(Tiket tiket) async {
+    try {
+      final result = await datasource.updateTiket(tiket);
+
+      return result.toSuccess();
     } on IMyException catch (e) {
       return MyException(message: e.message).toFailure();
     } catch (e) {

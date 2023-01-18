@@ -18,7 +18,7 @@ class SQLFliteService implements ISQLFliteStorage {
     late int id = 0;
 
     await _db!.transaction((txn) async {
-      id = await txn.insert(param.table.name, param.data);
+      id = await txn.insert(param.table.name.toUpperCase(), param.data);
     });
 
     return id;
@@ -28,7 +28,7 @@ class SQLFliteService implements ISQLFliteStorage {
   Future<void> delete(SQLFliteDeleteParam param) async {
     await _db!.transaction((txn) async {
       await txn.delete(
-        param.table.name,
+        param.table.name.toUpperCase(),
         where: 'id = ?',
         whereArgs: [param.id],
       );
@@ -41,7 +41,7 @@ class SQLFliteService implements ISQLFliteStorage {
 
     await _db!.transaction((txn) async {
       result = await txn.query(
-        param.table.name,
+        param.table.name.toUpperCase(),
       );
     });
 
@@ -59,7 +59,7 @@ class SQLFliteService implements ISQLFliteStorage {
 
     await _db!.transaction((txn) async {
       result = await txn.query(
-        param.table.name,
+        param.table.name.toUpperCase(),
         where: where,
         whereArgs: param.filters
             ?.map(SqFliteHelpers.convertFilterToSqlWhereArgs)
@@ -92,22 +92,26 @@ class SQLFliteService implements ISQLFliteStorage {
   }
 
   @override
-  Future<void> update(SQLFliteUpdateParam param) async {
+  Future<bool> update(SQLFliteUpdateParam param) async {
+    late int atualizou;
+
     await _db!.transaction((txn) async {
-      await txn.update(
-        param.table.name,
-        {param.field: param.value},
+      atualizou = await txn.update(
+        param.table.name.toUpperCase(),
+        param.fieldsWithValues,
         where: 'id = ?',
         whereArgs: [param.id],
       );
     });
+
+    return atualizou > 0;
   }
 
   @override
   Future<void> deleteAll(SQLFliteDeleteAllParam param) async {
     await _db!.transaction((txn) async {
       await txn.delete(
-        param.table.name,
+        param.table.name.toUpperCase(),
       );
     });
   }

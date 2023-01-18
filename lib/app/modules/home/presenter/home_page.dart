@@ -244,7 +244,10 @@ class _HomePageState extends State<HomePage> {
                                     default:
                                       Modular.to.pushNamed(
                                         '/home/tikets/',
-                                        arguments: {'coleta': coleta},
+                                        arguments: {
+                                          'coleta': coleta,
+                                          'editando': true,
+                                        },
                                       );
                                   }
                                 },

@@ -32,11 +32,11 @@ class ProdutorDatasource implements IProdutorDatasource {
 
   @override
   Future<bool> saveProdutores(List<Produtor> produtores) async {
+    final paramDelete = SQLFliteDeleteAllParam(table: Tables.produtores);
+
+    await storage.deleteAll(paramDelete);
+
     for (var produtor in produtores) {
-      final paramDelete = SQLFliteDeleteAllParam(table: Tables.produtores);
-
-      await storage.deleteAll(paramDelete);
-
       final param = SQLFliteInsertParam(
           table: Tables.produtores, data: ProdutorAdapter.toMap(produtor));
 

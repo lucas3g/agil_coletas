@@ -6,7 +6,7 @@ import 'package:agil_coletas/app/modules/tikets/domain/vos/quantidade.dart';
 import 'package:agil_coletas/app/modules/tikets/domain/vos/temperatura.dart';
 import 'package:result_dart/result_dart.dart';
 
-class Tiket extends Entity {
+class TiketClone extends Entity {
   RotaColeta _rota;
   Produtor _produtor;
   int _codProduto;
@@ -90,7 +90,7 @@ class Tiket extends Entity {
   int get qtdVezesEditado => _qtdVezesEditado;
   void setQtdVezesEditado(int value) => _qtdVezesEditado = value;
 
-  Tiket({
+  TiketClone({
     required super.id,
     required RotaColeta rota,
     required Produtor produtor,
@@ -134,7 +134,7 @@ class Tiket extends Entity {
         _qtdVezesEditado = qtdVezesEditado;
 
   @override
-  Result<Tiket, String> validate([Object? object]) {
+  Result<TiketClone, String> validate([Object? object]) {
     return super
         .validate()
         .flatMap(quantidade.validate)

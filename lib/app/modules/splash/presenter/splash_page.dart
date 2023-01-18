@@ -27,7 +27,7 @@ class _SplashPageState extends State<SplashPage> {
   Future init() async {
     await Modular.isModuleReady<AppModule>();
 
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(seconds: 2));
 
     if (await ConnectivityService.hasWiFi()) {
       baixaTudo = BaixaTudo(
