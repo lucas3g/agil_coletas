@@ -23,7 +23,7 @@ class HomeModule extends Module {
   final List<Bind> binds = [
     //DATASOURCES
     Bind.factory<IHomeDatasource>(
-      (i) => HomeDatasource(storage: i()),
+      (i) => HomeDatasource(storage: i(), clientHttp: i()),
     ),
 
     //REPOSITORIES
@@ -48,6 +48,7 @@ class HomeModule extends Module {
         getColetasUseCase: i(),
         createColetasUseCase: i(),
         updateColetasUseCase: i(),
+        sendColetaToServerUseCase: i(),
       ),
     ),
   ];

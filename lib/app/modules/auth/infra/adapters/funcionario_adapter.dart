@@ -12,7 +12,9 @@ class FuncionarioAdapter {
       ccusto: map['CCUSTO'],
       empresa: FunEmpresa(
         cnpj: '97.305.890/0001-81',
-        nome: map['EMPRESA']['DESC_EMPRESA'],
+        nome: (map as Map).containsKey('EMPRESA')
+            ? map['EMPRESA']['DESC_EMPRESA']
+            : map['DESC_EMPRESA'],
       ),
     );
   }

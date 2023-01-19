@@ -16,6 +16,13 @@ import 'package:agil_coletas/app/modules/rotas/infra/datasources/rotas_datasourc
 import 'package:agil_coletas/app/modules/rotas/infra/repositories/rotas_repository.dart';
 import 'package:agil_coletas/app/modules/rotas/presenter/bloc/rotas_bloc.dart';
 import 'package:agil_coletas/app/modules/splash/splash_module.dart';
+import 'package:agil_coletas/app/modules/transportador/domain/repositories/transportador_repository.dart';
+import 'package:agil_coletas/app/modules/transportador/domain/usecases/get_transportador_usecase.dart';
+import 'package:agil_coletas/app/modules/transportador/domain/usecases/save_transportador_usecase.dart';
+import 'package:agil_coletas/app/modules/transportador/external/datasources/transportador_datasource.dart';
+import 'package:agil_coletas/app/modules/transportador/infra/datasources/transportador_datasouce.dart';
+import 'package:agil_coletas/app/modules/transportador/infra/repositories/transportador_repository.dart';
+import 'package:agil_coletas/app/modules/transportador/presenter/bloc/transportador_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:modular_bloc_bind/modular_bloc_bind.dart';
 
@@ -77,31 +84,28 @@ class AppModule extends Module {
       ),
     ),
 
-    // //DATASOURCES
-    // Bind.lazySingleton<ITiketDatasource>(
-    //   (i) => TiketDatasource(clientHttp: i(), storage: i()),
-    // ),
+    //DATASOURCES
+    Bind.factory<ITransportadorDatasource>(
+      (i) => TransportadorDatasource(clientHttp: i(), storage: i()),
+    ),
 
-    // //REPOSITORIES
-    // Bind.lazySingleton<ITiketRepository>(
-    //   (i) => TiketRepository(datasource: i()),
-    // ),
+    //REPOSITORIES
+    Bind.factory<ITransportadorRepository>(
+        (i) => TransportadorRepository(datasource: i())),
 
-    // //USECASES
-    // Bind.lazySingleton<IGetTiketByColetaUseCase>(
-    //   (i) => GetTiketByColetaUseCase(repository: i()),
-    // ),
-    // Bind.lazySingleton<ICreateTiketByColetaUseCase>(
-    //   (i) => CreateTiketByColetaUseCase(repository: i()),
-    // ),
+    //USECASES
+    Bind.factory<IGetTransportadorUseCase>(
+        (i) => GetTransportadorUseCase(repository: i())),
+    Bind.factory<ISaveTransportadorUseCase>(
+        (i) => SaveTransportadorUseCase(repository: i())),
 
-    // //BLOCS
-    // BlocBind.lazySingleton<TiketBloc>(
-    //   (i) => TiketBloc(
-    //     getTiketByColetaUseCase: i(),
-    //     createTiketByColetaUseCase: i(),
-    //   ),
-    // ),
+    //BLOCS
+    BlocBind.factory<TransportadorBloc>(
+      (i) => TransportadorBloc(
+        getTransportadorUseCase: i(),
+        saveTransportadorUseCase: i(),
+      ),
+    ),
   ];
 
   @override

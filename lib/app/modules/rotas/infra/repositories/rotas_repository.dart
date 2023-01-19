@@ -56,7 +56,7 @@ class RotasRepository implements IRotasRepository {
   @override
   Future<Result<bool, IMyException>> saveRotas(List<Rotas> rotas) async {
     try {
-      final result = jsonDecode(await datasource.getRotasOnline());
+      final result = await datasource.saveRotas(rotas);
 
       return result.toSuccess();
     } on DioError catch (e) {

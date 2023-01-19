@@ -11,4 +11,13 @@ class TransportadorAdapter {
       ultimo: false,
     );
   }
+
+  static Map<String, dynamic> toMapSQL(Transportador transp) {
+    return {
+      'ID': transp.id.value,
+      'DESCRICAO': transp.descricao,
+      'PLACA': transp.placa,
+      'TANQUES': transp.particoes,
+    };
+  }
 }

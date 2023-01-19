@@ -4,4 +4,5 @@ abstract class IHomeDatasource {
   Future<List> getColetas();
   Future<Map<String, dynamic>> createColeta(Coletas coleta);
   Future<bool> updateColeta(Coletas coleta);
+  Future<bool> sendColetaToServer();
 }

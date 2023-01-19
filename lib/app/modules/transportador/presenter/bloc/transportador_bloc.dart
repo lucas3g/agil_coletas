@@ -1,15 +1,20 @@
 import 'package:agil_coletas/app/modules/transportador/domain/usecases/get_transportador_usecase.dart';
+import 'package:agil_coletas/app/modules/transportador/domain/usecases/save_transportador_usecase.dart';
 import 'package:agil_coletas/app/modules/transportador/presenter/bloc/events/transportador_event.dart';
 import 'package:agil_coletas/app/modules/transportador/presenter/bloc/states/transportador_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TransportadorBloc extends Bloc<TransportadorEvents, TransportadorStates> {
   final IGetTransportadorUseCase getTransportadorUseCase;
+  final ISaveTransportadorUseCase saveTransportadorUseCase;
 
-  TransportadorBloc({required this.getTransportadorUseCase})
-      : super(InitialTransportador()) {
+  TransportadorBloc({
+    required this.getTransportadorUseCase,
+    required this.saveTransportadorUseCase,
+  }) : super(InitialTransportador()) {
     on<GetTransportadorEvent>(_getTransportadores);
     on<FiltraTransportadorEvent>(_serachTransp);
+    on<SaveTransportadorEvent>(_saveTransp);
   }
 
   Future _getTransportadores(GetTransportadorEvent event, emit) async {
@@ -19,6 +24,17 @@ class TransportadorBloc extends Bloc<TransportadorEvents, TransportadorStates> {
 
     result.fold(
       (success) => emit(state.success(transportadores: success, filtro: '')),
+      (failure) => emit(state.error(failure.message)),
+    );
+  }
+
+  Future _saveTransp(SaveTransportadorEvent event, emit) async {
+    emit(state.loading());
+
+    final result = await saveTransportadorUseCase(event.transportadores);
+
+    result.fold(
+      (success) => emit(state.successSave()),
       (failure) => emit(state.error(failure.message)),
     );
   }

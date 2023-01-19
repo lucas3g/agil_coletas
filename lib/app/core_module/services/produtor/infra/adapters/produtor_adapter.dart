@@ -6,7 +6,7 @@ class ProdutorAdapter {
     return Produtor(
       id: IdVO(map['CLIFOR']),
       nome: map['NOME'],
-      municipio: map['MUNICIPIO'],
+      municipio: map['MUNICIPIOS'],
       uf: map['UF'],
       codRota: map['ROTA'],
     );
@@ -16,7 +16,7 @@ class ProdutorAdapter {
     return {
       'CLIFOR': produtor.id.value,
       'UF': produtor.uf,
-      'MUNICIPIO': produtor.municipio,
+      'MUNICIPIOS': produtor.municipio,
       'NOME': produtor.nome,
       'ROTA': produtor.codRota,
     };

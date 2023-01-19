@@ -25,8 +25,8 @@ class MySnackBar {
         borderRadius: BorderRadius.circular(20),
       ),
       content: AwesomeSnackbarContent(
-        title: title,
-        message: message,
+        title: '   $title',
+        message: '      $message',
         contentType: type,
       ),
     );

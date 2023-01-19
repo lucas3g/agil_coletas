@@ -15,7 +15,7 @@ class RotasAdapter {
     return {
       'ID': rotas.id.value,
       'DESCRICAO': rotas.descricao,
-      'TRANSPORTADORA': rotas.transportador,
+      'TRANSPORTADOR': rotas.transportador,
       'ROTA_FINALIZADA': rotas.finalizada ? 1 : 0,
     };
   }

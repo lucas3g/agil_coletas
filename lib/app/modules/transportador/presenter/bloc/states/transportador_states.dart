@@ -15,6 +15,11 @@ abstract class TransportadorStates {
     );
   }
 
+  SuccessSaveTransportador successSave() {
+    return SuccessSaveTransportador(
+        transportadores: transportadores, filtro: filtro);
+  }
+
   LoadingTransportador loading() {
     return LoadingTransportador(
         transportadores: transportadores, filtro: filtro);
@@ -55,6 +60,11 @@ class LoadingTransportador extends TransportadorStates {
 
 class SuccessGetTransportador extends TransportadorStates {
   SuccessGetTransportador(
+      {required super.transportadores, required super.filtro});
+}
+
+class SuccessSaveTransportador extends TransportadorStates {
+  SuccessSaveTransportador(
       {required super.transportadores, required super.filtro});
 }
 

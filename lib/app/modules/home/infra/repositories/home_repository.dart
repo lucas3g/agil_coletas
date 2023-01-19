@@ -64,4 +64,19 @@ class HomeRepository implements IHomeRepository {
       return MyException(message: e.toString()).toFailure();
     }
   }
+
+  @override
+  Future<Result<bool, IMyException>> sendColetaToSever() async {
+    try {
+      final result = await datasource.sendColetaToServer();
+
+      return result.toSuccess();
+    } on DioError catch (e) {
+      return MyException(message: e.message).toFailure();
+    } on MyException catch (e) {
+      return MyException(message: e.message).toFailure();
+    } catch (e) {
+      return MyException(message: e.toString()).toFailure();
+    }
+  }
 }

@@ -5,6 +5,7 @@ import 'package:agil_coletas/app/components/my_list_shimmer_widget.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/events/home_events.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/states/home_states.dart';
 import 'package:agil_coletas/app/modules/home/presenter/widgets/my_drawer_widget.dart';
+import 'package:agil_coletas/app/modules/home/presenter/widgets/send_coleta_server_modal_widget.dart';
 import 'package:agil_coletas/app/utils/my_snackbar.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
@@ -242,7 +243,14 @@ class _HomePageState extends State<HomePage> {
           children: [
             FloatingActionButton(
               heroTag: 'botao1',
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => SendColetaServerModalWidget(
+                    homeBloc: widget.homeBloc,
+                  ),
+                );
+              },
               child: const Icon(Icons.cloud_upload_rounded),
             ),
             FloatingActionButton(
