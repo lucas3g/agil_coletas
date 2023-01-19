@@ -19,7 +19,7 @@ class TiketAdapter {
       'TIKET': 1,
       'QUANTIDADE': 0,
       'PER_DESCONTO': 0.0,
-      'CCUSTO': 0,
+      'CCUSTO': coleta.ccusto,
       'ROTA_COLETA': coleta.rota.codigo,
       'CRIOSCOPIA': 0,
       'ALIZAROL': 0,
@@ -27,7 +27,7 @@ class TiketAdapter {
           '"${DateTime.now().hour}:${DateTime.now().minute.toString().padLeft(2, '0')}"',
       'PARTICAO': 1,
       'OBSERVACAO': '',
-      'PLACA': '',
+      'PLACA': coleta.placa,
       'TEMPERATURA': 0.0,
       'QTD_VEZES_EDITADO': 0,
     };

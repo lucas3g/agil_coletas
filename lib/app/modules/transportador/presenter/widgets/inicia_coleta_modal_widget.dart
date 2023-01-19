@@ -44,19 +44,6 @@ class _IniciaColetaModalWidgetState extends State<IniciaColetaModalWidget> {
 
     coleta = ColetasAdapter.empty();
 
-    final fun = GlobalFuncionario.instance.funcionario;
-
-    coleta.setRota(widget.rota.id.value, widget.rota.descricao);
-    coleta.setDataMov(DateTime.now().DiaMesAnoDB());
-    coleta.setDatasColeta(
-      dataHoraInicial:
-          '"${DateTime.now().DiaMesAnoDB()} ${DateTime.now().hour}:${DateTime.now().minute.toString().padLeft(2, '0')}"',
-    );
-    coleta.setMotorista(fun.name.value);
-    coleta.setParticoes(widget.transp.particoes);
-    coleta.setPlaca(widget.transp.placa);
-    coleta.setCCusto(fun.ccusto.value);
-
     widget.homeBloc.stream.listen((state) {
       if (state is SuccessCreateColetaHome) {
         coleta.setID(state.coleta.id);
@@ -167,6 +154,19 @@ class _IniciaColetaModalWidgetState extends State<IniciaColetaModalWidget> {
                     if (!gkForm.currentState!.validate()) {
                       return;
                     }
+
+                    final fun = GlobalFuncionario.instance.funcionario;
+
+                    coleta.setRota(widget.rota.id.value, widget.rota.descricao);
+                    coleta.setDataMov(DateTime.now().DiaMesAnoDB());
+                    coleta.setDatasColeta(
+                      dataHoraInicial:
+                          '"${DateTime.now().DiaMesAnoDB()} ${DateTime.now().hour}:${DateTime.now().minute.toString().padLeft(2, '0')}"',
+                    );
+                    coleta.setMotorista(fun.name.value);
+                    coleta.setParticoes(widget.transp.particoes);
+                    coleta.setPlaca(widget.transp.placa);
+                    coleta.setCCusto(fun.ccusto.value);
 
                     widget.homeBloc.add(CreateColetaEvent(coleta: coleta));
                   },
