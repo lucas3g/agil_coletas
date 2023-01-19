@@ -260,10 +260,14 @@ class _HomePageState extends State<HomePage> {
                   if (state is! SuccessGetColetasHome) {
                     return const SizedBox();
                   }
+
+                  final coletas = state.coletas
+                      .where((coleta) => !coleta.enviada)
+                      .isNotEmpty;
+
                   return FloatingActionButton(
-                    backgroundColor: state.coletas.isNotEmpty
-                        ? AppTheme.colors.primary
-                        : Colors.grey,
+                    backgroundColor:
+                        coletas ? AppTheme.colors.primary : Colors.grey,
                     heroTag: 'botao1',
                     onPressed: state.coletas.isNotEmpty
                         ? () {
