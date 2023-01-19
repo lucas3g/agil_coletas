@@ -1,27 +1,32 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
-import 'package:agil_coletas/app/components/my_list_shimmer_widget.dart';
-import 'package:agil_coletas/app/modules/home/presenter/bloc/events/home_events.dart';
-import 'package:agil_coletas/app/modules/home/presenter/bloc/states/home_states.dart';
-import 'package:agil_coletas/app/modules/home/presenter/widgets/my_drawer_widget.dart';
-import 'package:agil_coletas/app/modules/home/presenter/widgets/send_coleta_server_modal_widget.dart';
-import 'package:agil_coletas/app/utils/my_snackbar.dart';
+import 'package:agil_coletas/app/modules/home/presenter/bloc/states/send_states.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import 'package:agil_coletas/app/components/my_list_shimmer_widget.dart';
 import 'package:agil_coletas/app/core_module/constants/constants.dart';
+import 'package:agil_coletas/app/modules/home/presenter/bloc/events/home_events.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/home_bloc.dart';
+import 'package:agil_coletas/app/modules/home/presenter/bloc/send_bloc.dart';
+import 'package:agil_coletas/app/modules/home/presenter/bloc/states/home_states.dart';
+import 'package:agil_coletas/app/modules/home/presenter/widgets/my_drawer_widget.dart';
+import 'package:agil_coletas/app/modules/home/presenter/widgets/send_coleta_server_modal_widget.dart';
 import 'package:agil_coletas/app/theme/app_theme.dart';
 import 'package:agil_coletas/app/utils/constants.dart';
+import 'package:agil_coletas/app/utils/my_snackbar.dart';
 
 class HomePage extends StatefulWidget {
   final HomeBloc homeBloc;
+  final SendBloc sendBloc;
+
   const HomePage({
     Key? key,
     required this.homeBloc,
+    required this.sendBloc,
   }) : super(key: key);
 
   @override
@@ -32,6 +37,7 @@ class _HomePageState extends State<HomePage> {
   final funcionario = GlobalFuncionario.instance.funcionario;
 
   late StreamSubscription sub;
+  late StreamSubscription subSend;
 
   @override
   void initState() {
@@ -52,11 +58,18 @@ class _HomePageState extends State<HomePage> {
         widget.homeBloc.add(GetColetasEvent());
       }
     });
+
+    subSend = widget.sendBloc.stream.listen((state) {
+      if (state is SuccessSend) {
+        widget.homeBloc.add(GetColetasEvent());
+      }
+    });
   }
 
   @override
   void dispose() {
     sub.cancel();
+    subSend.cancel();
 
     super.dispose();
   }
@@ -241,18 +254,30 @@ class _HomePageState extends State<HomePage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            FloatingActionButton(
-              heroTag: 'botao1',
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => SendColetaServerModalWidget(
-                    homeBloc: widget.homeBloc,
-                  ),
-                );
-              },
-              child: const Icon(Icons.cloud_upload_rounded),
-            ),
+            BlocBuilder<HomeBloc, HomeStates>(
+                bloc: widget.homeBloc,
+                builder: (context, state) {
+                  if (state is! SuccessGetColetasHome) {
+                    return const SizedBox();
+                  }
+                  return FloatingActionButton(
+                    backgroundColor: state.coletas.isNotEmpty
+                        ? AppTheme.colors.primary
+                        : Colors.grey,
+                    heroTag: 'botao1',
+                    onPressed: state.coletas.isNotEmpty
+                        ? () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => SendColetaServerModalWidget(
+                                sendBloc: widget.sendBloc,
+                              ),
+                            );
+                          }
+                        : null,
+                    child: const Icon(Icons.cloud_upload_rounded),
+                  );
+                }),
             FloatingActionButton(
               heroTag: 'botao2',
               onPressed: () {

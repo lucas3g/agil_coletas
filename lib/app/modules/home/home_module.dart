@@ -1,11 +1,13 @@
 import 'package:agil_coletas/app/modules/home/domain/repositories/home_repository.dart';
 import 'package:agil_coletas/app/modules/home/domain/usecases/create_coleta_usecase.dart';
 import 'package:agil_coletas/app/modules/home/domain/usecases/get_coletas_usecase.dart';
+import 'package:agil_coletas/app/modules/home/domain/usecases/send_coleta_to_server_usecase.dart';
 import 'package:agil_coletas/app/modules/home/domain/usecases/update_coleta_usecase.dart';
 import 'package:agil_coletas/app/modules/home/external/datasources/home_datasource.dart';
 import 'package:agil_coletas/app/modules/home/infra/datasources/home_datasource.dart';
 import 'package:agil_coletas/app/modules/home/infra/repositories/home_repository.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/home_bloc.dart';
+import 'package:agil_coletas/app/modules/home/presenter/bloc/send_bloc.dart';
 import 'package:agil_coletas/app/modules/home/presenter/home_page.dart';
 import 'package:agil_coletas/app/modules/rotas/rotas_module.dart';
 import 'package:agil_coletas/app/modules/tikets/tikets_module.dart';
@@ -41,6 +43,9 @@ class HomeModule extends Module {
     Bind.factory<IUpdateColetasUseCase>(
       (i) => UpdateColetasUseCase(repository: i()),
     ),
+    Bind.factory<ISendColetaToServerUseCase>(
+      (i) => SendColetaToServerUseCase(repository: i()),
+    ),
 
     //BLOCS
     BlocBind.factory<HomeBloc>(
@@ -48,6 +53,11 @@ class HomeModule extends Module {
         getColetasUseCase: i(),
         createColetasUseCase: i(),
         updateColetasUseCase: i(),
+      ),
+    ),
+
+    BlocBind.factory<SendBloc>(
+      (i) => SendBloc(
         sendColetaToServerUseCase: i(),
       ),
     ),
@@ -59,6 +69,7 @@ class HomeModule extends Module {
       '/',
       child: (context, args) => HomePage(
         homeBloc: Modular.get<HomeBloc>(),
+        sendBloc: Modular.get<SendBloc>(),
       ),
       transition: TransitionType.noTransition,
     ),

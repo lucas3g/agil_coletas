@@ -37,8 +37,11 @@ class HomeDatasource implements IHomeDatasource {
 
     final idCriado = await storage.create(param);
 
-    final filters =
-        FilterEntity(name: 'ID', value: idCriado, type: FilterType.equal);
+    final filters = FilterEntity(
+        name: 'ID',
+        value: idCriado,
+        type: FilterType.equal,
+        operator: FilterOperator.and);
 
     final params = SQLFliteGetPerFilterParam(
         table: Tables.coletas, columns: [], filters: {filters});
@@ -63,11 +66,22 @@ class HomeDatasource implements IHomeDatasource {
 
   @override
   Future<bool> sendColetaToServer() async {
-    const filterColetas =
-        FilterEntity(name: 'ENVIADA', value: 0, type: FilterType.equal);
+    const filterColetas = FilterEntity(
+        name: 'ENVIADA',
+        value: 0,
+        type: FilterType.equal,
+        operator: FilterOperator.and);
+
+    const filterFinalizada = FilterEntity(
+        name: 'FINALIZADA',
+        value: 1,
+        type: FilterType.equal,
+        operator: FilterOperator.and);
 
     final paramGetColetas = SQLFliteGetPerFilterParam(
-        table: Tables.coletas, columns: [], filters: {filterColetas});
+        table: Tables.coletas,
+        columns: [],
+        filters: {filterColetas, filterFinalizada});
 
     final result = await storage.getPerFilter(paramGetColetas);
 
@@ -81,21 +95,46 @@ class HomeDatasource implements IHomeDatasource {
 
     if (coletas.isNotEmpty) {
       for (var coleta in coletas) {
-        final filterTiket = FilterEntity(
-            name: 'ID_COLETA', value: coleta.id, type: FilterType.equal);
+        final filterId = FilterEntity(
+            name: 'ID_COLETA',
+            value: coleta.id,
+            type: FilterType.equal,
+            operator: FilterOperator.and);
+
+        const filterQtd = FilterEntity(
+            name: 'QUANTIDADE',
+            value: 0,
+            type: FilterType.biggerThen,
+            operator: FilterOperator.or);
+
+        const filterTemp = FilterEntity(
+            name: 'TEMPERATURA',
+            value: 0,
+            type: FilterType.biggerThen,
+            operator: FilterOperator.or);
+
+        const filterObs = FilterEntity(
+            name: 'OBSERVACAO',
+            value: '',
+            type: FilterType.different,
+            operator: FilterOperator.or);
 
         final paramTiket = SQLFliteGetPerFilterParam(
-            table: Tables.tikets, columns: [], filters: {filterTiket});
+            table: Tables.tikets,
+            columns: [],
+            filters: {filterId, filterQtd, filterTemp, filterObs});
 
         final tikets = await storage.getPerFilter(paramTiket);
 
-        if (result.isNotEmpty) {
+        if (tikets.isNotEmpty) {
           coletasWithTikets = [
             {...ColetasAdapter.toMap(coleta), 'tikets': tikets},
             ...coletasWithTikets
           ];
         }
       }
+    } else {
+      return false;
     }
 
     final response = await clientHttp.post(

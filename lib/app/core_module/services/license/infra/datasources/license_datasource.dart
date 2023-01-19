@@ -3,4 +3,5 @@ import 'package:agil_coletas/app/core_module/services/device_info/device_info_in
 abstract class ILicenseDatasource {
   Future<Map<String, dynamic>> verifyLicense(DeviceInfo deviceInfo);
   Future<bool> saveLicense();
+  Future<List<Map<String, dynamic>>> getDateLicense();
 }

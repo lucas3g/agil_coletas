@@ -7,6 +7,12 @@ import 'package:agil_coletas/app/core_module/services/produtor/external/datasour
 import 'package:agil_coletas/app/core_module/services/produtor/infra/datasources/produtor_datasource.dart';
 import 'package:agil_coletas/app/core_module/services/produtor/infra/repositories/produtor_repository.dart';
 import 'package:agil_coletas/app/modules/auth/auth_module.dart';
+import 'package:agil_coletas/app/modules/auth/domain/repositories/auth_repository.dart';
+import 'package:agil_coletas/app/modules/auth/domain/usecases/signin_user_usecase.dart';
+import 'package:agil_coletas/app/modules/auth/external/datasources/auth_datasource.dart';
+import 'package:agil_coletas/app/modules/auth/infra/datasources/auth_datasource.dart';
+import 'package:agil_coletas/app/modules/auth/infra/repositories/auth_repository.dart';
+import 'package:agil_coletas/app/modules/auth/presenter/bloc/auth_bloc.dart';
 import 'package:agil_coletas/app/modules/home/home_module.dart';
 import 'package:agil_coletas/app/modules/rotas/domain/repositories/rotas_repository.dart';
 import 'package:agil_coletas/app/modules/rotas/domain/usecases/get_rotas_usecase.dart';
@@ -104,6 +110,25 @@ class AppModule extends Module {
       (i) => TransportadorBloc(
         getTransportadorUseCase: i(),
         saveTransportadorUseCase: i(),
+      ),
+    ),
+
+    //DATASOURCES
+    Bind.factory<IAuthDatasource>((i) => AuthDatasource(clientHttp: i())),
+
+    //REPOSITORIES
+    Bind.factory<IAuthRepository>((i) => AuthRepository(datasource: i())),
+
+    //USECASES
+    Bind.factory<ISignInUserUseCase>((i) => SignInUserUseCase(repository: i())),
+
+    //BLOC
+    BlocBind.factory<AuthBloc>(
+      (i) => AuthBloc(
+        signInUserUseCase: i(),
+        verifyLicenseUseCase: i(),
+        saveLicenseUseCase: i(),
+        getDateLicenseUseCase: i(),
       ),
     ),
   ];

@@ -53,9 +53,23 @@ class SQLFliteService implements ISQLFliteStorage {
       SQLFliteGetPerFilterParam param) async {
     late List<Map<String, dynamic>> result;
 
-    final where = param.filters
-        ?.map(SqFliteHelpers.convertFilterToSqlWhere)
-        .join(' and ');
+    late String? where =
+        param.filters?.map(SqFliteHelpers.convertFilterToSqlWhere).toString();
+
+    if (param.filters
+            ?.map(
+              (e) => e,
+            )
+            .length ==
+        1) {
+      where = where?.replaceAll('and', '');
+    } else {
+      where = '${where?.substring(0, where.length - 4).replaceAll(',', '')})';
+    }
+
+    if (where == 'null)') {
+      where = null;
+    }
 
     await _db!.transaction((txn) async {
       result = await txn.query(

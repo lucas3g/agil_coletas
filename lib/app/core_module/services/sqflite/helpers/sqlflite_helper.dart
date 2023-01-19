@@ -19,8 +19,9 @@ class SqFliteHelpers {
   static String convertFilterToSqlWhere(FilterEntity entity) {
     final field = entity.name;
     final comparator = _convertFilterTypeToSql(entity.type);
+    final operator = entity.operator;
 
-    return '$field $comparator ?';
+    return '$field $comparator ? ${operator.name}';
   }
 
   static dynamic convertFilterToSqlWhereArgs(FilterEntity entity) {
@@ -33,6 +34,10 @@ class SqFliteHelpers {
         return '=';
       case FilterType.containing:
         return 'containing';
+      case FilterType.biggerThen:
+        return '>';
+      case FilterType.different:
+        return '!=';
     }
   }
 

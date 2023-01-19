@@ -23,6 +23,14 @@ class ErrorAuth extends AuthStates {
   });
 }
 
+class DateLicenseAuth extends AuthStates {
+  final DateTime dateTime;
+
+  DateLicenseAuth({
+    required this.dateTime,
+  });
+}
+
 class LicenseActiveAuth extends AuthStates {}
 
 class LicenseNotActiveAuth extends AuthStates {}

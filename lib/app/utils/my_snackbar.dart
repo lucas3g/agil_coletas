@@ -26,7 +26,7 @@ class MySnackBar {
       ),
       content: AwesomeSnackbarContent(
         title: '   $title',
-        message: '      $message',
+        message: '     $message',
         contentType: type,
       ),
     );

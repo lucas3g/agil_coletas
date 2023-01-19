@@ -85,7 +85,14 @@ extension DiaMesAnoTexto on String {
   }
 }
 
-extension DiasMesAnoDB on DateTime {
+extension AnoMesDia on DateTime {
+  String AnoMesDiaDB() {
+    final format = DateFormat('yyyy/MM/dd');
+    return format.format(this);
+  }
+}
+
+extension DiaMesAno on DateTime {
   String DiaMesAnoDB() {
     final format = DateFormat('dd.MM.yyyy', 'pt_br');
     return format.format(this);

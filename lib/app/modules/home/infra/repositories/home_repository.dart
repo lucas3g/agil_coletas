@@ -1,3 +1,4 @@
+import 'package:agil_coletas/app/core_module/services/connectivity/connectivity_service.dart';
 import 'package:agil_coletas/app/modules/home/infra/adapters/coletas_adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:result_dart/result_dart.dart';
@@ -68,6 +69,11 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<Result<bool, IMyException>> sendColetaToSever() async {
     try {
+      if (!await ConnectivityService.hasWiFi()) {
+        throw const MyException(
+            message: 'Você precisa estar conectado na internet');
+      }
+
       final result = await datasource.sendColetaToServer();
 
       return result.toSuccess();

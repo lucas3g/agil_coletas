@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:agil_coletas/app/core_module/services/license/domain/usecases/get_date_license_usecase.dart';
 import 'package:agil_coletas/app/core_module/services/license/domain/usecases/save_license_usecase.dart';
 import 'package:agil_coletas/app/core_module/services/license/domain/usecases/verify_license_usecase.dart';
 import 'package:agil_coletas/app/modules/auth/domain/usecases/signin_user_usecase.dart';
@@ -11,15 +12,18 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
   final ISignInUserUseCase signInUserUseCase;
   final IVerifyLicenseUseCase verifyLicenseUseCase;
   final ISaveLicenseUseCase saveLicenseUseCase;
+  final IGetDateLicenseUseCase getDateLicenseUseCase;
 
   AuthBloc({
     required this.signInUserUseCase,
     required this.verifyLicenseUseCase,
     required this.saveLicenseUseCase,
+    required this.getDateLicenseUseCase,
   }) : super(InitialAuth()) {
     on<SignInAuthEvent>(_signIn);
     on<VerifyLicenseEvent>(_verifyLicense);
     on<SaveLicenseEvent>(_saveLicense);
+    on<GetDateLicenseEvent>(_getDateLicense);
   }
 
   Future _signIn(SignInAuthEvent event, emit) async {
@@ -50,6 +54,17 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
 
         return emit(LicenseNotFoundAuth());
       },
+      (failure) => emit(ErrorAuth(message: failure.message)),
+    );
+  }
+
+  Future _getDateLicense(GetDateLicenseEvent event, emit) async {
+    emit(LoadingAuth());
+
+    final result = await getDateLicenseUseCase();
+
+    result.fold(
+      (success) => emit(DateLicenseAuth(dateTime: success)),
       (failure) => emit(ErrorAuth(message: failure.message)),
     );
   }

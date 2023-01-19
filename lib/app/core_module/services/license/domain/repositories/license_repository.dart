@@ -6,4 +6,5 @@ import 'package:result_dart/result_dart.dart';
 abstract class ILicenseRepository {
   Future<Result<License, IMyException>> verifyLicense(DeviceInfo deviceInfo);
   Future<Result<bool, IMyException>> saveLicense();
+  Future<Result<DateTime, IMyException>> getDateLicense();
 }

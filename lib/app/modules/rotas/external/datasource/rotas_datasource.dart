@@ -48,6 +48,7 @@ class RotasDatasource implements IRotasDatasource {
       name: 'FINALIZADA',
       value: 0, //NÃO
       type: FilterType.equal,
+      operator: FilterOperator.and,
     );
 
     final param = SQLFliteGetPerFilterParam(

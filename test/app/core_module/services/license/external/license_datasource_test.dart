@@ -19,6 +19,7 @@ void main() {
     storage = IStorgeServiceMock();
     datasource = LicenseDatasource(
       clientHttp: clientHttp,
+      storage: storage,
     );
   });
 

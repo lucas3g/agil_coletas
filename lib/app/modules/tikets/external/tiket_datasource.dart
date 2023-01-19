@@ -22,7 +22,10 @@ class TiketDatasource implements ITiketDatasource {
   @override
   Future<int> createTikets(Coletas coleta) async {
     final filter = FilterEntity(
-        name: 'ROTA', value: coleta.rota.codigo, type: FilterType.equal);
+        name: 'ROTA',
+        value: coleta.rota.codigo,
+        type: FilterType.equal,
+        operator: FilterOperator.and);
 
     final paramGet = SQLFliteGetPerFilterParam(
         table: Tables.produtores, columns: [], filters: {filter});
@@ -50,7 +53,10 @@ class TiketDatasource implements ITiketDatasource {
   @override
   Future<List> getTikets(int idColeta) async {
     final filters = FilterEntity(
-        name: 'ID_COLETA', value: idColeta, type: FilterType.equal);
+        name: 'ID_COLETA',
+        value: idColeta,
+        type: FilterType.equal,
+        operator: FilterOperator.and);
 
     final param = SQLFliteGetPerFilterParam(
         table: Tables.tikets, columns: [], filters: {filters});

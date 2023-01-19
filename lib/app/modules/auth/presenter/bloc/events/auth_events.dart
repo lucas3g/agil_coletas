@@ -20,3 +20,5 @@ class VerifyLicenseEvent extends AuthEvents {
 }
 
 class SaveLicenseEvent extends AuthEvents {}
+
+class GetDateLicenseEvent extends AuthEvents {}

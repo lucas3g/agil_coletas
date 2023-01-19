@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:agil_coletas/app/modules/home/domain/usecases/create_coleta_usecase.dart';
 import 'package:agil_coletas/app/modules/home/domain/usecases/get_coletas_usecase.dart';
-import 'package:agil_coletas/app/modules/home/domain/usecases/send_coleta_to_server_usecase.dart';
 import 'package:agil_coletas/app/modules/home/domain/usecases/update_coleta_usecase.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/events/home_events.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/states/home_states.dart';
@@ -12,18 +11,15 @@ class HomeBloc extends Bloc<HomeEvents, HomeStates> {
   final IGetColetasUseCase getColetasUseCase;
   final ICreateColetasUseCase createColetasUseCase;
   final IUpdateColetasUseCase updateColetasUseCase;
-  final ISendColetaToServerUseCase sendColetaToServerUseCase;
 
   HomeBloc({
     required this.getColetasUseCase,
     required this.createColetasUseCase,
     required this.updateColetasUseCase,
-    required this.sendColetaToServerUseCase,
   }) : super(InitialHome()) {
     on<GetColetasEvent>(_getColetas);
     on<CreateColetaEvent>(_createColeta);
     on<UpdateColetaEvent>(_updateColeta);
-    on<SendColetasToServerEvent>(_sendColetaToServer);
   }
 
   Future _getColetas(GetColetasEvent event, emit) async {
@@ -52,17 +48,6 @@ class HomeBloc extends Bloc<HomeEvents, HomeStates> {
     emit(LoadingHome());
 
     final result = await updateColetasUseCase(event.coleta);
-
-    result.fold(
-      (success) => emit(SuccessUpdateColetaHome()),
-      (failure) => emit(ErrorHome(message: failure.message)),
-    );
-  }
-
-  Future _sendColetaToServer(SendColetasToServerEvent event, emit) async {
-    emit(LoadingHome());
-
-    final result = await sendColetaToServerUseCase();
 
     result.fold(
       (success) => emit(SuccessUpdateColetaHome()),

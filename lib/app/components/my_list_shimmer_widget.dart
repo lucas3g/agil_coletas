@@ -9,7 +9,7 @@ class MyListShimmerWidget extends StatelessWidget {
     return Center(
       child: Column(
         children: List.generate(
-          10,
+          5,
           (index) => Column(
             children: const [
               LoadingWidget(

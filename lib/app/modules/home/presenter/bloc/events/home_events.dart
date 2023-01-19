@@ -20,5 +20,3 @@ class UpdateColetaEvent extends HomeEvents {
     required this.coleta,
   });
 }
-
-class SendColetasToServerEvent extends HomeEvents {}
