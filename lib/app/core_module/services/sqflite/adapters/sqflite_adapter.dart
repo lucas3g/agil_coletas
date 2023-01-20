@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:agil_coletas/app/core_module/services/sqflite/adapters/filter_entity.dart';
 import 'package:agil_coletas/app/core_module/services/sqflite/adapters/table_entity.dart';
 import 'package:agil_coletas/app/core_module/services/sqflite/adapters/tables.dart';
@@ -9,6 +10,14 @@ class SQLFliteInsertParam {
   SQLFliteInsertParam({
     required this.table,
     required this.data,
+  });
+}
+
+class SQLFliteRawInsertParam {
+  final String sql;
+
+  SQLFliteRawInsertParam({
+    required this.sql,
   });
 }
 
@@ -49,6 +58,16 @@ class SQLFliteUpdateParam {
     required this.table,
     required this.id,
     required this.fieldsWithValues,
+  });
+}
+
+class SQLFliteRawUpdateParam {
+  final String sql;
+  final List values;
+
+  SQLFliteRawUpdateParam({
+    required this.sql,
+    required this.values,
   });
 }
 

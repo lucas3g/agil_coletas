@@ -69,12 +69,9 @@ class RotasDatasource implements IRotasDatasource {
     await storage.deleteAll(paramDelete);
 
     for (var rota in rotas) {
-      final param = SQLFliteInsertParam(
-        table: Tables.rotas,
-        data: RotasAdapter.toMapSQL(rota),
-      );
+      final param = SQLFliteRawInsertParam(sql: RotasAdapter.toInsertSQL(rota));
 
-      await storage.create(param);
+      await storage.rawCreate(param);
     }
 
     return true;

@@ -21,9 +21,6 @@ class MySnackBar {
       elevation: 0,
       margin: const EdgeInsets.all(20),
       behavior: SnackBarBehavior.floating,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
       content: AwesomeSnackbarContent(
         title: '   $title',
         message: '     $message',

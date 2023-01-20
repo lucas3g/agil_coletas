@@ -37,10 +37,11 @@ class ProdutorDatasource implements IProdutorDatasource {
     await storage.deleteAll(paramDelete);
 
     for (var produtor in produtores) {
-      final param = SQLFliteInsertParam(
-          table: Tables.produtores, data: ProdutorAdapter.toMap(produtor));
+      final param = SQLFliteRawInsertParam(
+        sql: ProdutorAdapter.toInsertSQL(produtor),
+      );
 
-      await storage.create(param);
+      await storage.rawCreate(param);
     }
 
     return true;

@@ -42,11 +42,22 @@ class _SendColetaServerModalWidgetState
 
     subAuth = authBloc.stream.listen((state) {
       if (state is ErrorAuth) {
-        authBloc.add(GetDateLicenseEvent());
+        if (state.message
+            .contains('Você precisa estar conectado em uma de rede WiFi')) {
+          Modular.to.pop('dialog');
+
+          MySnackBar(
+            title: 'Atenção',
+            message: state.message,
+            type: ContentType.warning,
+          );
+        } else {
+          authBloc.add(GetDateLicenseEvent());
+        }
       }
 
       if (state is DateLicenseAuth) {
-        if (state.dateTime.difference(DateTime.now()).inDays <= 3) {
+        if (state.dateTime.difference(DateTime.now()).inDays >= 3) {
           MySnackBar(
             title: 'Atenção',
             message: 'Fazem mais de dois que a sua licença não é verificada.',

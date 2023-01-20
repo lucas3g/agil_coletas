@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:agil_coletas/app/components/my_alert_dialog_widget.dart';
+import 'package:agil_coletas/app/core_module/services/baixa_tudo/baixa_tudo_controller.dart';
 import 'package:agil_coletas/app/core_module/services/shared_preferences/adapters/shared_params.dart';
 import 'package:agil_coletas/app/core_module/services/shared_preferences/local_storage_interface.dart';
 import 'package:agil_coletas/app/modules/auth/infra/adapters/funcionario_adapter.dart';
@@ -73,12 +74,14 @@ class _AuthPageState extends State<AuthPage> {
 
     sub = widget.authBloc.stream.listen((state) async {
       if (state is SuccessAuth) {
-        shared.setData(
+        await shared.setData(
           params: SharedParams(
             key: 'funcionario',
             value: FuncionarioAdapter.toJson(state.funcionario),
           ),
         );
+
+        await BaixaTudoController.instance.baixaTudo.baixaTudo();
 
         widget.authBloc.add(SaveLicenseEvent());
 
@@ -122,6 +125,36 @@ class _AuthPageState extends State<AuthPage> {
     sub.cancel();
 
     super.dispose();
+  }
+
+  Widget retornaLogin(AuthStates state) {
+    if (state is LoadingAuth || state is LicenseActiveAuth) {
+      return const Center(
+        child: SizedBox(
+          height: 25,
+          width: 25,
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    if (state is SuccessAuth) {
+      return const Center(
+        child: Icon(Icons.done_rounded),
+      );
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        Icon(Icons.check_circle_rounded),
+        SizedBox(width: 10),
+        Text(
+          'Entrar',
+          overflow: TextOverflow.ellipsis,
+        )
+      ],
+    );
   }
 
   @override
@@ -216,22 +249,7 @@ class _AuthPageState extends State<AuthPage> {
                       builder: (context, state) {
                         return MyElevatedButtonWidget(
                           height: 40,
-                          label: state is LoadingAuth
-                              ? const Center(
-                                  child: SizedBox(
-                                    height: 25,
-                                    width: 25,
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                )
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Icon(Icons.check_circle_rounded),
-                                    SizedBox(width: 10),
-                                    Text('Entrar')
-                                  ],
-                                ),
+                          label: retornaLogin(state),
                           onPressed: () {
                             if (!gkForm.currentState!.validate()) {
                               return;

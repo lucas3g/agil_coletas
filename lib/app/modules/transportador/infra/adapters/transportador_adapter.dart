@@ -20,4 +20,8 @@ class TransportadorAdapter {
       'TANQUES': transp.particoes,
     };
   }
+
+  static String toInsertSQL(Transportador transp) {
+    return "INSERT INTO CAMINHOES(PLACA, DESCRICAO, TANQUES) VALUES ('${transp.placa}', '${transp.descricao}', ${transp.particoes})";
+  }
 }

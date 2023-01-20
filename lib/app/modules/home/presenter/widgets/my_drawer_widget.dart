@@ -60,6 +60,11 @@ class MyDrawerWidget extends StatelessWidget {
                   Column(
                     children: [
                       ListTile(
+                        leading: Icon(
+                          Icons.settings,
+                          color: AppTheme.colors.primary,
+                        ),
+                        minLeadingWidth: 10,
                         title: Text(
                           'Configuração',
                           style: AppTheme.textStyles.subtitleDrawer,
@@ -67,6 +72,11 @@ class MyDrawerWidget extends StatelessWidget {
                         onTap: () {},
                       ),
                       ListTile(
+                        leading: Icon(
+                          Icons.print_rounded,
+                          color: AppTheme.colors.primary,
+                        ),
+                        minLeadingWidth: 10,
                         title: Text(
                           'Impressora',
                           style: AppTheme.textStyles.subtitleDrawer,
@@ -74,6 +84,11 @@ class MyDrawerWidget extends StatelessWidget {
                         onTap: () {},
                       ),
                       ListTile(
+                        leading: Icon(
+                          Icons.exit_to_app,
+                          color: AppTheme.colors.primary,
+                        ),
+                        minLeadingWidth: 10,
                         title: Text(
                           'Sair',
                           style: AppTheme.textStyles.subtitleDrawer,

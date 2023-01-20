@@ -5,10 +5,12 @@ import 'package:agil_coletas/app/components/my_app_bar_widget.dart';
 import 'package:agil_coletas/app/components/my_elevated_button_widget.dart';
 import 'package:agil_coletas/app/components/my_input_widget.dart';
 import 'package:agil_coletas/app/components/my_list_shimmer_widget.dart';
+import 'package:agil_coletas/app/core_module/services/produtor/bloc/events/produtor_events.dart';
+import 'package:agil_coletas/app/core_module/services/produtor/bloc/produtor_bloc.dart';
+import 'package:agil_coletas/app/core_module/services/produtor/bloc/states/produtor_states.dart';
 import 'package:agil_coletas/app/modules/home/domain/entities/coletas.dart';
-import 'package:agil_coletas/app/modules/home/presenter/bloc/events/home_events.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/home_bloc.dart';
-import 'package:agil_coletas/app/modules/tikets/domain/entities/tiket.dart';
+import 'package:agil_coletas/app/modules/tikets/presenter/controller/tiket_controller.dart';
 import 'package:agil_coletas/app/modules/tikets/presenter/widgets/tiket_modal_finalizar_widget.dart';
 import 'package:agil_coletas/app/modules/tikets/presenter/widgets/tiket_modal_widget.dart';
 import 'package:agil_coletas/app/theme/app_theme.dart';
@@ -38,8 +40,10 @@ class TiketsPage extends StatefulWidget {
 
 class _TiketsPageState extends State<TiketsPage> {
   final homeBloc = Modular.get<HomeBloc>();
+  final produtorBloc = Modular.get<ProdutorBloc>();
 
   late StreamSubscription sub;
+  late StreamSubscription subProdutor;
 
   final Coletas coleta = Modular.args.data['coleta'];
   final bool editando = Modular.args.data['editando'];
@@ -47,6 +51,14 @@ class _TiketsPageState extends State<TiketsPage> {
   @override
   void initState() {
     super.initState();
+
+    produtorBloc.add(GetProdutoresEvent());
+
+    subProdutor = produtorBloc.stream.listen((state) {
+      if (state is SuccessGetProdutor) {
+        produtorBloc.add(SaveProdutoresEvent(produtores: state.produtores));
+      }
+    });
 
     if (!editando) {
       widget.tiketBloc.add(CreateTiketsEvent(coleta: coleta));
@@ -72,84 +84,9 @@ class _TiketsPageState extends State<TiketsPage> {
   @override
   void dispose() {
     sub.cancel();
+    subProdutor.cancel();
 
     super.dispose();
-  }
-
-  Color retornaCorDoCard(Tiket tiket) {
-    if (tiket.alizarol) {
-      return Colors.orange;
-    }
-
-    if (tiket.quantidade.value > 0 && tiket.temperatura.value != 0.0) {
-      return Colors.green.shade400;
-    }
-
-    if (tiket.quantidade.value == 0 &&
-        tiket.temperatura.value == 0.0 &&
-        tiket.observacao.isEmpty) {
-      return Colors.grey.shade400;
-    }
-
-    if (tiket.observacao.isNotEmpty) {
-      return Colors.red.shade400;
-    }
-
-    return Colors.amber.shade300;
-  }
-
-  Icon retornaIconeCard(Tiket tiket) {
-    if (tiket.alizarol) {
-      return const Icon(
-        Icons.warning_amber_rounded,
-        size: 30,
-        color: Colors.black,
-      );
-    }
-
-    if (tiket.quantidade.value > 0 && tiket.temperatura.value != 0.0) {
-      return const Icon(
-        Icons.check_circle_outline,
-        size: 30,
-        color: Colors.black,
-      );
-    }
-
-    if (tiket.quantidade.value == 0 &&
-        tiket.temperatura.value == 0.0 &&
-        tiket.observacao.isEmpty) {
-      return const Icon(
-        Icons.person_outline,
-        size: 30,
-        color: Colors.black,
-      );
-    }
-
-    if (tiket.observacao.isNotEmpty) {
-      return const Icon(
-        Icons.error_outline_rounded,
-        size: 30,
-        color: Colors.black,
-      );
-    }
-
-    return const Icon(
-      Icons.warning_amber_rounded,
-      size: 30,
-      color: Colors.black,
-    );
-  }
-
-  int totalColetado(List<Tiket> tikets) {
-    final result = tikets
-        .map((e) => e.quantidade.value)
-        .reduce((value, element) => value + element);
-
-    coleta.setTotalColetado(result);
-
-    homeBloc.add(UpdateColetaEvent(coleta: coleta));
-
-    return result;
   }
 
   @override
@@ -208,7 +145,11 @@ class _TiketsPageState extends State<TiketsPage> {
                           ),
                           Expanded(
                             child: Text(
-                              totalColetado(tikets).toString(),
+                              TiketController.totalColetado(
+                                tikets,
+                                coleta,
+                                homeBloc,
+                              ).toString(),
                               style:
                                   AppTheme.textStyles.labelTotalColetadoBlack,
                             ),
@@ -223,11 +164,13 @@ class _TiketsPageState extends State<TiketsPage> {
 
                             return Container(
                               decoration: BoxDecoration(
-                                  color: retornaCorDoCard(tiket),
+                                  color:
+                                      TiketController.retornaCorDoCard(tiket),
                                   borderRadius: BorderRadius.circular(10),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: retornaCorDoCard(tiket),
+                                      color: TiketController.retornaCorDoCard(
+                                          tiket),
                                       blurRadius: 3,
                                       offset: const Offset(0, 5),
                                     )
@@ -245,7 +188,8 @@ class _TiketsPageState extends State<TiketsPage> {
                                 },
                                 leading: SizedBox(
                                   height: double.maxFinite,
-                                  child: retornaIconeCard(tiket),
+                                  child:
+                                      TiketController.retornaIconeCard(tiket),
                                 ),
                                 title: Text(
                                   tiket.produtor.nome,

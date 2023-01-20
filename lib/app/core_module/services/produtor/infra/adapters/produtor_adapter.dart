@@ -21,4 +21,8 @@ class ProdutorAdapter {
       'ROTA': produtor.codRota,
     };
   }
+
+  static String toInsertSQL(Produtor produtor) {
+    return "INSERT INTO PRODUTORES(CLIFOR, ROTA, NOME, MUNICIPIOS, UF) VALUES(${produtor.id.value}, ${produtor.codRota}, '${produtor.nome}', '${produtor.municipio}', '${produtor.uf}')";
+  }
 }

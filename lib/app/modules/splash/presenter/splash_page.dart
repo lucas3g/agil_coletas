@@ -1,9 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:agil_coletas/app/core_module/services/baixa_tudo/baixa_tudo.dart';
-import 'package:agil_coletas/app/core_module/services/connectivity/connectivity_service.dart';
-import 'package:agil_coletas/app/core_module/services/produtor/bloc/produtor_bloc.dart';
-import 'package:agil_coletas/app/modules/rotas/presenter/bloc/rotas_bloc.dart';
-import 'package:agil_coletas/app/modules/transportador/presenter/bloc/transportador_bloc.dart';
+import 'dart:async';
+
+import 'package:agil_coletas/app/core_module/services/baixa_tudo/baixa_tudo_controller.dart';
+import 'package:agil_coletas/app/modules/auth/presenter/bloc/auth_bloc.dart';
+import 'package:agil_coletas/app/modules/auth/presenter/bloc/events/auth_events.dart';
+import 'package:agil_coletas/app/modules/auth/presenter/bloc/states/auth_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/svg.dart';
@@ -23,28 +24,26 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  late BaixaTudo baixaTudo;
+  late AuthBloc authBloc;
+  late StreamSubscription sub;
+  late dynamic fun;
 
   Future init() async {
     await Modular.isModuleReady<AppModule>();
 
-    await Future.delayed(const Duration(seconds: 2));
-
-    if (await ConnectivityService.hasWiFi()) {
-      baixaTudo = BaixaTudo(
-        rotasBloc: Modular.get<RotasBloc>(),
-        produtorBloc: Modular.get<ProdutorBloc>(),
-        transportadorBloc: Modular.get<TransportadorBloc>(),
-      );
-
-      baixaTudo.baixaTudo();
-    }
+    await Future.delayed(const Duration(seconds: 1));
 
     final shared = Modular.get<ILocalStorage>();
 
-    final fun = shared.getData('funcionario');
+    fun = shared.getData('funcionario');
 
     if (fun != null) {
+      authBloc = Modular.get<AuthBloc>();
+
+      authBloc.add(
+          VerifyLicenseEvent(deviceInfo: GlobalDevice.instance.deviceInfo));
+
+      await BaixaTudoController.instance.baixaTudo.baixaTudo();
       return Modular.to.navigate('/home/');
     }
 
@@ -55,7 +54,17 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
 
-    init();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await init();
+
+      if (fun != null) {
+        sub = authBloc.stream.listen((state) {
+          if (state is LicenseActiveAuth) {
+            authBloc.add(SaveLicenseEvent());
+          }
+        });
+      }
+    });
   }
 
   @override

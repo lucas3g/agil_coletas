@@ -69,7 +69,7 @@ class MakeTables {
 
   static TableEntity rotas() {
     final fields = {
-      const TableFieldEntity(name: 'ID', type: FieldType.integer, pk: true),
+      const TableFieldEntity(name: 'ID', type: FieldType.integer),
       const TableFieldEntity(name: 'DESCRICAO', type: FieldType.string),
       const TableFieldEntity(name: 'TRANSPORTADOR', type: FieldType.string),
       const TableFieldEntity(name: 'ROTA_FINALIZADA', type: FieldType.integer),
@@ -95,7 +95,6 @@ class MakeTables {
 
   static TableEntity produtores() {
     final fields = {
-      const TableFieldEntity(name: 'ID', type: FieldType.integer, pk: true),
       const TableFieldEntity(name: 'CLIFOR', type: FieldType.integer),
       const TableFieldEntity(name: 'ROTA', type: FieldType.integer),
       const TableFieldEntity(name: 'NOME', type: FieldType.string),

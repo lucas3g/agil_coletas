@@ -25,6 +25,17 @@ class SQLFliteService implements ISQLFliteStorage {
   }
 
   @override
+  Future<int> rawCreate(SQLFliteRawInsertParam param) async {
+    late int id = 0;
+
+    await _db!.transaction((txn) async {
+      id = await txn.rawInsert(param.sql);
+    });
+
+    return id;
+  }
+
+  @override
   Future<void> delete(SQLFliteDeleteParam param) async {
     await _db!.transaction((txn) async {
       await txn.delete(
@@ -99,8 +110,8 @@ class SQLFliteService implements ISQLFliteStorage {
     _db ??= await openDatabase(
       path,
       version: 1,
-      onCreate: (Database db, int version) {
-        return SqFliteHelpers.onCreate(_tables, db, version);
+      onCreate: (Database db, int version) async {
+        return await SqFliteHelpers.onCreate(_tables, db, version);
       },
     );
   }
@@ -116,6 +127,17 @@ class SQLFliteService implements ISQLFliteStorage {
         where: 'id = ?',
         whereArgs: [param.id],
       );
+    });
+
+    return atualizou > 0;
+  }
+
+  @override
+  Future<bool> rawUpdate(SQLFliteRawUpdateParam param) async {
+    late int atualizou;
+
+    await _db!.transaction((txn) async {
+      atualizou = await txn.rawUpdate(param.sql, param.values);
     });
 
     return atualizou > 0;

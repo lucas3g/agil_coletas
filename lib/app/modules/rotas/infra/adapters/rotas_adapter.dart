@@ -19,4 +19,8 @@ class RotasAdapter {
       'ROTA_FINALIZADA': rotas.finalizada ? 1 : 0,
     };
   }
+
+  static String toInsertSQL(Rotas rota) {
+    return "INSERT INTO ROTAS(ID, DESCRICAO, TRANSPORTADOR, ROTA_FINALIZADA) VALUES(${rota.id.value},'${rota.descricao}', '${rota.transportador}', ${rota.finalizada ? 1 : 0})";
+  }
 }

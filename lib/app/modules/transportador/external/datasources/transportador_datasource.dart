@@ -62,12 +62,10 @@ class TransportadorDatasource implements ITransportadorDatasource {
     await storage.deleteAll(paramDelete);
 
     for (var transp in transportadores) {
-      final param = SQLFliteInsertParam(
-        table: Tables.caminhoes,
-        data: TransportadorAdapter.toMapSQL(transp),
-      );
+      final param =
+          SQLFliteRawInsertParam(sql: TransportadorAdapter.toInsertSQL(transp));
 
-      await storage.create(param);
+      await storage.rawCreate(param);
     }
 
     return true;

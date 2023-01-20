@@ -4,10 +4,10 @@ class TableEntity extends Equatable {
   final String name;
   final Set<TableFieldEntity> fields;
 
-  TableEntity({
+  const TableEntity({
     required this.name,
     required this.fields,
-  }) : assert(fields.where((e) => e.pk).length == 1);
+  });
 
   @override
   List<Object?> get props => [name];

@@ -181,7 +181,7 @@ class _HomePageState extends State<HomePage> {
 
                                       break;
                                     default:
-                                      Modular.to.pushNamed(
+                                      Modular.to.navigate(
                                         '/home/tikets/',
                                         arguments: {
                                           'coleta': coleta,
@@ -269,7 +269,7 @@ class _HomePageState extends State<HomePage> {
                     backgroundColor:
                         coletas ? AppTheme.colors.primary : Colors.grey,
                     heroTag: 'botao1',
-                    onPressed: state.coletas.isNotEmpty
+                    onPressed: coletas
                         ? () {
                             showDialog(
                               context: context,

@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
+import 'package:agil_coletas/app/core_module/services/connectivity/connectivity_service.dart';
 import 'package:agil_coletas/app/core_module/services/produtor/bloc/events/produtor_events.dart';
 import 'package:agil_coletas/app/core_module/services/produtor/bloc/produtor_bloc.dart';
 import 'package:agil_coletas/app/core_module/services/produtor/bloc/states/produtor_states.dart';
@@ -48,9 +49,11 @@ class BaixaTudo {
     });
   }
 
-  void baixaTudo() {
-    produtorBloc.add(GetProdutoresEvent());
-    rotasBloc.add(GetRotasEvent());
-    transportadorBloc.add(GetTransportadorEvent());
+  Future baixaTudo() async {
+    if (await ConnectivityService.hasWiFi()) {
+      produtorBloc.add(GetProdutoresEvent());
+      rotasBloc.add(GetRotasEvent());
+      transportadorBloc.add(GetTransportadorEvent());
+    }
   }
 }
