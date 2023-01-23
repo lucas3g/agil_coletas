@@ -11,6 +11,8 @@ class SignInAuthEvent extends AuthEvents {
   });
 }
 
+class SignOutUserEvent extends AuthEvents {}
+
 class VerifyLicenseEvent extends AuthEvents {
   final DeviceInfo deviceInfo;
 

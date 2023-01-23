@@ -7,6 +7,8 @@ class InitialAuth extends AuthStates {}
 
 class LoadingAuth extends AuthStates {}
 
+class SuccessSignOutAuth extends AuthStates {}
+
 class SuccessAuth extends AuthStates {
   final Funcionario funcionario;
 

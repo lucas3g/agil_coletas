@@ -151,6 +151,7 @@ class _SendColetaServerModalWidgetState
                 Text(
                   'Enviar coletas para o servidor?',
                   style: AppTheme.textStyles.titleAlertDialog,
+                  textAlign: TextAlign.center,
                 ),
                 const Divider(),
                 Row(
@@ -160,7 +161,14 @@ class _SendColetaServerModalWidgetState
                         backgroundColor: Colors.black,
                         textButtonColor: Colors.white,
                         height: 45,
-                        label: const Text('Cancelar'),
+                        label: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.cancel),
+                            SizedBox(width: 5),
+                            Text('Cancelar'),
+                          ],
+                        ),
                         onPressed: () {
                           Modular.to.pop('dialog');
                         },
@@ -183,7 +191,15 @@ class _SendColetaServerModalWidgetState
                                             height: 20,
                                             child: CircularProgressIndicator(),
                                           )
-                                        : const Text('Enviar'),
+                                        : Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: const [
+                                              Icon(Icons.send),
+                                              SizedBox(width: 5),
+                                              Text('Enviar'),
+                                            ],
+                                          ),
                                     onPressed: state is! LoadingSend &&
                                             stateAuth is! LoadingAuth
                                         ? () {

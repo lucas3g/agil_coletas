@@ -33,5 +33,5 @@ final json = {
   'id': 1,
   'nome': 'lucas',
   'ccusto': 101,
-  'empresa': 'el sistemas'
-};
+  'empresa': 'el sistemas',
+}.toString();

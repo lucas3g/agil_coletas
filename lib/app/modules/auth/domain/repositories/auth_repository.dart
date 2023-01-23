@@ -5,4 +5,5 @@ import 'package:result_dart/result_dart.dart';
 
 abstract class IAuthRepository {
   Future<Result<Funcionario, IMyException>> signinUser(User user);
+  Future<Result<bool, IMyException>> signOutUser();
 }

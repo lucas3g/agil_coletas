@@ -1,5 +1,6 @@
 import 'package:agil_coletas/app/core_module/constants/constants.dart';
 import 'package:agil_coletas/app/core_module/services/client_http/client_http_interface.dart';
+import 'package:agil_coletas/app/core_module/services/shared_preferences/local_storage_interface.dart';
 import 'package:agil_coletas/app/modules/auth/external/datasources/auth_datasource.dart';
 import 'package:agil_coletas/app/modules/auth/infra/adapters/user_adapter.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,11 +11,14 @@ import '../../domain/usecases/signin_user_usecase_test.dart';
 
 void main() {
   late IClientHttp clientHttp;
+  late ILocalStorage localStorage;
   late AuthDatasource authDatasource;
 
   setUp(() {
     clientHttp = IClientHttpMock();
-    authDatasource = AuthDatasource(clientHttp: clientHttp);
+    localStorage = ILocalStorageMock();
+    authDatasource =
+        AuthDatasource(clientHttp: clientHttp, localStorage: localStorage);
   });
 
   test('deve retornar um Map<String, dynamic> com os dados do funcionario',
