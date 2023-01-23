@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.elsistemas.agilcoletas">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
    <application
         android:label="agil_coletas"
         android:name="${applicationName}"
