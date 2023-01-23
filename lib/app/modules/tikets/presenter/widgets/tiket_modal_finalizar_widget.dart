@@ -1,21 +1,31 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
+
+import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/bloc/events/impressora_events.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import 'package:agil_coletas/app/components/my_elevated_button_widget.dart';
 import 'package:agil_coletas/app/components/my_input_widget.dart';
+import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/bloc/impressora_bloc.dart';
 import 'package:agil_coletas/app/modules/home/domain/entities/coletas.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/events/home_events.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/home_bloc.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/states/home_states.dart';
 import 'package:agil_coletas/app/theme/app_theme.dart';
 import 'package:agil_coletas/app/utils/my_snackbar.dart';
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 class TiketModalFinalizarWidget extends StatefulWidget {
   final Coletas coleta;
-  const TiketModalFinalizarWidget({super.key, required this.coleta});
+  final ImpressoraBloc impressoraBloc;
+
+  const TiketModalFinalizarWidget({
+    Key? key,
+    required this.coleta,
+    required this.impressoraBloc,
+  }) : super(key: key);
 
   @override
   State<TiketModalFinalizarWidget> createState() =>
@@ -34,6 +44,8 @@ class _TiketModalFinalizarWidgetState extends State<TiketModalFinalizarWidget> {
 
     sub = homeBloc.stream.listen((state) {
       if (state is SuccessUpdateColetaHome) {
+        widget.impressoraBloc.add(ImprimirRotaFinalizadaEvent(widget.coleta));
+
         MySnackBar(
           title: 'Sucesso',
           message: 'Rota finalizada.',

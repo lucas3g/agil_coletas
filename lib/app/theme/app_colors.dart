@@ -7,6 +7,8 @@ abstract class AppColors {
 
   Color get labelLogin;
   Color get verde;
+  Color get preto;
+  Color get branco;
 
   final String hex = '0xff';
   final String colorFinal = 'cf1f36';
@@ -58,4 +60,10 @@ class AppColorDefault implements AppColors {
 
   @override
   Color get verde => Colors.green;
+
+  @override
+  Color get preto => Colors.black;
+
+  @override
+  Color get branco => Colors.white;
 }

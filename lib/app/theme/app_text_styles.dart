@@ -23,6 +23,7 @@ abstract class AppTextStyles {
   TextStyle get labelButtonFinalizar;
   TextStyle get labelTotalColetadoRed;
   TextStyle get labelTotalColetadoBlack;
+  TextStyle get subtitleCardImpressora;
 }
 
 class AppTextStylesDefault implements AppTextStyles {
@@ -44,7 +45,7 @@ class AppTextStylesDefault implements AppTextStyles {
   TextStyle get contentAlertDialog => GoogleFonts.montserrat(
         fontSize: 16,
         fontWeight: FontWeight.bold,
-        color: Colors.black,
+        color: AppTheme.colors.preto,
       );
 
   @override
@@ -65,48 +66,48 @@ class AppTextStylesDefault implements AppTextStyles {
   TextStyle get subtitleDrawer => GoogleFonts.montserrat(
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        color: Colors.black,
+        color: AppTheme.colors.preto,
       );
 
   @override
   TextStyle get titleCardTransp => GoogleFonts.montserrat(
         fontSize: 16,
         fontWeight: FontWeight.w500,
-        color: Colors.black,
+        color: AppTheme.colors.preto,
       );
   @override
   TextStyle get titleCardTranspBold => GoogleFonts.montserrat(
         fontSize: 16,
         fontWeight: FontWeight.bold,
-        color: Colors.black,
+        color: AppTheme.colors.preto,
       );
 
   @override
   TextStyle get subTitleCardTranspBold => GoogleFonts.montserrat(
         fontSize: 14,
         fontWeight: FontWeight.bold,
-        color: Colors.black,
+        color: AppTheme.colors.preto,
       );
 
   @override
   TextStyle get subTitleCardTransp => GoogleFonts.montserrat(
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        color: Colors.black,
+        color: AppTheme.colors.preto,
       );
 
   @override
   TextStyle get titleAlertTransp => GoogleFonts.montserrat(
         fontSize: 14,
         fontWeight: FontWeight.bold,
-        color: Colors.black,
+        color: AppTheme.colors.preto,
       );
 
   @override
   TextStyle get subTitleAlertTransp => GoogleFonts.montserrat(
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        color: Colors.black,
+        color: AppTheme.colors.preto,
       );
 
   @override
@@ -120,28 +121,28 @@ class AppTextStylesDefault implements AppTextStyles {
   TextStyle get subTitleCardListaColetas => GoogleFonts.montserrat(
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        color: Colors.black,
+        color: AppTheme.colors.preto,
       );
 
   @override
   TextStyle get titleCardListaColetas => GoogleFonts.montserrat(
         fontSize: 14,
         fontWeight: FontWeight.bold,
-        color: Colors.black,
+        color: AppTheme.colors.preto,
       );
 
   @override
   TextStyle get subTitleListTikets => GoogleFonts.montserrat(
         fontSize: 14,
         fontWeight: FontWeight.bold,
-        color: Colors.black,
+        color: AppTheme.colors.preto,
       );
 
   @override
   TextStyle get titleListTikets => GoogleFonts.montserrat(
         fontSize: 16,
         fontWeight: FontWeight.bold,
-        color: Colors.black,
+        color: AppTheme.colors.preto,
       );
 
   @override
@@ -155,12 +156,19 @@ class AppTextStylesDefault implements AppTextStyles {
   TextStyle get labelTotalColetadoBlack => GoogleFonts.montserrat(
         fontSize: 20,
         fontWeight: FontWeight.bold,
-        color: Colors.black,
+        color: AppTheme.colors.preto,
       );
 
   @override
   TextStyle get labelTotalColetadoRed => GoogleFonts.montserrat(
         fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: AppTheme.colors.primary,
+      );
+
+  @override
+  TextStyle get subtitleCardImpressora => GoogleFonts.montserrat(
+        fontSize: 14,
         fontWeight: FontWeight.bold,
         color: AppTheme.colors.primary,
       );

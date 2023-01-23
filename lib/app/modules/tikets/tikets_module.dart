@@ -1,3 +1,6 @@
+import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/bloc/impressora_bloc.dart';
+import 'package:agil_coletas/app/core_module/services/produtor/bloc/produtor_bloc.dart';
+import 'package:agil_coletas/app/modules/home/presenter/bloc/home_bloc.dart';
 import 'package:agil_coletas/app/modules/rotas/rotas_module.dart';
 import 'package:agil_coletas/app/modules/tikets/domain/repositories/tiket_repository.dart';
 import 'package:agil_coletas/app/modules/tikets/domain/usecases/create_tikets_by_coleta_usecase.dart';
@@ -56,6 +59,9 @@ class TiketsModule extends Module {
       '/',
       child: (context, args) => TiketsPage(
         tiketBloc: Modular.get<TiketBloc>(),
+        impressoraBloc: Modular.get<ImpressoraBloc>(),
+        homeBloc: Modular.get<HomeBloc>(),
+        produtorBloc: Modular.get<ProdutorBloc>(),
       ),
     ),
   ];

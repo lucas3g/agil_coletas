@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.agil_coletas">
+    package="com.elsistemas.agilcoletas">
    <application
         android:label="agil_coletas"
         android:name="${applicationName}"

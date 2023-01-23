@@ -9,6 +9,7 @@ import 'package:agil_coletas/app/modules/home/infra/repositories/home_repository
 import 'package:agil_coletas/app/modules/home/presenter/bloc/home_bloc.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/send_bloc.dart';
 import 'package:agil_coletas/app/modules/home/presenter/home_page.dart';
+import 'package:agil_coletas/app/modules/impressoras/impressoras_module.dart';
 import 'package:agil_coletas/app/modules/rotas/rotas_module.dart';
 import 'package:agil_coletas/app/modules/tikets/tikets_module.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -19,6 +20,7 @@ class HomeModule extends Module {
   final List<Module> imports = [
     RotasModules(),
     TiketsModule(),
+    ImpressorasModule(),
   ];
 
   @override
@@ -81,6 +83,11 @@ class HomeModule extends Module {
     ModuleRoute(
       '/tikets',
       module: TiketsModule(),
+      transition: TransitionType.noTransition,
+    ),
+    ModuleRoute(
+      '/impressoras',
+      module: ImpressorasModule(),
       transition: TransitionType.noTransition,
     ),
   ];

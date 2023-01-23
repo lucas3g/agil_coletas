@@ -133,9 +133,6 @@ class AppModule extends Module {
     BlocBind.factory<AuthBloc>(
       (i) => AuthBloc(
         signInUserUseCase: i(),
-        verifyLicenseUseCase: i(),
-        saveLicenseUseCase: i(),
-        getDateLicenseUseCase: i(),
         signOutUserUseCase: i(),
       ),
     ),

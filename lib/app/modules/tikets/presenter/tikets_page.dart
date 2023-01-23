@@ -1,37 +1,46 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
+import 'package:agil_coletas/app/core_module/constants/constants.dart';
+import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/bloc/events/impressora_events.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+
 import 'package:agil_coletas/app/components/my_app_bar_widget.dart';
 import 'package:agil_coletas/app/components/my_elevated_button_widget.dart';
 import 'package:agil_coletas/app/components/my_input_widget.dart';
 import 'package:agil_coletas/app/components/my_list_shimmer_widget.dart';
+import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/bloc/impressora_bloc.dart';
 import 'package:agil_coletas/app/core_module/services/produtor/bloc/events/produtor_events.dart';
 import 'package:agil_coletas/app/core_module/services/produtor/bloc/produtor_bloc.dart';
 import 'package:agil_coletas/app/core_module/services/produtor/bloc/states/produtor_states.dart';
 import 'package:agil_coletas/app/modules/home/domain/entities/coletas.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/home_bloc.dart';
+import 'package:agil_coletas/app/modules/tikets/presenter/bloc/events/tiket_events.dart';
+import 'package:agil_coletas/app/modules/tikets/presenter/bloc/states/tiket_states.dart';
+import 'package:agil_coletas/app/modules/tikets/presenter/bloc/tiket_bloc.dart';
 import 'package:agil_coletas/app/modules/tikets/presenter/controller/tiket_controller.dart';
 import 'package:agil_coletas/app/modules/tikets/presenter/widgets/tiket_modal_finalizar_widget.dart';
 import 'package:agil_coletas/app/modules/tikets/presenter/widgets/tiket_modal_widget.dart';
 import 'package:agil_coletas/app/theme/app_theme.dart';
 import 'package:agil_coletas/app/utils/constants.dart';
 import 'package:agil_coletas/app/utils/formatters.dart';
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:flutter/material.dart';
-
-import 'package:agil_coletas/app/modules/tikets/presenter/bloc/events/tiket_events.dart';
-import 'package:agil_coletas/app/modules/tikets/presenter/bloc/states/tiket_states.dart';
-import 'package:agil_coletas/app/modules/tikets/presenter/bloc/tiket_bloc.dart';
 import 'package:agil_coletas/app/utils/my_snackbar.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 class TiketsPage extends StatefulWidget {
   final TiketBloc tiketBloc;
+  final ImpressoraBloc impressoraBloc;
+  final HomeBloc homeBloc;
+  final ProdutorBloc produtorBloc;
 
   const TiketsPage({
     Key? key,
     required this.tiketBloc,
+    required this.impressoraBloc,
+    required this.homeBloc,
+    required this.produtorBloc,
   }) : super(key: key);
 
   @override
@@ -39,24 +48,25 @@ class TiketsPage extends StatefulWidget {
 }
 
 class _TiketsPageState extends State<TiketsPage> {
-  final homeBloc = Modular.get<HomeBloc>();
-  final produtorBloc = Modular.get<ProdutorBloc>();
-
   late StreamSubscription sub;
   late StreamSubscription subProdutor;
+  late StreamSubscription subImp;
 
   final Coletas coleta = Modular.args.data['coleta'];
   final bool editando = Modular.args.data['editando'];
+
+  final imp = GlobalImpressora.instance.impressora;
 
   @override
   void initState() {
     super.initState();
 
-    produtorBloc.add(GetProdutoresEvent());
+    widget.produtorBloc.add(GetProdutoresEvent());
 
-    subProdutor = produtorBloc.stream.listen((state) {
+    subProdutor = widget.produtorBloc.stream.listen((state) {
       if (state is SuccessGetProdutor) {
-        produtorBloc.add(SaveProdutoresEvent(produtores: state.produtores));
+        widget.produtorBloc
+            .add(SaveProdutoresEvent(produtores: state.produtores));
       }
     });
 
@@ -148,7 +158,7 @@ class _TiketsPageState extends State<TiketsPage> {
                               TiketController.totalColetado(
                                 tikets,
                                 coleta,
-                                homeBloc,
+                                widget.homeBloc,
                               ).toString(),
                               style:
                                   AppTheme.textStyles.labelTotalColetadoBlack,
@@ -191,9 +201,32 @@ class _TiketsPageState extends State<TiketsPage> {
                                   child:
                                       TiketController.retornaIconeCard(tiket),
                                 ),
-                                title: Text(
-                                  tiket.produtor.nome,
-                                  style: AppTheme.textStyles.titleListTikets,
+                                title: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 8,
+                                      child: Text(
+                                        tiket.produtor.nome,
+                                        style:
+                                            AppTheme.textStyles.titleListTikets,
+                                      ),
+                                    ),
+                                    imp.connected
+                                        ? Expanded(
+                                            flex: 2,
+                                            child: IconButton(
+                                              icon: const Icon(
+                                                  Icons.print_rounded,
+                                                  color: Colors.black),
+                                              onPressed: () {
+                                                widget.impressoraBloc.add(
+                                                  ImprimirTiketEvent(tiket),
+                                                );
+                                              },
+                                            ),
+                                          )
+                                        : const SizedBox(),
+                                  ],
                                 ),
                                 subtitle: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,7 +263,10 @@ class _TiketsPageState extends State<TiketsPage> {
                                 showDialog(
                                   context: context,
                                   builder: (context) =>
-                                      TiketModalFinalizarWidget(coleta: coleta),
+                                      TiketModalFinalizarWidget(
+                                    coleta: coleta,
+                                    impressoraBloc: widget.impressoraBloc,
+                                  ),
                                 );
                               },
                             ),

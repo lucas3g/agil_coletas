@@ -2,9 +2,9 @@
 import 'dart:async';
 
 import 'package:agil_coletas/app/core_module/services/baixa_tudo/baixa_tudo_controller.dart';
-import 'package:agil_coletas/app/modules/auth/presenter/bloc/auth_bloc.dart';
-import 'package:agil_coletas/app/modules/auth/presenter/bloc/events/auth_events.dart';
-import 'package:agil_coletas/app/modules/auth/presenter/bloc/states/auth_states.dart';
+import 'package:agil_coletas/app/core_module/services/license/bloc/events/license_events.dart';
+import 'package:agil_coletas/app/core_module/services/license/bloc/license_bloc.dart';
+import 'package:agil_coletas/app/core_module/services/license/bloc/states/license_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/svg.dart';
@@ -24,7 +24,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  late AuthBloc authBloc;
+  late LicenseBloc licenseBloc;
   late StreamSubscription sub;
   late dynamic fun;
 
@@ -38,9 +38,9 @@ class _SplashPageState extends State<SplashPage> {
     fun = shared.getData('funcionario');
 
     if (fun != null) {
-      authBloc = Modular.get<AuthBloc>();
+      licenseBloc = Modular.get<LicenseBloc>();
 
-      authBloc.add(
+      licenseBloc.add(
           VerifyLicenseEvent(deviceInfo: GlobalDevice.instance.deviceInfo));
 
       await BaixaTudoController.instance.baixaTudo.baixaTudo();
@@ -58,9 +58,9 @@ class _SplashPageState extends State<SplashPage> {
       await init();
 
       if (fun != null) {
-        sub = authBloc.stream.listen((state) {
-          if (state is LicenseActiveAuth) {
-            authBloc.add(SaveLicenseEvent());
+        sub = licenseBloc.stream.listen((state) {
+          if (state is LicenseActive) {
+            licenseBloc.add(SaveLicenseEvent());
           }
         });
       }

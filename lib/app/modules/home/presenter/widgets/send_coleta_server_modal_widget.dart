@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:agil_coletas/app/components/my_elevated_button_widget.dart';
 import 'package:agil_coletas/app/core_module/constants/constants.dart';
+import 'package:agil_coletas/app/core_module/services/license/bloc/events/license_events.dart';
+import 'package:agil_coletas/app/core_module/services/license/bloc/license_bloc.dart';
+import 'package:agil_coletas/app/core_module/services/license/bloc/states/license_states.dart';
 import 'package:agil_coletas/app/modules/auth/presenter/bloc/auth_bloc.dart';
-import 'package:agil_coletas/app/modules/auth/presenter/bloc/events/auth_events.dart';
-import 'package:agil_coletas/app/modules/auth/presenter/bloc/states/auth_states.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/events/send_events.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/send_bloc.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/states/send_states.dart';
@@ -32,16 +33,17 @@ class SendColetaServerModalWidget extends StatefulWidget {
 class _SendColetaServerModalWidgetState
     extends State<SendColetaServerModalWidget> {
   final authBloc = Modular.get<AuthBloc>();
+  final licenseBloc = Modular.get<LicenseBloc>();
 
   late StreamSubscription sub;
-  late StreamSubscription subAuth;
+  late StreamSubscription subLicense;
 
   @override
   void initState() {
     super.initState();
 
-    subAuth = authBloc.stream.listen((state) {
-      if (state is ErrorAuth) {
+    subLicense = licenseBloc.stream.listen((state) {
+      if (state is ErrorLicense) {
         if (state.message
             .contains('Você precisa estar conectado em uma de rede WiFi')) {
           Modular.to.pop('dialog');
@@ -52,11 +54,11 @@ class _SendColetaServerModalWidgetState
             type: ContentType.warning,
           );
         } else {
-          authBloc.add(GetDateLicenseEvent());
+          licenseBloc.add(GetDateLicenseEvent());
         }
       }
 
-      if (state is DateLicenseAuth) {
+      if (state is DateLicense) {
         if (state.dateTime.difference(DateTime.now()).inDays >= 3) {
           MySnackBar(
             title: 'Atenção',
@@ -70,12 +72,12 @@ class _SendColetaServerModalWidgetState
         }
       }
 
-      if (state is LicenseActiveAuth) {
-        authBloc.add(SaveLicenseEvent());
+      if (state is LicenseActive) {
+        licenseBloc.add(SaveLicenseEvent());
         widget.sendBloc.add(SendColetasToServerEvent());
       }
 
-      if (state is LicenseNotActiveAuth) {
+      if (state is LicenseNotActive) {
         MySnackBar(
           title: 'Atenção',
           message:
@@ -86,7 +88,7 @@ class _SendColetaServerModalWidgetState
         Modular.to.pop('dialog');
       }
 
-      if (state is LicenseNotFoundAuth) {
+      if (state is LicenseNotFound) {
         MySnackBar(
           title: 'Atenção',
           message:
@@ -178,14 +180,14 @@ class _SendColetaServerModalWidgetState
                     BlocBuilder<SendBloc, SendStates>(
                         bloc: widget.sendBloc,
                         builder: (context, state) {
-                          return BlocBuilder<AuthBloc, AuthStates>(
-                              bloc: authBloc,
-                              builder: (context, stateAuth) {
+                          return BlocBuilder<LicenseBloc, LicenseStates>(
+                              bloc: licenseBloc,
+                              builder: (context, stateLicense) {
                                 return Expanded(
                                   child: MyElevatedButtonWidget(
                                     height: 45,
                                     label: state is LoadingSend ||
-                                            stateAuth is LoadingAuth
+                                            stateLicense is LoadingLicense
                                         ? const SizedBox(
                                             width: 20,
                                             height: 20,
@@ -201,9 +203,9 @@ class _SendColetaServerModalWidgetState
                                             ],
                                           ),
                                     onPressed: state is! LoadingSend &&
-                                            stateAuth is! LoadingAuth
+                                            stateLicense is! LoadingLicense
                                         ? () {
-                                            authBloc.add(
+                                            licenseBloc.add(
                                               VerifyLicenseEvent(
                                                 deviceInfo: GlobalDevice
                                                     .instance.deviceInfo,

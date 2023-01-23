@@ -1,5 +1,9 @@
 import 'package:agil_coletas/app/core_module/services/device_info/device_info_interface.dart';
 import 'package:agil_coletas/app/core_module/services/device_info/platform_device_info.dart';
+import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/bloc/impressora_bloc.dart';
+import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/blue_thermal_printer.dart';
+import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/impressoras_service.dart';
+import 'package:agil_coletas/app/core_module/services/license/bloc/license_bloc.dart';
 import 'package:agil_coletas/app/core_module/services/license/domain/repositories/license_repository.dart';
 import 'package:agil_coletas/app/core_module/services/license/domain/usecases/get_date_license_usecase.dart';
 import 'package:agil_coletas/app/core_module/services/license/domain/usecases/save_license_usecase.dart';
@@ -11,6 +15,8 @@ import 'package:agil_coletas/app/core_module/services/sqflite/adapters/sqflite_a
 import 'package:agil_coletas/app/core_module/services/sqflite/make_tables/make_tables.dart';
 import 'package:agil_coletas/app/core_module/services/sqflite/sqflite_service.dart';
 import 'package:agil_coletas/app/core_module/services/sqflite/sqflite_storage_interface.dart';
+import 'package:blue_thermal_printer/blue_thermal_printer.dart';
+import 'package:modular_bloc_bind/modular_bloc_bind.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'services/shared_preferences/local_storage_interface.dart';
@@ -95,6 +101,15 @@ class CoreModule extends Module {
       export: true,
     ),
 
+    BlocBind.factory<LicenseBloc>(
+      (i) => LicenseBloc(
+        verifyLicenseUseCase: i(),
+        saveLicenseUseCase: i(),
+        getDateLicenseUseCase: i(),
+      ),
+      export: true,
+    ),
+
     //SQFLITE
     AsyncBind<ISQLFliteStorage>(
       (i) async {
@@ -116,6 +131,26 @@ class CoreModule extends Module {
 
         return service;
       },
+      export: true,
+    ),
+
+    //PACKAGE BLUE_THERMAL_PRINTER
+    Bind.factory(
+      (i) => BlueThermalPrinter.instance,
+      export: true,
+    ),
+
+    //SERVICE IMPRESSORA
+    Bind.factory<IBlueThermalPrinter>(
+      (i) => ImpressorasService(printer: i(), localStorage: i(), storage: i()),
+      export: true,
+    ),
+
+    //BLOC IMPRESSORA
+    BlocBind.factory<ImpressoraBloc>(
+      (i) => ImpressoraBloc(
+        blueThermalPrinter: i(),
+      ),
       export: true,
     ),
   ];

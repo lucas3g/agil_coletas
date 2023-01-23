@@ -1,11 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
-import 'package:agil_coletas/app/components/my_alert_dialog_widget.dart';
-import 'package:agil_coletas/app/core_module/services/baixa_tudo/baixa_tudo_controller.dart';
-import 'package:agil_coletas/app/core_module/services/shared_preferences/adapters/shared_params.dart';
-import 'package:agil_coletas/app/core_module/services/shared_preferences/local_storage_interface.dart';
-import 'package:agil_coletas/app/modules/auth/infra/adapters/funcionario_adapter.dart';
+import 'package:agil_coletas/app/core_module/services/license/bloc/events/license_events.dart';
+import 'package:agil_coletas/app/core_module/services/license/bloc/states/license_states.dart';
+import 'package:agil_coletas/app/modules/auth/presenter/bloc/events/auth_events.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
@@ -14,14 +12,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:agil_coletas/app/components/my_alert_dialog_widget.dart';
 import 'package:agil_coletas/app/components/my_elevated_button_widget.dart';
 import 'package:agil_coletas/app/components/my_input_widget.dart';
 import 'package:agil_coletas/app/core_module/constants/constants.dart';
+import 'package:agil_coletas/app/core_module/services/baixa_tudo/baixa_tudo_controller.dart';
 import 'package:agil_coletas/app/core_module/services/device_info/device_info_interface.dart';
+import 'package:agil_coletas/app/core_module/services/license/bloc/license_bloc.dart';
+import 'package:agil_coletas/app/core_module/services/shared_preferences/adapters/shared_params.dart';
+import 'package:agil_coletas/app/core_module/services/shared_preferences/local_storage_interface.dart';
 import 'package:agil_coletas/app/modules/auth/domain/entities/user.dart';
+import 'package:agil_coletas/app/modules/auth/infra/adapters/funcionario_adapter.dart';
 import 'package:agil_coletas/app/modules/auth/infra/adapters/user_adapter.dart';
 import 'package:agil_coletas/app/modules/auth/presenter/bloc/auth_bloc.dart';
-import 'package:agil_coletas/app/modules/auth/presenter/bloc/events/auth_events.dart';
 import 'package:agil_coletas/app/modules/auth/presenter/bloc/states/auth_states.dart';
 import 'package:agil_coletas/app/theme/app_theme.dart';
 import 'package:agil_coletas/app/utils/constants.dart';
@@ -30,11 +33,13 @@ import 'package:agil_coletas/app/utils/my_snackbar.dart';
 
 class AuthPage extends StatefulWidget {
   final AuthBloc authBloc;
+  final LicenseBloc licenseBloc;
   final IDeviceInfo deviceInfo;
 
   const AuthPage({
     Key? key,
     required this.authBloc,
+    required this.licenseBloc,
     required this.deviceInfo,
   }) : super(key: key);
 
@@ -56,6 +61,7 @@ class _AuthPageState extends State<AuthPage> {
   late bool visiblePass = true;
 
   late StreamSubscription sub;
+  late StreamSubscription subLicense;
 
   Future getDeviceInfo() async {
     final result = await widget.deviceInfo.getDeviceInfo();
@@ -83,7 +89,7 @@ class _AuthPageState extends State<AuthPage> {
 
         await BaixaTudoController.instance.baixaTudo.baixaTudo();
 
-        widget.authBloc.add(SaveLicenseEvent());
+        widget.licenseBloc.add(SaveLicenseEvent());
 
         Modular.to.navigate('/home/');
       }
@@ -95,12 +101,14 @@ class _AuthPageState extends State<AuthPage> {
           type: ContentType.failure,
         );
       }
+    });
 
-      if (state is LicenseActiveAuth) {
+    subLicense = widget.licenseBloc.stream.listen((state) {
+      if (state is LicenseActive) {
         widget.authBloc.add(SignInAuthEvent(user: user));
       }
 
-      if (state is LicenseNotActiveAuth) {
+      if (state is LicenseNotActive) {
         MySnackBar(
           title: 'Atenção',
           message:
@@ -109,12 +117,20 @@ class _AuthPageState extends State<AuthPage> {
         );
       }
 
-      if (state is LicenseNotFoundAuth) {
+      if (state is LicenseNotFound) {
         MySnackBar(
           title: 'Atenção',
           message:
               'Licença não encontrada. Por favor, entre em contato com o suporte.',
           type: ContentType.warning,
+        );
+      }
+
+      if (state is ErrorLicense) {
+        MySnackBar(
+          title: 'Opss...',
+          message: state.message,
+          type: ContentType.failure,
         );
       }
     });
@@ -123,12 +139,13 @@ class _AuthPageState extends State<AuthPage> {
   @override
   void dispose() {
     sub.cancel();
+    subLicense.cancel();
 
     super.dispose();
   }
 
-  Widget retornaLogin(AuthStates state) {
-    if (state is LoadingAuth || state is LicenseActiveAuth) {
+  Widget retornaLogin(AuthStates state, LicenseStates stateLicense) {
+    if (state is LoadingAuth || stateLicense is LoadingLicense) {
       return const Center(
         child: SizedBox(
           height: 25,
@@ -244,26 +261,31 @@ class _AuthPageState extends State<AuthPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    BlocBuilder<AuthBloc, AuthStates>(
-                      bloc: widget.authBloc,
-                      builder: (context, state) {
-                        return MyElevatedButtonWidget(
-                          height: 40,
-                          label: retornaLogin(state),
-                          onPressed: () {
-                            if (!gkForm.currentState!.validate()) {
-                              return;
-                            }
+                    BlocBuilder<LicenseBloc, LicenseStates>(
+                        bloc: widget.licenseBloc,
+                        builder: (context, licenseState) {
+                          return BlocBuilder<AuthBloc, AuthStates>(
+                            bloc: widget.authBloc,
+                            builder: (context, state) {
+                              return MyElevatedButtonWidget(
+                                height: 40,
+                                label: retornaLogin(state, licenseState),
+                                onPressed: () {
+                                  if (!gkForm.currentState!.validate()) {
+                                    return;
+                                  }
 
-                            widget.authBloc.add(
-                              VerifyLicenseEvent(
-                                deviceInfo: GlobalDevice.instance.deviceInfo,
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
+                                  widget.licenseBloc.add(
+                                    VerifyLicenseEvent(
+                                      deviceInfo:
+                                          GlobalDevice.instance.deviceInfo,
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        }),
                     const SizedBox(height: 10),
                     TextButton(
                       onPressed: () {
