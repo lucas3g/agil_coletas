@@ -23,7 +23,7 @@ class AuthDatasource implements IAuthDatasource {
         UtilBrasilFields.removeCaracteres(user.cnpj.value).substring(0, 8);
 
     final response = await clientHttp.post(
-      '$baseUrl/login/$cnpj',
+      '$baseUrl/login2/$cnpj',
       data: UserAdapter.toJson(user),
     );
 
