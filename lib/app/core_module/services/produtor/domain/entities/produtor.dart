@@ -5,6 +5,7 @@ class Produtor extends Entity {
   String _municipio;
   String _uf;
   int _codRota;
+  int _rotaColeta;
 
   String get nome => _nome;
   void setNome(String value) => _nome = value;
@@ -18,14 +19,19 @@ class Produtor extends Entity {
   int get codRota => _codRota;
   void setCodRota(int value) => _codRota = value;
 
-  Produtor({
-    required super.id,
-    required String nome,
-    required String municipio,
-    required String uf,
-    required int codRota,
-  })  : _nome = nome,
+  int get rotaColeta => _rotaColeta;
+  void setRotaColeta(int value) => _rotaColeta = value;
+
+  Produtor(
+      {required super.id,
+      required String nome,
+      required String municipio,
+      required String uf,
+      required int codRota,
+      required int rotaColeta})
+      : _nome = nome,
         _municipio = municipio,
         _uf = uf,
-        _codRota = codRota;
+        _codRota = codRota,
+        _rotaColeta = rotaColeta;
 }

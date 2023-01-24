@@ -39,6 +39,7 @@ class MakeTables {
       const TableFieldEntity(name: 'QUANTIDADE', type: FieldType.integer),
       const TableFieldEntity(name: 'PER_DESCONTO', type: FieldType.real),
       const TableFieldEntity(name: 'CCUSTO', type: FieldType.integer),
+      const TableFieldEntity(name: 'ROTA', type: FieldType.integer),
       const TableFieldEntity(name: 'ROTA_COLETA', type: FieldType.integer),
       const TableFieldEntity(name: 'CRIOSCOPIA', type: FieldType.real),
       const TableFieldEntity(name: 'ALIZAROL', type: FieldType.integer),
@@ -100,6 +101,7 @@ class MakeTables {
       const TableFieldEntity(name: 'NOME', type: FieldType.string),
       const TableFieldEntity(name: 'MUNICIPIOS', type: FieldType.string),
       const TableFieldEntity(name: 'UF', type: FieldType.string),
+      const TableFieldEntity(name: 'ROTA_COLETA', type: FieldType.integer),
     };
 
     final table = TableEntity(name: 'PRODUTORES', fields: fields);

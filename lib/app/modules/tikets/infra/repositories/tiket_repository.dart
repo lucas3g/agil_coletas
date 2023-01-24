@@ -38,9 +38,10 @@ class TiketRepository implements ITiketRepository {
         tikets.add(TiketAdapter.fromMap(tiket));
       }
 
-      tikets.sort((a, b) => ("${a.quantidade}${a.temperatura}")
+      tikets.sort((a, b) => ("${a.rotaColeta}${a.quantidade}${a.temperatura}")
           .toString()
-          .compareTo(("${b.quantidade}${b.temperatura}").toString()));
+          .compareTo(
+              ("${b.rotaColeta}${b.quantidade}${b.temperatura}").toString()));
 
       return tikets.toSuccess();
     } on IMyException catch (e) {

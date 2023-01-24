@@ -24,6 +24,7 @@ class Tiket extends Entity {
   Temperatura _temperatura;
   int _idColeta;
   int _qtdVezesEditado;
+  int _rotaColeta;
 
   RotaColeta get rota => _rota;
   void setRota(int cod, String nome) =>
@@ -36,6 +37,7 @@ class Tiket extends Entity {
     String mun,
     String uf,
     int codRota,
+    int rotaColeta,
   ) =>
       _produtor = Produtor(
         id: IdVO(cod),
@@ -43,6 +45,7 @@ class Tiket extends Entity {
         municipio: mun,
         uf: uf,
         codRota: codRota,
+        rotaColeta: rotaColeta,
       );
 
   int get codProduto => _codProduto;
@@ -90,6 +93,9 @@ class Tiket extends Entity {
   int get qtdVezesEditado => _qtdVezesEditado;
   void setQtdVezesEditado(int value) => _qtdVezesEditado = value;
 
+  int get rotaColeta => _rotaColeta;
+  void setRotaColeta(int value) => _rotaColeta = value;
+
   Tiket({
     required super.id,
     required RotaColeta rota,
@@ -109,6 +115,7 @@ class Tiket extends Entity {
     required temperatura,
     required idColeta,
     required qtdVezesEditado,
+    required rotaColeta,
   })  : _rota = RotaColeta(codigo: rota.codigo, nome: rota.nome),
         _produtor = Produtor(
           id: produtor.id,
@@ -116,6 +123,7 @@ class Tiket extends Entity {
           municipio: produtor.municipio,
           uf: produtor.uf,
           codRota: produtor.codRota,
+          rotaColeta: produtor.rotaColeta,
         ),
         _codProduto = codProduto,
         _data = data,
@@ -131,7 +139,8 @@ class Tiket extends Entity {
         _placa = placa,
         _temperatura = Temperatura(temperatura),
         _idColeta = idColeta,
-        _qtdVezesEditado = qtdVezesEditado;
+        _qtdVezesEditado = qtdVezesEditado,
+        _rotaColeta = rotaColeta;
 
   @override
   Result<Tiket, String> validate([Object? object]) {

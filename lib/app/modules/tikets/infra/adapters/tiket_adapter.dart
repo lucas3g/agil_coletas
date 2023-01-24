@@ -20,7 +20,8 @@ class TiketAdapter {
       'QUANTIDADE': 0,
       'PER_DESCONTO': 0.0,
       'CCUSTO': coleta.ccusto,
-      'ROTA_COLETA': coleta.rota.codigo,
+      'ROTA': coleta.rota.codigo,
+      'ROTA_COLETA': produtor.rotaColeta,
       'CRIOSCOPIA': 0,
       'ALIZAROL': 0,
       'HORA':
@@ -36,13 +37,14 @@ class TiketAdapter {
   static Tiket fromMap(dynamic map) {
     return Tiket(
       id: IdVO(map['ID']),
-      rota: RotaColeta(codigo: map['ROTA_COLETA'], nome: ''),
+      rota: RotaColeta(codigo: map['ROTA'], nome: ''),
       produtor: Produtor(
         id: IdVO(map['CLIFOR']),
         nome: map['NOME'],
         municipio: map['MUNICIPIOS'],
         uf: map['UF'],
-        codRota: map['ROTA_COLETA'],
+        codRota: map['ROTA'],
+        rotaColeta: map['ROTA_COLETA'],
       ),
       codProduto: map['PRODUTO'],
       data: map['DATA'],
@@ -59,6 +61,7 @@ class TiketAdapter {
       temperatura: map['TEMPERATURA'],
       idColeta: map['ID_COLETA'],
       qtdVezesEditado: map['QTD_VEZES_EDITADO'],
+      rotaColeta: map['ROTA_COLETA'],
     );
   }
 
@@ -82,6 +85,7 @@ class TiketAdapter {
       temperatura: tiket.temperatura.value,
       idColeta: tiket.idColeta,
       qtdVezesEditado: tiket.qtdVezesEditado,
+      rotaColeta: tiket.rotaColeta,
     );
   }
 
@@ -98,7 +102,8 @@ class TiketAdapter {
       'QUANTIDADE': tiket.quantidade.value,
       'PER_DESCONTO': tiket.perDesconto,
       'CCUSTO': tiket.ccusto,
-      'ROTA_COLETA': tiket.rota.codigo,
+      'ROTA': tiket.rota.codigo,
+      'ROTA_COLETA': tiket.produtor.rotaColeta,
       'CRIOSCOPIA': tiket.crioscopia,
       'ALIZAROL': tiket.alizarol ? 1 : 0,
       'HORA':
