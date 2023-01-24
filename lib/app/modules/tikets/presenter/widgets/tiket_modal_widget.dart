@@ -2,9 +2,7 @@
 
 import 'dart:async';
 
-import 'package:agil_coletas/app/modules/tikets/presenter/bloc/events/tiket_events.dart';
-import 'package:agil_coletas/app/modules/tikets/presenter/bloc/states/tiket_states.dart';
-import 'package:agil_coletas/app/utils/my_snackbar.dart';
+import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/bloc/events/impressora_events.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,20 +11,26 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:agil_coletas/app/components/my_drop_down_button_widget.dart';
 import 'package:agil_coletas/app/components/my_elevated_button_widget.dart';
 import 'package:agil_coletas/app/components/my_input_widget.dart';
+import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/bloc/impressora_bloc.dart';
 import 'package:agil_coletas/app/modules/tikets/domain/entities/tiket.dart';
 import 'package:agil_coletas/app/modules/tikets/domain/entities/tiket_clone.dart';
 import 'package:agil_coletas/app/modules/tikets/infra/adapters/tiket_adapter.dart';
+import 'package:agil_coletas/app/modules/tikets/presenter/bloc/events/tiket_events.dart';
+import 'package:agil_coletas/app/modules/tikets/presenter/bloc/states/tiket_states.dart';
 import 'package:agil_coletas/app/modules/tikets/presenter/bloc/tiket_bloc.dart';
 import 'package:agil_coletas/app/theme/app_theme.dart';
+import 'package:agil_coletas/app/utils/my_snackbar.dart';
 
 class TiketModalWidget extends StatefulWidget {
   final Tiket tiket;
   final TiketBloc tiketBloc;
+  final ImpressoraBloc impressoraBloc;
 
   const TiketModalWidget({
     Key? key,
     required this.tiket,
     required this.tiketBloc,
+    required this.impressoraBloc,
   }) : super(key: key);
 
   @override
@@ -256,7 +260,12 @@ class _TiketModalWidgetState extends State<TiketModalWidget> {
                           gkForm.currentState!.save();
                         }
 
+                        tiket.setHora(
+                          '"${DateTime.now().hour.toString().padLeft(2, '0')}:${DateTime.now().minute.toString().padLeft(2, '0')}"',
+                        );
+
                         widget.tiketBloc.add(UpdateTiketEvent(tiket: tiket));
+                        widget.impressoraBloc.add(ImprimirTiketEvent(tiket));
 
                         Modular.to.pop('dialog');
                       },

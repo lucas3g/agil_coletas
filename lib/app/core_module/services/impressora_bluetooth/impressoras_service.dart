@@ -209,7 +209,7 @@ class ImpressorasService implements IBlueThermalPrinter {
       );
       printer.printNewLine();
       printer.printCustom(
-          'Data: ${tiket.data.toString().replaceAll('"', '')} Hora: ${tiket.hora.toString().replaceAll('"', '')}',
+          'Data: ${tiket.data.toString().replaceAll('"', '').replaceAll('.', '/')} Hora: ${tiket.hora.toString().replaceAll('"', '')}',
           1,
           0);
       printer.printCustom('Produtor: ${tiket.produtor.nome.trim()}', 1, 0);
@@ -240,6 +240,17 @@ class ImpressorasService implements IBlueThermalPrinter {
       printer.printNewLine();
 
       return unit.toSuccess();
+    } catch (e) {
+      return MyException(message: e.toString()).toFailure();
+    }
+  }
+
+  @override
+  Future<Result<bool, IMyException>> verificaStatusImpressora() async {
+    try {
+      final result = await printer.isConnected ?? false;
+
+      return result.toSuccess();
     } catch (e) {
       return MyException(message: e.toString()).toFailure();
     }

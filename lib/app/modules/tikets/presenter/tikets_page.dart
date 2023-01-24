@@ -193,6 +193,7 @@ class _TiketsPageState extends State<TiketsPage> {
                                     builder: (context) => TiketModalWidget(
                                       tiket: tiket,
                                       tiketBloc: widget.tiketBloc,
+                                      impressoraBloc: widget.impressoraBloc,
                                     ),
                                   );
                                 },

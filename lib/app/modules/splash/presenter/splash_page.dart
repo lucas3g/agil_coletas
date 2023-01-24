@@ -2,6 +2,9 @@
 import 'dart:async';
 
 import 'package:agil_coletas/app/core_module/services/baixa_tudo/baixa_tudo_controller.dart';
+import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/bloc/events/impressora_events.dart';
+import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/bloc/impressora_bloc.dart';
+import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/bloc/states/impressora_state.dart';
 import 'package:agil_coletas/app/core_module/services/license/bloc/events/license_events.dart';
 import 'package:agil_coletas/app/core_module/services/license/bloc/license_bloc.dart';
 import 'package:agil_coletas/app/core_module/services/license/bloc/states/license_states.dart';
@@ -25,13 +28,21 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   late LicenseBloc licenseBloc;
+  late ImpressoraBloc impressoraBloc;
   late StreamSubscription sub;
+  late StreamSubscription subImp;
   late dynamic fun;
 
   Future init() async {
     await Modular.isModuleReady<AppModule>();
 
     await Future.delayed(const Duration(seconds: 1));
+
+    impressoraBloc = Modular.get<ImpressoraBloc>();
+
+    if (!GlobalImpressora.instance.impressora.address.contains('address')) {
+      impressoraBloc.add(VerificaStatusImpressoraEvent());
+    }
 
     final shared = Modular.get<ILocalStorage>();
 
@@ -63,8 +74,32 @@ class _SplashPageState extends State<SplashPage> {
             licenseBloc.add(SaveLicenseEvent());
           }
         });
+
+        subImp = impressoraBloc.stream.listen((state) {
+          if (state is ImpressoraStatus) {
+            if (!state.status) {
+              impressoraBloc.add(
+                ConnectImpressoraEvent(
+                  imp: GlobalImpressora.instance.impressora,
+                ),
+              );
+            }
+          }
+
+          if (state is SuccessConnectImpressora) {
+            impressoraBloc.add(SaveImpressoraLocalStorageEvent(imp: state.imp));
+          }
+        });
       }
     });
+  }
+
+  @override
+  void dispose() {
+    sub.cancel();
+    subImp.cancel();
+
+    super.dispose();
   }
 
   @override

@@ -22,12 +22,15 @@ class ImpressoraBloc extends Bloc<ImpressoraEvents, ImpressoraStates> {
         _getImpressoraConectadaLocalStorage);
     on<ImprimirTiketEvent>(_imprimirTiket);
     on<ImprimirRotaFinalizadaEvent>(_imprimirRotaFinalizada);
+    on<VerificaStatusImpressoraEvent>(_verificaStatusImpressora);
   }
 
   Future _getImpressoras(GetImpressorasEvent event, emit) async {
     emit(state.loadingGet());
 
     final result = await blueThermalPrinter.getImpressoras();
+
+    await Future.delayed(const Duration(milliseconds: 500));
 
     result.fold(
       (success) => emit(state.successGet(impressoras: success)),
@@ -99,5 +102,15 @@ class ImpressoraBloc extends Bloc<ImpressoraEvents, ImpressoraStates> {
   Future _imprimirRotaFinalizada(
       ImprimirRotaFinalizadaEvent event, emit) async {
     await blueThermalPrinter.imprimirRotaFinalizada(event.coleta);
+  }
+
+  Future _verificaStatusImpressora(
+      VerificaStatusImpressoraEvent event, emit) async {
+    final result = await blueThermalPrinter.verificaStatusImpressora();
+
+    result.fold(
+      (success) => emit(state.impressoraStatus(success)),
+      (failure) => emit(state.error(failure.message)),
+    );
   }
 }

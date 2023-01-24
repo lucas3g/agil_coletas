@@ -11,9 +11,9 @@ abstract class IBlueThermalPrinter {
   Future<Result<Unit, IMyException>> imprimirPaginaTeste();
   Future<Result<Unit, IMyException>> imprimirTiket(Tiket tiket);
   Future<Result<Unit, IMyException>> imprimirRotaFinalizada(Coletas coleta);
-  Future<Result<bool, IMyException>> saveImpressoraLocalStorage(
-    Impressoras imp,
-  );
   Future<Result<bool, IMyException>> removeImpressoraLocalStorage();
   Result<Impressoras, IMyException> getImpressoraConectada();
+  Future<Result<bool, IMyException>> verificaStatusImpressora();
+  Future<Result<bool, IMyException>> saveImpressoraLocalStorage(
+      Impressoras imp);
 }

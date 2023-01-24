@@ -39,6 +39,10 @@ abstract class ImpressoraStates {
   SuccessImpressaoTiket successImpressaoTiket() {
     return SuccessImpressaoTiket(impressoras: impressoras);
   }
+
+  ImpressoraStatus impressoraStatus(bool status) {
+    return ImpressoraStatus(status: status, impressoras: impressoras);
+  }
 }
 
 class InitialImpressora extends ImpressoraStates {
@@ -85,4 +89,13 @@ class ImprimindoTiket extends ImpressoraStates {
 
 class SuccessImpressaoTiket extends ImpressoraStates {
   SuccessImpressaoTiket({required super.impressoras});
+}
+
+class ImpressoraStatus extends ImpressoraStates {
+  final bool status;
+
+  ImpressoraStatus({
+    required this.status,
+    required super.impressoras,
+  });
 }

@@ -56,3 +56,7 @@ class ImprimirRotaFinalizadaEvent extends ImpressoraEvents {
     this.coleta,
   );
 }
+
+class VerificaStatusImpressoraEvent extends ImpressoraEvents {
+  VerificaStatusImpressoraEvent();
+}

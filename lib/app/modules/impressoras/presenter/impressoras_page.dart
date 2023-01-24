@@ -94,25 +94,25 @@ class _ImpressorasPageState extends State<ImpressorasPage> {
             const Divider(),
             BlocBuilder<ImpressoraBloc, ImpressoraStates>(
                 bloc: widget.impressoraBloc,
-                buildWhen: (previous, current) {
-                  return current is SuccessGetImpressora;
-                },
                 builder: (context, state) {
-                  final impressoras = state.impressoras;
-
-                  if (impressoras.isEmpty) {
-                    return const Center(
-                      child: Text('Nenhuma impressora encontrada'),
-                    );
-                  }
-
                   if (state is LoadingImpressora) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
 
-                  if (state is SuccessGetImpressora) {
+                  if (state is SuccessGetImpressora ||
+                      state is LoadingConnectImpressora ||
+                      state is SuccessConnectImpressora ||
+                      state is SuccessDisconnectImpressora) {
+                    final impressoras = state.impressoras;
+
+                    if (impressoras.isEmpty) {
+                      return const Center(
+                        child: Text('Nenhuma impressora encontrada'),
+                      );
+                    }
+
                     return Expanded(
                       child: ListView.separated(
                         itemBuilder: (context, index) {
