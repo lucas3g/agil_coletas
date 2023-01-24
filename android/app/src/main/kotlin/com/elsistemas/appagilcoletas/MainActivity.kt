@@ -1,4 +1,4 @@
-package com.elsistemas.agilcoletas
+package com.elsistemas.appagilcoletas
 
 import io.flutter.embedding.android.FlutterActivity
 
