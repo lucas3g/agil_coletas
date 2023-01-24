@@ -168,11 +168,12 @@ class _TiketsPageState extends State<TiketsPage> {
                       ),
                       const SizedBox(height: 5),
                       Expanded(
-                        child: ListView.separated(
+                        child: ListView.builder(
                           itemBuilder: (context, index) {
                             final tiket = tikets[index];
 
                             return Container(
+                              margin: const EdgeInsets.only(bottom: 15),
                               decoration: BoxDecoration(
                                   color:
                                       TiketController.retornaCorDoCard(tiket),
@@ -194,6 +195,7 @@ class _TiketsPageState extends State<TiketsPage> {
                                       tiket: tiket,
                                       tiketBloc: widget.tiketBloc,
                                       impressoraBloc: widget.impressoraBloc,
+                                      imp: imp,
                                     ),
                                   );
                                 },
@@ -202,33 +204,24 @@ class _TiketsPageState extends State<TiketsPage> {
                                   child:
                                       TiketController.retornaIconeCard(tiket),
                                 ),
-                                title: Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 8,
-                                      child: Text(
-                                        tiket.produtor.nome,
-                                        style:
-                                            AppTheme.textStyles.titleListTikets,
-                                      ),
-                                    ),
-                                    imp.connected
-                                        ? Expanded(
-                                            flex: 2,
-                                            child: IconButton(
-                                              icon: const Icon(
-                                                  Icons.print_rounded,
-                                                  color: Colors.black),
-                                              onPressed: () {
-                                                widget.impressoraBloc.add(
-                                                  ImprimirTiketEvent(tiket),
-                                                );
-                                              },
-                                            ),
-                                          )
-                                        : const SizedBox(),
-                                  ],
+                                minLeadingWidth: 10,
+                                title: Text(
+                                  tiket.produtor.nome,
+                                  style: AppTheme.textStyles.titleListTikets,
                                 ),
+                                trailing: imp.connected
+                                    ? IconButton(
+                                        icon: const Icon(
+                                          Icons.print_rounded,
+                                          color: Colors.black,
+                                        ),
+                                        onPressed: () {
+                                          widget.impressoraBloc.add(
+                                            ImprimirTiketEvent(tiket),
+                                          );
+                                        },
+                                      )
+                                    : null,
                                 subtitle: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -245,8 +238,6 @@ class _TiketsPageState extends State<TiketsPage> {
                               ),
                             );
                           },
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(height: 15),
                           itemCount: tikets.length,
                         ),
                       ),
@@ -256,9 +247,18 @@ class _TiketsPageState extends State<TiketsPage> {
                           Expanded(
                             child: MyElevatedButtonWidget(
                               height: 50,
-                              label: Text(
-                                'Finalizar Rota',
-                                style: AppTheme.textStyles.labelButtonFinalizar,
+                              label: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                      Icons.check_circle_outline_outlined),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    'Finalizar Rota',
+                                    style: AppTheme
+                                        .textStyles.labelButtonFinalizar,
+                                  ),
+                                ],
                               ),
                               onPressed: () {
                                 showDialog(
@@ -267,6 +267,7 @@ class _TiketsPageState extends State<TiketsPage> {
                                       TiketModalFinalizarWidget(
                                     coleta: coleta,
                                     impressoraBloc: widget.impressoraBloc,
+                                    imp: imp,
                                   ),
                                 );
                               },

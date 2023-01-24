@@ -141,7 +141,7 @@ class AppTextStylesDefault implements AppTextStyles {
   @override
   TextStyle get titleListTikets => GoogleFonts.montserrat(
         fontSize: 16,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w700,
         color: AppTheme.colors.preto,
       );
 

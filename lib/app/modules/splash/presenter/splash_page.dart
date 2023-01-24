@@ -95,14 +95,6 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   @override
-  void dispose() {
-    sub.cancel();
-    subImp.cancel();
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(

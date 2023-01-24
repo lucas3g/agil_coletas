@@ -109,7 +109,8 @@ class _ImpressorasPageState extends State<ImpressorasPage> {
 
                     if (impressoras.isEmpty) {
                       return const Center(
-                        child: Text('Nenhuma impressora encontrada'),
+                        child: Text(
+                            'Nenhuma impressora encontrada ou Bluetooth esta desligado.'),
                       );
                     }
 

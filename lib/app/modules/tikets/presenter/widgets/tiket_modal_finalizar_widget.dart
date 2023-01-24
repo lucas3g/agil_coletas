@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
-import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/bloc/events/impressora_events.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +8,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import 'package:agil_coletas/app/components/my_elevated_button_widget.dart';
 import 'package:agil_coletas/app/components/my_input_widget.dart';
+import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/bloc/events/impressora_events.dart';
 import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/bloc/impressora_bloc.dart';
+import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/entity/impressoras.dart';
 import 'package:agil_coletas/app/modules/home/domain/entities/coletas.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/events/home_events.dart';
 import 'package:agil_coletas/app/modules/home/presenter/bloc/home_bloc.dart';
@@ -20,11 +21,13 @@ import 'package:agil_coletas/app/utils/my_snackbar.dart';
 class TiketModalFinalizarWidget extends StatefulWidget {
   final Coletas coleta;
   final ImpressoraBloc impressoraBloc;
+  final Impressoras imp;
 
   const TiketModalFinalizarWidget({
     Key? key,
     required this.coleta,
     required this.impressoraBloc,
+    required this.imp,
   }) : super(key: key);
 
   @override
@@ -44,7 +47,9 @@ class _TiketModalFinalizarWidgetState extends State<TiketModalFinalizarWidget> {
 
     sub = homeBloc.stream.listen((state) {
       if (state is SuccessUpdateColetaHome) {
-        widget.impressoraBloc.add(ImprimirRotaFinalizadaEvent(widget.coleta));
+        if (widget.imp.connected) {
+          widget.impressoraBloc.add(ImprimirRotaFinalizadaEvent(widget.coleta));
+        }
 
         MySnackBar(
           title: 'Sucesso',

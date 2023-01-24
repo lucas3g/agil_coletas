@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:agil_coletas/app/core_module/services/license/bloc/events/license_events.dart';
 import 'package:agil_coletas/app/core_module/services/license/bloc/states/license_states.dart';
 import 'package:agil_coletas/app/modules/auth/presenter/bloc/events/auth_events.dart';
+import 'package:agil_coletas/app/modules/auth/presenter/controller/auth_controller.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
@@ -297,6 +298,7 @@ class _AuthPageState extends State<AuthPage> {
                               content:
                                   GlobalDevice.instance.deviceInfo.deviceID,
                               okButton: MyElevatedButtonWidget(
+                                height: 45,
                                 label: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: const [
@@ -305,9 +307,16 @@ class _AuthPageState extends State<AuthPage> {
                                     Text('Whatsapp'),
                                   ],
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  AuthController.openWhatsapp(
+                                    text:
+                                        'Olá, desejo usar o aplicativo do ADM BI esse é meu codigo de autenticação: ${GlobalDevice.instance.deviceInfo.deviceID}',
+                                    number: '+555499712433',
+                                  );
+                                },
                               ),
                               cancelButton: MyElevatedButtonWidget(
+                                height: 45,
                                 label: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: const [
