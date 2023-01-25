@@ -302,7 +302,7 @@ class _AuthPageState extends State<AuthPage> {
                                 label: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: const [
-                                    Icon(Icons.whatsapp),
+                                    Icon(Icons.message_rounded),
                                     SizedBox(width: 10),
                                     Text('WhatsApp'),
                                   ],
