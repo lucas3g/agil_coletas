@@ -304,13 +304,13 @@ class _AuthPageState extends State<AuthPage> {
                                   children: const [
                                     Icon(Icons.whatsapp),
                                     SizedBox(width: 10),
-                                    Text('Whatsapp'),
+                                    Text('WhatsApp'),
                                   ],
                                 ),
                                 onPressed: () {
                                   AuthController.openWhatsapp(
                                     text:
-                                        'Olá, desejo usar o aplicativo do ADM BI esse é meu codigo de autenticação: ${GlobalDevice.instance.deviceInfo.deviceID}',
+                                        'Olá, desejo usar o aplicativo do Ágil Coletas esse é meu codigo de autenticação: ${GlobalDevice.instance.deviceInfo.deviceID}',
                                     number: '+555499712433',
                                   );
                                 },
@@ -345,7 +345,7 @@ class _AuthPageState extends State<AuthPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    'EL Sistemas - 2022 - 054 3364-1588',
+                    'EL Sistemas - 2023 - 054 3364-1588',
                     style: AppTheme.textStyles.labelLogin,
                   ),
                 ],
