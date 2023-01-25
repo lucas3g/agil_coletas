@@ -144,10 +144,6 @@ class Tiket extends Entity {
 
   @override
   Result<Tiket, String> validate([Object? object]) {
-    return super
-        .validate()
-        .flatMap(quantidade.validate)
-        .flatMap(temperatura.validate)
-        .pure(this);
+    return super.validate().pure(this);
   }
 }

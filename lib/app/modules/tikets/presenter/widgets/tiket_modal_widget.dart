@@ -138,7 +138,13 @@ class _TiketModalWidgetState extends State<TiketModalWidget> {
                 label: 'Quantidade',
                 value: tiket.quantidade.value.toString(),
                 onSaved: (e) => tiket.setQuantidade(int.tryParse(e!) ?? 0),
-                validator: (v) => tiket.validate().exceptionOrNull(),
+                validator: (v) {
+                  if (double.tryParse(v!) == null) {
+                    return 'Quantidade invalida';
+                  }
+
+                  return null;
+                },
                 keyboardType: TextInputType.number,
                 inputFormaters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -159,7 +165,7 @@ class _TiketModalWidgetState extends State<TiketModalWidget> {
                     return 'Temperatura invalida';
                   }
 
-                  return tiket.validate().exceptionOrNull();
+                  return null;
                 },
                 keyboardType: TextInputType.number,
                 onSaved: (e) =>
