@@ -67,12 +67,7 @@ class SQLFliteService implements ISQLFliteStorage {
     late String? where =
         param.filters?.map(SqFliteHelpers.convertFilterToSqlWhere).toString();
 
-    if (param.filters
-            ?.map(
-              (e) => e,
-            )
-            .length ==
-        1) {
+    if (param.filters?.map((e) => e).length == 1) {
       where = where?.replaceAll('and', '');
     } else {
       where = '${where?.substring(0, where.length - 4).replaceAll(',', '')})';
