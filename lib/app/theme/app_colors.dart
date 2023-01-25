@@ -20,16 +20,16 @@ abstract class AppColors {
 
 class AppColorDefault implements AppColors {
   Map<int, Color> color = {
-    50: const Color.fromRGBO(136, 14, 79, .1),
-    100: const Color.fromRGBO(136, 14, 79, .2),
-    200: const Color.fromRGBO(136, 14, 79, .3),
-    300: const Color.fromRGBO(136, 14, 79, .4),
-    400: const Color.fromRGBO(136, 14, 79, .5),
-    500: const Color.fromRGBO(136, 14, 79, .6),
-    600: const Color.fromRGBO(136, 14, 79, .7),
-    700: const Color.fromRGBO(136, 14, 79, .8),
-    800: const Color.fromRGBO(136, 14, 79, .9),
-    900: const Color.fromRGBO(136, 14, 79, 1),
+    50: const Color.fromRGBO(207, 31, 54, .1),
+    100: const Color.fromRGBO(207, 31, 54, .2),
+    200: const Color.fromRGBO(207, 31, 54, .3),
+    300: const Color.fromRGBO(207, 31, 54, .4),
+    400: const Color.fromRGBO(207, 31, 54, .5),
+    500: const Color.fromRGBO(207, 31, 54, .6),
+    600: const Color.fromRGBO(207, 31, 54, .7),
+    700: const Color.fromRGBO(207, 31, 54, .8),
+    800: const Color.fromRGBO(207, 31, 54, .9),
+    900: const Color.fromRGBO(207, 31, 54, 1),
   };
 
   @override
