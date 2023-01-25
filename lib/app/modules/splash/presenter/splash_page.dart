@@ -55,6 +55,7 @@ class _SplashPageState extends State<SplashPage> {
           VerifyLicenseEvent(deviceInfo: GlobalDevice.instance.deviceInfo));
 
       await BaixaTudoController.instance.baixaTudo.baixaTudo();
+
       return Modular.to.navigate('/home/');
     }
 

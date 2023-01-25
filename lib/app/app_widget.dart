@@ -11,6 +11,7 @@ class AppWidget extends StatelessWidget {
     Modular.setNavigatorKey(NavigationService.navigatorKey);
 
     return MaterialApp.router(
+      title: 'Ágil Coletas',
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.white,
