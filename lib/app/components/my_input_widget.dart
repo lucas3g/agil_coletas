@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:agil_coletas/app/theme/app_theme.dart';
-
 class MyInputWidget extends StatelessWidget {
   final FocusNode? focusNode;
   final TextInputType keyboardType;
@@ -84,34 +82,35 @@ class MyInputWidget extends StatelessWidget {
       maxLength: maxLength,
       onSaved: onSaved,
       decoration: InputDecoration(
-          counterText: '',
-          hintText: hintText,
-          label: Text(label),
-          suffixIcon: suffixIcon,
-          filled: true,
-          isDense: true,
-          fillColor: Colors.transparent,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: Colors.grey.shade700,
-            ),
+        counterText: '',
+        hintText: hintText,
+        label: Text(label),
+        suffixIcon: suffixIcon,
+        filled: true,
+        isDense: true,
+        fillColor: Colors.transparent,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: Colors.grey.shade700,
           ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: AppTheme.colors.primary,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: AppTheme.colors.primary,
-            ),
-          ),
-          labelStyle: const TextStyle(
-            color: Colors.black87,
-          )),
+        ),
+        // enabledBorder: OutlineInputBorder(
+        //   borderRadius: BorderRadius.circular(10),
+        //   borderSide: BorderSide(
+        //     color: AppTheme.colors.primary,
+        //   ),
+        // ),
+        // focusedBorder: OutlineInputBorder(
+        //   borderRadius: BorderRadius.circular(10),
+        //   borderSide: BorderSide(
+        //     color: AppTheme.colors.primary,
+        //   ),
+        // ),
+        // labelStyle: const TextStyle(
+        //   color: Colors.black87,
+        // ),
+      ),
     );
   }
 }

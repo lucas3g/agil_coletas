@@ -1,8 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
-import 'package:agil_coletas/app/core_module/constants/constants.dart';
-import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/bloc/events/impressora_events.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +10,8 @@ import 'package:agil_coletas/app/components/my_app_bar_widget.dart';
 import 'package:agil_coletas/app/components/my_elevated_button_widget.dart';
 import 'package:agil_coletas/app/components/my_input_widget.dart';
 import 'package:agil_coletas/app/components/my_list_shimmer_widget.dart';
+import 'package:agil_coletas/app/core_module/constants/constants.dart';
+import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/bloc/events/impressora_events.dart';
 import 'package:agil_coletas/app/core_module/services/impressora_bluetooth/bloc/impressora_bloc.dart';
 import 'package:agil_coletas/app/core_module/services/produtor/bloc/events/produtor_events.dart';
 import 'package:agil_coletas/app/core_module/services/produtor/bloc/produtor_bloc.dart';
@@ -196,6 +196,7 @@ class _TiketsPageState extends State<TiketsPage> {
                                       tiketBloc: widget.tiketBloc,
                                       impressoraBloc: widget.impressoraBloc,
                                       imp: imp,
+                                      particoes: coleta.particoes,
                                     ),
                                   );
                                 },

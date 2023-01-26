@@ -21,9 +21,10 @@ class LicenseDatasource implements ILicenseDatasource {
 
   @override
   Future<Map<String, dynamic>> verifyLicense(DeviceInfo deviceInfo) async {
-    if (!await ConnectivityService.hasWiFi()) {
+    if (!await ConnectivityService.hasWiFi() &&
+        !await ConnectivityService.has4G()) {
       throw const MyException(
-          message: 'Você precisa estar conectado em uma de rede WiFi');
+          message: 'Você precisa estar com internet para acessar.');
     }
 
     clientHttp.setHeaders({'cnpj': 'licenca', 'id': deviceInfo.deviceID});

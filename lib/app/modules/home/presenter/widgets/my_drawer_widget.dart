@@ -140,7 +140,7 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
                   ),
                   ListTile(
                     title: Text(
-                      'Versão 1.0.0',
+                      'Versão 1.0.1',
                       textAlign: TextAlign.end,
                       style: AppTheme.textStyles.subtitleDrawer,
                     ),

@@ -15,9 +15,9 @@ class AppWidget extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.white,
-        primarySwatch: AppTheme.colors.primary,
+        colorSchemeSeed: AppTheme.colors.primary,
         dialogTheme: const DialogTheme(
-          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
         ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: AppTheme.colors.primary,

@@ -204,8 +204,10 @@ class _HomePageState extends State<HomePage> {
                                   children: [
                                     Row(
                                       children: [
-                                        Text(
-                                          '${coleta.rota.codigo} - ${coleta.rota.nome}',
+                                        Expanded(
+                                          child: Text(
+                                            '${coleta.rota.codigo} - ${coleta.rota.nome}',
+                                          ),
                                         ),
                                       ],
                                     ),

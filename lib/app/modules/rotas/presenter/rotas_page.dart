@@ -140,8 +140,10 @@ class _RotasPageState extends State<RotasPage> {
                                         color: Colors.black,
                                       ),
                                       const SizedBox(width: 10),
-                                      Text(
-                                          '${rota.id.value} - ${rota.descricao}'),
+                                      Expanded(
+                                        child: Text(
+                                            '${rota.id.value} - ${rota.descricao}'),
+                                      ),
                                     ],
                                   ),
                                 ),

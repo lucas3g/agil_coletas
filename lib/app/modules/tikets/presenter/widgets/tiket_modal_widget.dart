@@ -27,6 +27,7 @@ class TiketModalWidget extends StatefulWidget {
   final TiketBloc tiketBloc;
   final ImpressoraBloc impressoraBloc;
   final Impressoras imp;
+  final int particoes;
 
   const TiketModalWidget({
     Key? key,
@@ -34,6 +35,7 @@ class TiketModalWidget extends StatefulWidget {
     required this.tiketBloc,
     required this.impressoraBloc,
     required this.imp,
+    required this.particoes,
   }) : super(key: key);
 
   @override
@@ -57,7 +59,7 @@ class _TiketModalWidgetState extends State<TiketModalWidget> {
   late StreamSubscription sub;
 
   void geraListaTanques() {
-    for (var i = 1; i <= tiket.particao; i++) {
+    for (var i = 1; i <= widget.particoes; i++) {
       tanques.add(i.toString());
     }
   }
