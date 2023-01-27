@@ -132,8 +132,11 @@ class _HomePageState extends State<HomePage> {
               final coletas = state.coletas;
 
               if (coletas.isEmpty) {
-                return const Center(
-                  child: Text('Lista de coletas esta vazia.'),
+                return Center(
+                  child: Text(
+                    'Lista de coletas esta vazia.',
+                    style: AppTheme.textStyles.labelNotFound,
+                  ),
                 );
               }
 

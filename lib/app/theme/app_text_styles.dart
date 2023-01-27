@@ -24,6 +24,7 @@ abstract class AppTextStyles {
   TextStyle get labelTotalColetadoRed;
   TextStyle get labelTotalColetadoBlack;
   TextStyle get subtitleCardImpressora;
+  TextStyle get labelNotFound;
 }
 
 class AppTextStylesDefault implements AppTextStyles {
@@ -171,5 +172,11 @@ class AppTextStylesDefault implements AppTextStyles {
         fontSize: 14,
         fontWeight: FontWeight.bold,
         color: AppTheme.colors.primary,
+      );
+
+  @override
+  TextStyle get labelNotFound => GoogleFonts.montserrat(
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
       );
 }

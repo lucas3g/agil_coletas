@@ -112,9 +112,12 @@ class _TransportadorPageState extends State<TransportadorPage> {
                 final transps = state.transpFiltrados;
 
                 if (transps.isEmpty) {
-                  return const Expanded(
+                  return Expanded(
                     child: Center(
-                      child: Text('Lista de transportadores está vazia.'),
+                      child: Text(
+                        'Lista de transportadores está vazia.',
+                        style: AppTheme.textStyles.labelNotFound,
+                      ),
                     ),
                   );
                 }

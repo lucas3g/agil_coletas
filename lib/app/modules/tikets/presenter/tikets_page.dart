@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
+import 'package:agil_coletas/app/core_module/services/connectivity/connectivity_service.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,30 +51,40 @@ class TiketsPage extends StatefulWidget {
 class _TiketsPageState extends State<TiketsPage> {
   late StreamSubscription sub;
   late StreamSubscription subProdutor;
-  late StreamSubscription subImp;
 
   final Coletas coleta = Modular.args.data['coleta'];
   final bool editando = Modular.args.data['editando'];
 
   final imp = GlobalImpressora.instance.impressora;
 
+  Future getProdutores() async {
+    if (await ConnectivityService.hasWiFi()) {
+      widget.produtorBloc.add(GetProdutoresEvent());
+
+      subProdutor = widget.produtorBloc.stream.listen((state) {
+        if (state is SuccessGetProdutor) {
+          widget.produtorBloc
+              .add(SaveProdutoresEvent(produtores: state.produtores));
+        }
+
+        if (state is SuccessSaveProdutor) {
+          widget.tiketBloc.add(CreateTiketsEvent(coleta: coleta));
+          subProdutor.cancel();
+        }
+      });
+    } else {
+      widget.tiketBloc.add(CreateTiketsEvent(coleta: coleta));
+    }
+  }
+
   @override
   void initState() {
     super.initState();
 
-    widget.produtorBloc.add(GetProdutoresEvent());
-
-    subProdutor = widget.produtorBloc.stream.listen((state) {
-      if (state is SuccessGetProdutor) {
-        widget.produtorBloc
-            .add(SaveProdutoresEvent(produtores: state.produtores));
-      }
-    });
-
-    if (!editando) {
-      widget.tiketBloc.add(CreateTiketsEvent(coleta: coleta));
-    } else {
+    if (editando) {
       widget.tiketBloc.add(GetTiketsEvent(codColeta: coleta.id));
+    } else {
+      getProdutores();
     }
 
     sub = widget.tiketBloc.stream.listen((state) {
@@ -94,7 +105,6 @@ class _TiketsPageState extends State<TiketsPage> {
   @override
   void dispose() {
     sub.cancel();
-    subProdutor.cancel();
 
     super.dispose();
   }
@@ -127,7 +137,7 @@ class _TiketsPageState extends State<TiketsPage> {
               inputFormaters: [UpperCaseTextFormatter()],
             ),
             const Divider(),
-            BlocBuilder(
+            BlocBuilder<TiketBloc, TiketStates>(
               bloc: widget.tiketBloc,
               builder: (context, state) {
                 if (state is! SuccessGetTikets) {
@@ -137,9 +147,12 @@ class _TiketsPageState extends State<TiketsPage> {
                 final tikets = state.tiketsFiltrados;
 
                 if (tikets.isEmpty) {
-                  return const Expanded(
+                  return Expanded(
                     child: Center(
-                      child: Text('Nenhum tiket encontrado'),
+                      child: Text(
+                        'Nenhum tiket encontrado',
+                        style: AppTheme.textStyles.labelNotFound,
+                      ),
                     ),
                   );
                 }

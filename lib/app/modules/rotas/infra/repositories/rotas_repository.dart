@@ -43,6 +43,8 @@ class RotasRepository implements IRotasRepository {
             .setFinalizada(false);
       }
 
+      rotas.sort((a, b) => a.id.value.compareTo(b.id.value));
+
       return rotas.toSuccess();
     } on DioError catch (e) {
       return MyException(message: e.message).toFailure();

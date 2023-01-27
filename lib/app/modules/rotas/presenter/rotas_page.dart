@@ -5,6 +5,7 @@ import 'package:agil_coletas/app/components/my_input_widget.dart';
 import 'package:agil_coletas/app/components/my_list_shimmer_widget.dart';
 import 'package:agil_coletas/app/modules/rotas/presenter/bloc/events/rotas_events.dart';
 import 'package:agil_coletas/app/modules/rotas/presenter/bloc/states/rotas_states.dart';
+import 'package:agil_coletas/app/theme/app_theme.dart';
 import 'package:agil_coletas/app/utils/constants.dart';
 import 'package:agil_coletas/app/utils/formatters.dart';
 import 'package:agil_coletas/app/utils/my_snackbar.dart';
@@ -90,9 +91,12 @@ class _RotasPageState extends State<RotasPage> {
                   final rotas = state.rotasFiltradas;
 
                   if (rotas.isEmpty) {
-                    return const Expanded(
+                    return Expanded(
                       child: Center(
-                        child: Text('Lista de rotas está vazia'),
+                        child: Text(
+                          'Lista de rotas está vazia',
+                          style: AppTheme.textStyles.labelNotFound,
+                        ),
                       ),
                     );
                   }

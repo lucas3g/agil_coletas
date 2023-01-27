@@ -96,8 +96,10 @@ class _ImpressorasPageState extends State<ImpressorasPage> {
                 bloc: widget.impressoraBloc,
                 builder: (context, state) {
                   if (state is LoadingImpressora) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
+                    return const Expanded(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     );
                   }
 
@@ -108,9 +110,14 @@ class _ImpressorasPageState extends State<ImpressorasPage> {
                     final impressoras = state.impressoras;
 
                     if (impressoras.isEmpty) {
-                      return const Center(
-                        child: Text(
-                            'Nenhuma impressora encontrada ou Bluetooth esta desligado.'),
+                      return Expanded(
+                        child: Center(
+                          child: Text(
+                            'Nenhuma impressora encontrada ou Bluetooth esta desligado.',
+                            style: AppTheme.textStyles.labelNotFound,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       );
                     }
 
