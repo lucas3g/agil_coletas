@@ -8,6 +8,7 @@ abstract class ISQLFliteStorage {
       SQLFliteGetPerFilterParam param);
   Future<List<Map<String, dynamic>>> getAll(SQLFliteGetAllParam param);
   Future<void> delete(SQLFliteDeleteParam param);
+  Future<List<Map<String, dynamic>>> getColetasTikets(int idColeta);
   Future<void> deleteAll(SQLFliteDeleteAllParam param);
   Future<bool> update(SQLFliteUpdateParam param);
   Future<bool> rawUpdate(SQLFliteRawUpdateParam param);

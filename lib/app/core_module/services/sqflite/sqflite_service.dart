@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:agil_coletas/app/core_module/services/sqflite/adapters/tables.dart';
 import 'package:path/path.dart';
 import 'package:agil_coletas/app/core_module/services/sqflite/adapters/sqflite_adapter.dart';
 import 'package:agil_coletas/app/core_module/services/sqflite/adapters/table_entity.dart';
@@ -145,5 +146,21 @@ class SQLFliteService implements ISQLFliteStorage {
         param.table.name.toUpperCase(),
       );
     });
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getColetasTikets(int idColeta) async {
+    List<Map<String, dynamic>> result = [];
+
+    await _db!.transaction((txn) async {
+      result = await txn.query(
+        Tables.tikets.name.toUpperCase(),
+        where:
+            'id_coleta = ? and (quantidade > 0 or temperatura != 0 or observacao != ?) ',
+        whereArgs: [idColeta, ''],
+      );
+    });
+
+    return List<Map<String, dynamic>>.from(result);
   }
 }

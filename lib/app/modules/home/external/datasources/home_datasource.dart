@@ -97,36 +97,7 @@ class HomeDatasource implements IHomeDatasource {
 
     if (coletas.isNotEmpty) {
       for (var coleta in coletas) {
-        final filterId = FilterEntity(
-            name: 'ID_COLETA',
-            value: coleta.id,
-            type: FilterType.equal,
-            operator: FilterOperator.and);
-
-        const filterQtd = FilterEntity(
-            name: 'QUANTIDADE',
-            value: 0,
-            type: FilterType.biggerThen,
-            operator: FilterOperator.or);
-
-        const filterTemp = FilterEntity(
-            name: 'TEMPERATURA',
-            value: 0,
-            type: FilterType.biggerThen,
-            operator: FilterOperator.or);
-
-        const filterObs = FilterEntity(
-            name: 'OBSERVACAO',
-            value: '',
-            type: FilterType.different,
-            operator: FilterOperator.or);
-
-        final paramTiket = SQLFliteGetPerFilterParam(
-            table: Tables.tikets,
-            columns: [],
-            filters: {filterId, filterQtd, filterTemp, filterObs});
-
-        final tikets = await storage.getPerFilter(paramTiket);
+        final tikets = await storage.getColetasTikets(coleta.id);
 
         final List<Tiket> listTikets = [];
 
