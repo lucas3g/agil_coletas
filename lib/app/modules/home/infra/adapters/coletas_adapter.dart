@@ -60,8 +60,29 @@ class ColetasAdapter {
     };
   }
 
+  static Map<String, dynamic> toMapServer(Coletas coleta) {
+    return {
+      'id': coleta.id,
+      'rota_coleta': coleta.rota.codigo,
+      'rota_nome': coleta.rota.nome,
+      'data_mov': coleta.dataMov.replaceAll('.', '/'),
+      'dt_hora_ini': coleta.datasColeta.dataHoraInicial.replaceAll('.', '/'),
+      'dt_hora_fim': coleta.datasColeta.dataHoraFinal.replaceAll('.', '/'),
+      'motorista': coleta.motorista,
+      'km_inicio': coleta.km.inicial,
+      'km_fim': coleta.km.ffinal,
+      'ccusto': coleta.ccusto,
+      'tanques': coleta.particoes,
+      'transportador': coleta.placa,
+      'placa': coleta.placa,
+      'rota_finalizada': coleta.finalizada ? 1 : 0,
+      'enviada': coleta.enviada ? 1 : 0,
+    };
+  }
+
   static Map<String, dynamic> toMapSQL(Coletas coleta) {
     return {
+      'DT_HORA_FIM': coleta.datasColeta.dataHoraFinal,
       'TOTAL_COLETADO': coleta.totalColetado,
       'KM_FIM': coleta.km.ffinal,
       'FINALIZADA': coleta.finalizada ? 1 : 0,

@@ -11,6 +11,8 @@ import 'package:agil_coletas/app/core_module/types/my_exception.dart';
 import 'package:agil_coletas/app/modules/home/domain/entities/coletas.dart';
 import 'package:agil_coletas/app/modules/home/infra/adapters/coletas_adapter.dart';
 import 'package:agil_coletas/app/modules/home/infra/datasources/home_datasource.dart';
+import 'package:agil_coletas/app/modules/tikets/domain/entities/tiket.dart';
+import 'package:agil_coletas/app/modules/tikets/infra/adapters/tiket_adapter.dart';
 
 class HomeDatasource implements IHomeDatasource {
   final ISQLFliteStorage storage;
@@ -126,9 +128,18 @@ class HomeDatasource implements IHomeDatasource {
 
         final tikets = await storage.getPerFilter(paramTiket);
 
+        final List<Tiket> listTikets = [];
+
+        for (var tiket in tikets) {
+          listTikets.add(TiketAdapter.fromMap(tiket));
+        }
+
         if (tikets.isNotEmpty) {
           coletasWithTikets = [
-            {...ColetasAdapter.toMap(coleta), 'tikets': tikets},
+            {
+              ...ColetasAdapter.toMapServer(coleta),
+              'tikets': TiketAdapter.toListJsonServer(listTikets)
+            },
             ...coletasWithTikets
           ];
         }

@@ -34,6 +34,35 @@ class TiketAdapter {
     };
   }
 
+  static List<Map<String, dynamic>> toListJsonServer(List<Tiket> tikets) {
+    return tikets.map((tiket) {
+      return {
+        'id': tiket.id.value,
+        'id_coleta': tiket.idColeta,
+        'clifor': tiket.produtor.id.value,
+        'uf': tiket.produtor.uf,
+        'municipios': tiket.produtor.municipio,
+        'nome': tiket.produtor.nome,
+        'produto': 0,
+        'data': tiket.data,
+        'tiket': tiket.tiket,
+        'quantidade': tiket.quantidade.value,
+        'per_desconto': 0.0,
+        'ccusto': tiket.ccusto,
+        'rota': tiket.rota.codigo,
+        'rota_coleta': tiket.produtor.rotaColeta,
+        'crioscopia': tiket.crioscopia,
+        'alizarol': tiket.alizarol ? 1 : 0,
+        'hora': tiket.hora,
+        'particao': tiket.particao,
+        'observacao': tiket.observacao,
+        'placa': tiket.placa,
+        'temperatura': tiket.temperatura.value,
+        'qtd_vezes_editado': tiket.qtdVezesEditado,
+      };
+    }).toList();
+  }
+
   static Tiket fromMap(dynamic map) {
     return Tiket(
       id: IdVO(map['ID']),

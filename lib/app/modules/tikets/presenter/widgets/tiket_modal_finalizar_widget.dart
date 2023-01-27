@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
+import 'package:agil_coletas/app/utils/formatters.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -113,6 +114,9 @@ class _TiketModalFinalizarWidgetState extends State<TiketModalFinalizarWidget> {
                       }
 
                       widget.coleta.setFinalizada(true);
+                      widget.coleta.setDatasColeta(
+                          dataHoraFinal:
+                              '"${DateTime.now().DiaMesAnoDB()} ${DateTime.now().hour}:${DateTime.now().minute.toString().padLeft(2, '0')}"');
 
                       homeBloc.add(UpdateColetaEvent(coleta: widget.coleta));
                     },
