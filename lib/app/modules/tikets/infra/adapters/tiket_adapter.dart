@@ -44,7 +44,7 @@ class TiketAdapter {
         'municipios': tiket.produtor.municipio,
         'nome': tiket.produtor.nome,
         'produto': 0,
-        'data': tiket.data,
+        'data': tiket.data.replaceAll('.', '/'),
         'tiket': tiket.tiket,
         'quantidade': tiket.quantidade.value,
         'per_desconto': 0.0,
