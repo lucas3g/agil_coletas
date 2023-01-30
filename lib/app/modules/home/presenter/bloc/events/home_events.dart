@@ -20,3 +20,5 @@ class UpdateColetaEvent extends HomeEvents {
     required this.coleta,
   });
 }
+
+class RemoveAllColetasEvent extends HomeEvents {}

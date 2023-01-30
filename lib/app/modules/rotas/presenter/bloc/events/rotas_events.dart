@@ -20,3 +20,5 @@ class SaveRotasEvent extends RotasEvents {
     required this.rotas,
   });
 }
+
+class RemoveAllRotasEvent extends RotasEvents {}

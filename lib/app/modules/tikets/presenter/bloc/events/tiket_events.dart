@@ -35,3 +35,5 @@ class FilterTiketsEvent extends TiketEvents {
     required this.filtro,
   });
 }
+
+class RemoveAllTiketsEvent extends TiketEvents {}

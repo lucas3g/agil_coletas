@@ -12,3 +12,5 @@ class SaveProdutoresEvent extends ProdutorEvents {
     required this.produtores,
   });
 }
+
+class RemoveAllProdutores extends ProdutorEvents {}

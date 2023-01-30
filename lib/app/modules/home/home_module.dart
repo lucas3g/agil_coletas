@@ -1,6 +1,8 @@
+import 'package:agil_coletas/app/modules/config/config_module.dart';
 import 'package:agil_coletas/app/modules/home/domain/repositories/home_repository.dart';
 import 'package:agil_coletas/app/modules/home/domain/usecases/create_coleta_usecase.dart';
 import 'package:agil_coletas/app/modules/home/domain/usecases/get_coletas_usecase.dart';
+import 'package:agil_coletas/app/modules/home/domain/usecases/remove_all_coletas_usecase.dart';
 import 'package:agil_coletas/app/modules/home/domain/usecases/send_coleta_to_server_usecase.dart';
 import 'package:agil_coletas/app/modules/home/domain/usecases/update_coleta_usecase.dart';
 import 'package:agil_coletas/app/modules/home/external/datasources/home_datasource.dart';
@@ -21,6 +23,7 @@ class HomeModule extends Module {
     RotasModules(),
     TiketsModule(),
     ImpressorasModule(),
+    ConfigModule(),
   ];
 
   @override
@@ -48,6 +51,9 @@ class HomeModule extends Module {
     Bind.factory<ISendColetaToServerUseCase>(
       (i) => SendColetaToServerUseCase(repository: i()),
     ),
+    Bind.factory<IRemoveAllColetasUseCase>(
+      (i) => RemoveAllColetasUseCase(repository: i()),
+    ),
 
     //BLOCS
     BlocBind.factory<HomeBloc>(
@@ -55,6 +61,7 @@ class HomeModule extends Module {
         getColetasUseCase: i(),
         createColetasUseCase: i(),
         updateColetasUseCase: i(),
+        removeAllColetasUseCase: i(),
       ),
     ),
 
@@ -88,6 +95,11 @@ class HomeModule extends Module {
     ModuleRoute(
       '/impressoras',
       module: ImpressorasModule(),
+      transition: TransitionType.noTransition,
+    ),
+    ModuleRoute(
+      '/config',
+      module: ConfigModule(),
       transition: TransitionType.noTransition,
     ),
   ];

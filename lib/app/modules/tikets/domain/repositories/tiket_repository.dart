@@ -7,4 +7,5 @@ abstract class ITiketRepository {
   Future<Result<List<Tiket>, IMyException>> getTikets(int idColeta);
   Future<Result<int, IMyException>> createTikets(Coletas coleta);
   Future<Result<bool, IMyException>> updateTiket(Tiket tiket);
+  Future<Result<bool, IMyException>> removeAll();
 }

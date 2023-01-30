@@ -7,4 +7,5 @@ abstract class IHomeRepository {
   Future<Result<Coletas, IMyException>> createColeta(Coletas coleta);
   Future<Result<bool, IMyException>> updateColeta(Coletas coleta);
   Future<Result<bool, IMyException>> sendColetaToSever();
+  Future<Result<bool, IMyException>> removeAll();
 }

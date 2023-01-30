@@ -76,4 +76,13 @@ class RotasDatasource implements IRotasDatasource {
 
     return true;
   }
+
+  @override
+  Future<bool> removeAll() async {
+    final paramDelete = SQLFliteDeleteAllParam(table: Tables.rotas);
+
+    await storage.deleteAll(paramDelete);
+
+    return true;
+  }
 }

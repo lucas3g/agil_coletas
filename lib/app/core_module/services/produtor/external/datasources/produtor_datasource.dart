@@ -46,4 +46,13 @@ class ProdutorDatasource implements IProdutorDatasource {
 
     return true;
   }
+
+  @override
+  Future<bool> removeAll() async {
+    final paramDelete = SQLFliteDeleteAllParam(table: Tables.produtores);
+
+    await storage.deleteAll(paramDelete);
+
+    return true;
+  }
 }

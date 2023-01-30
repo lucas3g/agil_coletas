@@ -20,3 +20,5 @@ class SaveTransportadorEvent extends TransportadorEvents {
     required this.transportadores,
   });
 }
+
+class RemoveAllTransportadores extends TransportadorEvents {}

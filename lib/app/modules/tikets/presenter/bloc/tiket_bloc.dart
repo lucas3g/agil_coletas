@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:agil_coletas/app/modules/tikets/domain/usecases/remove_all_tikets_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:agil_coletas/app/modules/tikets/domain/usecases/create_tikets_by_coleta_usecase.dart';
@@ -11,16 +12,19 @@ class TiketBloc extends Bloc<TiketEvents, TiketStates> {
   final IGetTiketByColetaUseCase getTiketByColetaUseCase;
   final ICreateTiketByColetaUseCase createTiketByColetaUseCase;
   final IUpdateTiketUseCase updateTiketUseCase;
+  final IRemoveAllTiketUseCase removeAllTiketUseCase;
 
   TiketBloc({
     required this.getTiketByColetaUseCase,
     required this.createTiketByColetaUseCase,
     required this.updateTiketUseCase,
+    required this.removeAllTiketUseCase,
   }) : super(InitialTiket()) {
     on<GetTiketsEvent>(_getTikets);
     on<CreateTiketsEvent>(_createTikets);
     on<UpdateTiketEvent>(_updateTiket);
     on<FilterTiketsEvent>(_searchTikets);
+    on<RemoveAllTiketsEvent>(_removeAll);
   }
 
   Future _getTikets(GetTiketsEvent event, emit) async {
@@ -58,5 +62,9 @@ class TiketBloc extends Bloc<TiketEvents, TiketStates> {
 
   void _searchTikets(FilterTiketsEvent event, emit) {
     emit(state.successGet(filtro: event.filtro));
+  }
+
+  Future _removeAll(RemoveAllTiketsEvent event, emit) async {
+    await removeAllTiketUseCase();
   }
 }

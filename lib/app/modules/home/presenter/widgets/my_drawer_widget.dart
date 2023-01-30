@@ -110,6 +110,20 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
                           Modular.to.pushNamed('/home/impressoras/');
                         },
                       ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.settings,
+                          color: AppTheme.colors.primary,
+                        ),
+                        minLeadingWidth: 10,
+                        title: Text(
+                          'Configurações',
+                          style: AppTheme.textStyles.subtitleDrawer,
+                        ),
+                        onTap: () {
+                          Modular.to.pushNamed('/home/config/');
+                        },
+                      ),
                       BlocBuilder<AuthBloc, AuthStates>(
                           bloc: authBloc,
                           builder: (context, state) {
@@ -140,7 +154,7 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
                   ),
                   ListTile(
                     title: Text(
-                      'Versão 1.0.2',
+                      'Versão 2.0.0',
                       textAlign: TextAlign.end,
                       style: AppTheme.textStyles.subtitleDrawer,
                     ),

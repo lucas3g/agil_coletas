@@ -78,4 +78,13 @@ class TiketDatasource implements ITiketDatasource {
 
     return result;
   }
+
+  @override
+  Future<bool> removeAll() async {
+    final param = SQLFliteDeleteAllParam(table: Tables.tikets);
+
+    await storage.deleteAll(param);
+
+    return true;
+  }
 }

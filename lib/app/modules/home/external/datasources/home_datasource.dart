@@ -142,4 +142,13 @@ class HomeDatasource implements IHomeDatasource {
 
     return true;
   }
+
+  @override
+  Future<bool> removeAll() async {
+    final param = SQLFliteDeleteAllParam(table: Tables.coletas);
+
+    await storage.deleteAll(param);
+
+    return true;
+  }
 }

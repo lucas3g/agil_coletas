@@ -34,7 +34,6 @@ class _MyElevatedButtonWidgetState extends State<MyElevatedButtonWidget> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          padding: EdgeInsets.zero,
         ),
         child: widget.label,
       ),

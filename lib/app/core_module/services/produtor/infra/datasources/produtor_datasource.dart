@@ -2,5 +2,6 @@ import 'package:agil_coletas/app/core_module/services/produtor/domain/entities/p
 
 abstract class IProdutorDatasource {
   Future<String> getProdutores();
+  Future<bool> removeAll();
   Future<bool> saveProdutores(List<Produtor> produtores);
 }

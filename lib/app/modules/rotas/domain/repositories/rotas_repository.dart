@@ -4,5 +4,6 @@ import 'package:result_dart/result_dart.dart';
 
 abstract class IRotasRepository {
   Future<Result<List<Rotas>, IMyException>> getRotas();
+  Future<Result<bool, IMyException>> removeAll();
   Future<Result<bool, IMyException>> saveRotas(List<Rotas> rotas);
 }

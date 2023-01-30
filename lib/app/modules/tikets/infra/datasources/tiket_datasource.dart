@@ -5,4 +5,5 @@ abstract class ITiketDatasource {
   Future<int> createTikets(Coletas coleta);
   Future<List> getTikets(int idColeta);
   Future<bool> updateTiket(Tiket tiket);
+  Future<bool> removeAll();
 }

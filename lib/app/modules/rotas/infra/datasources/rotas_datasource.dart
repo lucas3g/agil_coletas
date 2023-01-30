@@ -5,4 +5,5 @@ abstract class IRotasDatasource {
   Future<List> getRotasOffline();
   Future<List> getRotasNaoFinalizadas();
   Future<bool> saveRotas(List<Rotas> rotas);
+  Future<bool> removeAll();
 }

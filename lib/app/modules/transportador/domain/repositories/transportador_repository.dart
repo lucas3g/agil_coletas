@@ -4,6 +4,7 @@ import 'package:result_dart/result_dart.dart';
 
 abstract class ITransportadorRepository {
   Future<Result<List<Transportador>, IMyException>> getTransportador();
+  Future<Result<bool, IMyException>> removeAll();
   Future<Result<bool, IMyException>> saveTransportador(
       List<Transportador> transportadores);
 }

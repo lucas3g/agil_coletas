@@ -70,4 +70,13 @@ class TransportadorDatasource implements ITransportadorDatasource {
 
     return true;
   }
+
+  @override
+  Future<bool> removeAll() async {
+    final paramDelete = SQLFliteDeleteAllParam(table: Tables.caminhoes);
+
+    await storage.deleteAll(paramDelete);
+
+    return true;
+  }
 }

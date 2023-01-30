@@ -52,6 +52,8 @@ class _TiketsPageState extends State<TiketsPage> {
   late StreamSubscription sub;
   late StreamSubscription subProdutor;
 
+  final cPesquisa = TextEditingController();
+
   final Coletas coleta = Modular.args.data['coleta'];
   final bool editando = Modular.args.data['editando'];
 
@@ -97,6 +99,12 @@ class _TiketsPageState extends State<TiketsPage> {
         );
       }
 
+      if (state is SuccessGetTikets) {
+        if (state.tikets.isEmpty) {
+          widget.tiketBloc.add(CreateTiketsEvent(coleta: coleta));
+        }
+      }
+
       if (state is SuccessCreateTiket || state is SuccessUpdateTikets) {
         widget.tiketBloc.add(GetTiketsEvent(codColeta: coleta.id));
       }
@@ -125,174 +133,196 @@ class _TiketsPageState extends State<TiketsPage> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(kPadding),
-        child: Column(
-          children: [
-            MyInputWidget(
-              label: 'Pesquisa',
-              hintText: 'Digite o nome do produtor',
-              onChanged: (e) {
-                widget.tiketBloc.add(FilterTiketsEvent(filtro: e));
-              },
-              inputFormaters: [UpperCaseTextFormatter()],
-            ),
-            const Divider(),
-            BlocBuilder<TiketBloc, TiketStates>(
-              bloc: widget.tiketBloc,
-              builder: (context, state) {
-                if (state is! SuccessGetTikets) {
-                  return const Expanded(child: MyListShimmerWidget());
-                }
+      body: WillPopScope(
+        onWillPop: () async {
+          Modular.to.navigate('/home/');
+          return false;
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(kPadding),
+          child: Column(
+            children: [
+              MyInputWidget(
+                controller: cPesquisa,
+                label: 'Pesquisa',
+                hintText: 'Digite o nome do produtor',
+                onChanged: (e) {
+                  widget.tiketBloc.add(FilterTiketsEvent(filtro: e));
+                },
+                inputFormaters: [UpperCaseTextFormatter()],
+              ),
+              const Divider(),
+              BlocBuilder<TiketBloc, TiketStates>(
+                bloc: widget.tiketBloc,
+                builder: (context, state) {
+                  if (state is! SuccessGetTikets) {
+                    return const Expanded(child: MyListShimmerWidget());
+                  }
 
-                final tikets = state.tiketsFiltrados;
+                  final tikets = state.tiketsFiltrados;
 
-                if (tikets.isEmpty) {
-                  return Expanded(
-                    child: Center(
-                      child: Text(
-                        'Nenhum tiket encontrado',
-                        style: AppTheme.textStyles.labelNotFound,
-                      ),
-                    ),
-                  );
-                }
-
-                return Expanded(
-                  child: Column(
-                    children: [
-                      Row(
+                  if (tikets.isEmpty) {
+                    return Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'Total Coletado: ',
-                            style: AppTheme.textStyles.labelTotalColetadoRed,
+                            'Nenhum tiket encontrado',
+                            style: AppTheme.textStyles.labelNotFound,
                           ),
-                          Expanded(
-                            child: Text(
-                              TiketController.totalColetado(
-                                tikets,
-                                coleta,
-                                widget.homeBloc,
-                              ).toString(),
-                              style:
-                                  AppTheme.textStyles.labelTotalColetadoBlack,
-                            ),
+                          const SizedBox(height: 10),
+                          MyElevatedButtonWidget(
+                            label: const Text('Buscar produtores'),
+                            onPressed: () {
+                              widget.tiketBloc
+                                  .add(GetTiketsEvent(codColeta: coleta.id));
+
+                              cPesquisa.clear();
+                            },
                           ),
                         ],
                       ),
-                      const SizedBox(height: 5),
-                      Expanded(
-                        child: ListView.builder(
-                          itemBuilder: (context, index) {
-                            final tiket = tikets[index];
+                    );
+                  }
 
-                            return Container(
-                              margin: const EdgeInsets.only(bottom: 15),
-                              decoration: BoxDecoration(
-                                  color:
-                                      TiketController.retornaCorDoCard(tiket),
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: TiketController.retornaCorDoCard(
-                                          tiket),
-                                      blurRadius: 3,
-                                      offset: const Offset(0, 5),
-                                    )
-                                  ]),
-                              child: ListTile(
-                                onTap: () async {
-                                  await showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (context) => TiketModalWidget(
-                                      tiket: tiket,
-                                      tiketBloc: widget.tiketBloc,
-                                      impressoraBloc: widget.impressoraBloc,
-                                      imp: imp,
-                                      particoes: coleta.particoes,
-                                    ),
-                                  );
-                                },
-                                leading: SizedBox(
-                                  height: double.maxFinite,
-                                  child:
-                                      TiketController.retornaIconeCard(tiket),
-                                ),
-                                minLeadingWidth: 10,
-                                title: Text(
-                                  tiket.produtor.nome,
-                                  style: AppTheme.textStyles.titleListTikets,
-                                ),
-                                trailing: imp.connected
-                                    ? IconButton(
-                                        icon: const Icon(
-                                          Icons.print_rounded,
-                                          color: Colors.black,
-                                        ),
-                                        onPressed: () {
-                                          widget.impressoraBloc.add(
-                                            ImprimirTiketEvent(tiket),
-                                          );
-                                        },
-                                      )
-                                    : null,
-                                subtitle: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Município: ',
-                                      style: AppTheme
-                                          .textStyles.subTitleListTikets,
-                                    ),
-                                    Expanded(
-                                      child: Text(tiket.produtor.municipio),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                          itemCount: tikets.length,
-                        ),
-                      ),
-                      const Divider(),
-                    ],
-                  ),
-                );
-              },
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: MyElevatedButtonWidget(
-                    height: 50,
-                    label: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                  return Expanded(
+                    child: Column(
                       children: [
-                        const Icon(Icons.check_circle_outline_outlined),
-                        const SizedBox(width: 10),
-                        Text(
-                          'Finalizar Rota',
-                          style: AppTheme.textStyles.labelButtonFinalizar,
+                        Row(
+                          children: [
+                            Text(
+                              'Total Coletado: ',
+                              style: AppTheme.textStyles.labelTotalColetadoRed,
+                            ),
+                            Expanded(
+                              child: Text(
+                                TiketController.totalColetado(
+                                  tikets,
+                                  coleta,
+                                  widget.homeBloc,
+                                ).toString(),
+                                style:
+                                    AppTheme.textStyles.labelTotalColetadoBlack,
+                              ),
+                            ),
+                          ],
                         ),
+                        const SizedBox(height: 5),
+                        Expanded(
+                          child: ListView.builder(
+                            itemBuilder: (context, index) {
+                              final tiket = tikets[index];
+
+                              return Container(
+                                margin: const EdgeInsets.only(bottom: 15),
+                                decoration: BoxDecoration(
+                                    color:
+                                        TiketController.retornaCorDoCard(tiket),
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: TiketController.retornaCorDoCard(
+                                            tiket),
+                                        blurRadius: 3,
+                                        offset: const Offset(0, 5),
+                                      )
+                                    ]),
+                                child: ListTile(
+                                  onTap: () async {
+                                    await showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (context) => TiketModalWidget(
+                                        tiket: tiket,
+                                        tiketBloc: widget.tiketBloc,
+                                        impressoraBloc: widget.impressoraBloc,
+                                        imp: imp,
+                                        particoes: coleta.particoes,
+                                      ),
+                                    );
+                                  },
+                                  leading: SizedBox(
+                                    height: double.maxFinite,
+                                    child:
+                                        TiketController.retornaIconeCard(tiket),
+                                  ),
+                                  minLeadingWidth: 10,
+                                  title: Text(
+                                    tiket.produtor.nome,
+                                    style: AppTheme.textStyles.titleListTikets,
+                                  ),
+                                  trailing: imp.connected
+                                      ? IconButton(
+                                          icon: const Icon(
+                                            Icons.print_rounded,
+                                            color: Colors.black,
+                                          ),
+                                          onPressed: () {
+                                            widget.impressoraBloc.add(
+                                              ImprimirTiketEvent(tiket),
+                                            );
+                                          },
+                                        )
+                                      : null,
+                                  subtitle: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Município: ',
+                                        style: AppTheme
+                                            .textStyles.subTitleListTikets,
+                                      ),
+                                      Expanded(
+                                        child: Text(tiket.produtor.municipio),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                            itemCount: tikets.length,
+                          ),
+                        ),
+                        const Divider(),
                       ],
                     ),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => TiketModalFinalizarWidget(
-                          coleta: coleta,
-                          impressoraBloc: widget.impressoraBloc,
-                          imp: imp,
-                        ),
-                      );
-                    },
+                  );
+                },
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: MyElevatedButtonWidget(
+                      height: 50,
+                      label: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.check_circle_outline_outlined),
+                          const SizedBox(width: 10),
+                          Text(
+                            'Finalizar Rota',
+                            style: AppTheme.textStyles.labelButtonFinalizar,
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => TiketModalFinalizarWidget(
+                            coleta: coleta,
+                            impressoraBloc: widget.impressoraBloc,
+                            imp: imp,
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

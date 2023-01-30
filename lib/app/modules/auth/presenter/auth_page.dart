@@ -178,183 +178,187 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: kPadding, vertical: 10),
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            Expanded(
-              flex: 4,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SvgPicture.asset(
-                    pathLogo,
-                    width: context.screenWidth * .8,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 10,
-              child: Form(
-                key: gkForm,
-                child: ListView(
+      body: SafeArea(
+        child: Padding(
+          padding:
+              const EdgeInsets.symmetric(horizontal: kPadding, vertical: 10),
+          child: Column(
+            children: [
+              Expanded(
+                flex: 4,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      'Faça o login agora com sua conta',
-                      style: AppTheme.textStyles.labelLogin,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 10),
-                    MyInputWidget(
-                      focusNode: fCNPJ,
-                      label: 'CNPJ',
-                      hintText: 'Digite o CNPJ da empresa',
-                      keyboardType: TextInputType.number,
-                      value: user.cnpj.value,
-                      validator: (v) => user.cnpj.validate().exceptionOrNull(),
-                      onChanged: (e) => user.setCNPJ(e),
-                      inputFormaters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        CnpjInputFormatter(),
-                      ],
-                      onFieldSubmitted: (v) => fLogin.requestFocus(),
-                    ),
-                    const SizedBox(height: 10),
-                    MyInputWidget(
-                      focusNode: fLogin,
-                      label: 'Usuário',
-                      hintText: 'Digite o seu usuário',
-                      value: user.login.value,
-                      validator: (v) => user.login.validate().exceptionOrNull(),
-                      onChanged: (e) => user.setLogin(e),
-                      inputFormaters: [UpperCaseTextFormatter()],
-                      onFieldSubmitted: (v) => fPassword.requestFocus(),
-                    ),
-                    const SizedBox(height: 10),
-                    MyInputWidget(
-                      focusNode: fPassword,
-                      label: 'Senha',
-                      hintText: 'Digite a sua senha',
-                      obscureText: visiblePass,
-                      maxLines: 1,
-                      value: user.password.value,
-                      validator: (v) =>
-                          user.password.validate().exceptionOrNull(),
-                      onChanged: (e) => user.setPassword(e),
-                      inputFormaters: [UpperCaseTextFormatter()],
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            visiblePass = !visiblePass;
-                          });
-                        },
-                        icon: !visiblePass
-                            ? Icon(
-                                Icons.visibility,
-                                color: AppTheme.colors.primary,
-                              )
-                            : const Icon(
-                                Icons.visibility_off,
-                                color: Colors.grey,
-                              ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    BlocBuilder<LicenseBloc, LicenseStates>(
-                        bloc: widget.licenseBloc,
-                        builder: (context, licenseState) {
-                          return BlocBuilder<AuthBloc, AuthStates>(
-                            bloc: widget.authBloc,
-                            builder: (context, state) {
-                              return MyElevatedButtonWidget(
-                                height: 40,
-                                label: retornaLogin(state, licenseState),
-                                onPressed: () {
-                                  if (!gkForm.currentState!.validate()) {
-                                    return;
-                                  }
-
-                                  FocusScope.of(context)
-                                      .requestFocus(FocusNode());
-
-                                  widget.licenseBloc.add(
-                                    VerifyLicenseEvent(
-                                      deviceInfo:
-                                          GlobalDevice.instance.deviceInfo,
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        }),
-                    const SizedBox(height: 10),
-                    TextButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return MyAlertDialogWidget(
-                              title: 'Código de Autenticação',
-                              content:
-                                  GlobalDevice.instance.deviceInfo.deviceID,
-                              okButton: MyElevatedButtonWidget(
-                                height: 45,
-                                label: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Icon(Icons.message_rounded),
-                                    SizedBox(width: 10),
-                                    Text('WhatsApp'),
-                                  ],
-                                ),
-                                onPressed: () {
-                                  AuthController.openWhatsapp(
-                                    text:
-                                        'Olá, desejo usar o aplicativo do Ágil Coletas esse é meu codigo de autenticação: ${GlobalDevice.instance.deviceInfo.deviceID}',
-                                    number: '+555499712433',
-                                  );
-                                },
-                              ),
-                              cancelButton: MyElevatedButtonWidget(
-                                height: 45,
-                                label: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Icon(Icons.close),
-                                    SizedBox(width: 10),
-                                    Text('Fechar'),
-                                  ],
-                                ),
-                                onPressed: () {
-                                  Modular.to.pop('dialog');
-                                },
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: const Text('Licença para acessar'),
+                    SvgPicture.asset(
+                      pathLogo,
+                      width: context.screenWidth * .8,
                     ),
                   ],
                 ),
               ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'EL Sistemas - 2023 - 054 3364-1588',
-                    style: AppTheme.textStyles.labelLogin,
+              Expanded(
+                flex: 10,
+                child: Form(
+                  key: gkForm,
+                  child: ListView(
+                    children: [
+                      Text(
+                        'Faça o login agora com sua conta',
+                        style: AppTheme.textStyles.labelLogin,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 10),
+                      MyInputWidget(
+                        focusNode: fCNPJ,
+                        label: 'CNPJ',
+                        hintText: 'Digite o CNPJ da empresa',
+                        keyboardType: TextInputType.number,
+                        value: user.cnpj.value,
+                        validator: (v) =>
+                            user.cnpj.validate().exceptionOrNull(),
+                        onChanged: (e) => user.setCNPJ(e),
+                        inputFormaters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          CnpjInputFormatter(),
+                        ],
+                        onFieldSubmitted: (v) => fLogin.requestFocus(),
+                      ),
+                      const SizedBox(height: 10),
+                      MyInputWidget(
+                        focusNode: fLogin,
+                        label: 'Usuário',
+                        hintText: 'Digite o seu usuário',
+                        value: user.login.value,
+                        validator: (v) =>
+                            user.login.validate().exceptionOrNull(),
+                        onChanged: (e) => user.setLogin(e),
+                        inputFormaters: [UpperCaseTextFormatter()],
+                        onFieldSubmitted: (v) => fPassword.requestFocus(),
+                      ),
+                      const SizedBox(height: 10),
+                      MyInputWidget(
+                        focusNode: fPassword,
+                        label: 'Senha',
+                        hintText: 'Digite a sua senha',
+                        obscureText: visiblePass,
+                        maxLines: 1,
+                        value: user.password.value,
+                        validator: (v) =>
+                            user.password.validate().exceptionOrNull(),
+                        onChanged: (e) => user.setPassword(e),
+                        inputFormaters: [UpperCaseTextFormatter()],
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              visiblePass = !visiblePass;
+                            });
+                          },
+                          icon: !visiblePass
+                              ? Icon(
+                                  Icons.visibility,
+                                  color: AppTheme.colors.primary,
+                                )
+                              : const Icon(
+                                  Icons.visibility_off,
+                                  color: Colors.grey,
+                                ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      BlocBuilder<LicenseBloc, LicenseStates>(
+                          bloc: widget.licenseBloc,
+                          builder: (context, licenseState) {
+                            return BlocBuilder<AuthBloc, AuthStates>(
+                              bloc: widget.authBloc,
+                              builder: (context, state) {
+                                return MyElevatedButtonWidget(
+                                  height: 40,
+                                  label: retornaLogin(state, licenseState),
+                                  onPressed: () {
+                                    if (!gkForm.currentState!.validate()) {
+                                      return;
+                                    }
+
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
+
+                                    widget.licenseBloc.add(
+                                      VerifyLicenseEvent(
+                                        deviceInfo:
+                                            GlobalDevice.instance.deviceInfo,
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          }),
+                      const SizedBox(height: 10),
+                      TextButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return MyAlertDialogWidget(
+                                title: 'Código de Autenticação',
+                                content:
+                                    GlobalDevice.instance.deviceInfo.deviceID,
+                                okButton: MyElevatedButtonWidget(
+                                  height: 45,
+                                  label: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(Icons.message_rounded),
+                                      SizedBox(width: 10),
+                                      Text('WhatsApp'),
+                                    ],
+                                  ),
+                                  onPressed: () {
+                                    AuthController.openWhatsapp(
+                                      text:
+                                          'Olá, desejo usar o aplicativo do Ágil Coletas esse é meu codigo de autenticação: ${GlobalDevice.instance.deviceInfo.deviceID}',
+                                      number: '+555499712433',
+                                    );
+                                  },
+                                ),
+                                cancelButton: MyElevatedButtonWidget(
+                                  height: 45,
+                                  label: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(Icons.close),
+                                      SizedBox(width: 10),
+                                      Text('Fechar'),
+                                    ],
+                                  ),
+                                  onPressed: () {
+                                    Modular.to.pop('dialog');
+                                  },
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: const Text('Licença para acessar'),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ],
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'EL Sistemas - 2023 - 054 3364-1588',
+                      style: AppTheme.textStyles.labelLogin,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
