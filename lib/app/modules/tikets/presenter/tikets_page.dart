@@ -84,7 +84,8 @@ class _TiketsPageState extends State<TiketsPage> {
     if (editando) {
       widget.tiketBloc.add(GetTiketsEvent(codColeta: coleta.id));
     } else {
-      getProdutores();
+      //getProdutores();
+      widget.tiketBloc.add(CreateTiketsEvent(coleta: coleta));
     }
 
     sub = widget.tiketBloc.stream.listen((state) {
@@ -141,7 +142,7 @@ class _TiketsPageState extends State<TiketsPage> {
               bloc: widget.tiketBloc,
               builder: (context, state) {
                 if (state is! SuccessGetTikets) {
-                  return const MyListShimmerWidget();
+                  return const Expanded(child: MyListShimmerWidget());
                 }
 
                 final tikets = state.tiketsFiltrados;
@@ -256,43 +257,40 @@ class _TiketsPageState extends State<TiketsPage> {
                         ),
                       ),
                       const Divider(),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: MyElevatedButtonWidget(
-                              height: 50,
-                              label: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                      Icons.check_circle_outline_outlined),
-                                  const SizedBox(width: 10),
-                                  Text(
-                                    'Finalizar Rota',
-                                    style: AppTheme
-                                        .textStyles.labelButtonFinalizar,
-                                  ),
-                                ],
-                              ),
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) =>
-                                      TiketModalFinalizarWidget(
-                                    coleta: coleta,
-                                    impressoraBloc: widget.impressoraBloc,
-                                    imp: imp,
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
                     ],
                   ),
                 );
               },
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: MyElevatedButtonWidget(
+                    height: 50,
+                    label: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.check_circle_outline_outlined),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Finalizar Rota',
+                          style: AppTheme.textStyles.labelButtonFinalizar,
+                        ),
+                      ],
+                    ),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => TiketModalFinalizarWidget(
+                          coleta: coleta,
+                          impressoraBloc: widget.impressoraBloc,
+                          imp: imp,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
         ),
