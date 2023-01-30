@@ -276,6 +276,9 @@ class _AuthPageState extends State<AuthPage> {
                                     return;
                                   }
 
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+
                                   widget.licenseBloc.add(
                                     VerifyLicenseEvent(
                                       deviceInfo:

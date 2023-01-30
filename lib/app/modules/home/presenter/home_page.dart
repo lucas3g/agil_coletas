@@ -18,6 +18,7 @@ import 'package:agil_coletas/app/modules/home/presenter/widgets/send_coleta_serv
 import 'package:agil_coletas/app/theme/app_theme.dart';
 import 'package:agil_coletas/app/utils/constants.dart';
 import 'package:agil_coletas/app/utils/my_snackbar.dart';
+import 'package:upgrader/upgrader.dart';
 
 class HomePage extends StatefulWidget {
   final HomeBloc homeBloc;
@@ -120,139 +121,145 @@ class _HomePageState extends State<HomePage> {
         }),
       ),
       drawer: MyDrawerWidget(funcionario: funcionario),
-      body: Padding(
-        padding: const EdgeInsets.all(kPadding),
-        child: BlocBuilder<HomeBloc, HomeStates>(
-            bloc: widget.homeBloc,
-            builder: (context, state) {
-              if (state is! SuccessGetColetasHome) {
-                return const MyListShimmerWidget();
-              }
+      body: UpgradeAlert(
+        upgrader: Upgrader(
+          durationUntilAlertAgain: const Duration(days: 1),
+          minAppVersion: '34.0.0',
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(kPadding),
+          child: BlocBuilder<HomeBloc, HomeStates>(
+              bloc: widget.homeBloc,
+              builder: (context, state) {
+                if (state is! SuccessGetColetasHome) {
+                  return const MyListShimmerWidget();
+                }
 
-              final coletas = state.coletas;
+                final coletas = state.coletas;
 
-              if (coletas.isEmpty) {
-                return Center(
-                  child: Text(
-                    'Lista de coletas esta vazia.',
-                    style: AppTheme.textStyles.labelNotFound,
-                  ),
-                );
-              }
+                if (coletas.isEmpty) {
+                  return Center(
+                    child: Text(
+                      'Lista de coletas esta vazia.',
+                      style: AppTheme.textStyles.labelNotFound,
+                    ),
+                  );
+                }
 
-              return Column(
-                children: [
-                  Text(
-                    'Lista de Coletas',
-                    style: AppTheme.textStyles.titleListaColetas,
-                  ),
-                  const Divider(),
-                  Expanded(
-                    child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        final coleta = coletas[index];
+                return Column(
+                  children: [
+                    Text(
+                      'Lista de Coletas',
+                      style: AppTheme.textStyles.titleListaColetas,
+                    ),
+                    const Divider(),
+                    Expanded(
+                      child: ListView.separated(
+                        itemBuilder: (context, index) {
+                          final coleta = coletas[index];
 
-                        return Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 2,
-                                color: Colors.grey.shade300,
-                                offset: const Offset(0, 5),
-                              )
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade300,
-                                border: coleta.finalizada
-                                    ? AppTheme.borderStyle.borderGreen
-                                    : AppTheme.borderStyle.borderRed,
-                              ),
-                              child: ListTile(
-                                onTap: () {
-                                  switch (coleta.finalizada) {
-                                    case true:
-                                      MySnackBar(
-                                        title: 'Atenção',
-                                        message: 'Coleta já finalizada',
-                                        type: ContentType.help,
-                                      );
-
-                                      break;
-                                    default:
-                                      Modular.to.navigate(
-                                        '/home/tikets/',
-                                        arguments: {
-                                          'coleta': coleta,
-                                          'editando': true,
-                                        },
-                                      );
-                                  }
-                                },
-                                trailing: Container(
-                                  width: 20,
-                                  height: 20,
-                                  decoration: BoxDecoration(
-                                    color: !coleta.enviada
-                                        ? AppTheme.colors.primary
-                                        : AppTheme.colors.verde,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
+                          return Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 2,
+                                  color: Colors.grey.shade300,
+                                  offset: const Offset(0, 5),
+                                )
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade300,
+                                  border: coleta.finalizada
+                                      ? AppTheme.borderStyle.borderGreen
+                                      : AppTheme.borderStyle.borderRed,
                                 ),
-                                title: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            '${coleta.rota.codigo} - ${coleta.rota.nome}',
+                                child: ListTile(
+                                  onTap: () {
+                                    switch (coleta.finalizada) {
+                                      case true:
+                                        MySnackBar(
+                                          title: 'Atenção',
+                                          message: 'Coleta já finalizada',
+                                          type: ContentType.help,
+                                        );
+
+                                        break;
+                                      default:
+                                        Modular.to.navigate(
+                                          '/home/tikets/',
+                                          arguments: {
+                                            'coleta': coleta,
+                                            'editando': true,
+                                          },
+                                        );
+                                    }
+                                  },
+                                  trailing: Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                      color: !coleta.enviada
+                                          ? AppTheme.colors.primary
+                                          : AppTheme.colors.verde,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                  title: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              '${coleta.rota.codigo} - ${coleta.rota.nome}',
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    contentListTile(
-                                      'Data Mov.: ',
-                                      coleta.dataMov.replaceAll('.', '/'),
-                                    ),
-                                    contentListTile(
-                                      'KM: ',
-                                      '${coleta.km.inicial} / ${coleta.km.ffinal}',
-                                    ),
-                                    contentListTile(
-                                      'Placa: ',
-                                      coleta.placa,
-                                    ),
-                                    contentListTile(
-                                      'Total Coletado: ',
-                                      '${coleta.totalColetado}',
-                                    ),
-                                    contentListTile(
-                                      'Rota Finalizada: ',
-                                      coleta.finalizada ? 'Sim' : 'Não',
-                                    ),
-                                    contentListTile(
-                                      'Rota Enviada: ',
-                                      coleta.enviada ? 'Sim' : 'Não',
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                      contentListTile(
+                                        'Data Mov.: ',
+                                        coleta.dataMov.replaceAll('.', '/'),
+                                      ),
+                                      contentListTile(
+                                        'KM: ',
+                                        '${coleta.km.inicial} / ${coleta.km.ffinal}',
+                                      ),
+                                      contentListTile(
+                                        'Placa: ',
+                                        coleta.placa,
+                                      ),
+                                      contentListTile(
+                                        'Total Coletado: ',
+                                        '${coleta.totalColetado}',
+                                      ),
+                                      contentListTile(
+                                        'Rota Finalizada: ',
+                                        coleta.finalizada ? 'Sim' : 'Não',
+                                      ),
+                                      contentListTile(
+                                        'Rota Enviada: ',
+                                        coleta.enviada ? 'Sim' : 'Não',
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 15),
-                      itemCount: coletas.length,
+                          );
+                        },
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 15),
+                        itemCount: coletas.length,
+                      ),
                     ),
-                  ),
-                ],
-              );
-            }),
+                  ],
+                );
+              }),
+        ),
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(left: 30),

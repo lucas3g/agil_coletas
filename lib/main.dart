@@ -7,6 +7,7 @@ import 'package:intl/intl_standalone.dart';
 
 Future<void> main() async {
   await initializeDateFormatting(await findSystemLocale(), '');
+
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
