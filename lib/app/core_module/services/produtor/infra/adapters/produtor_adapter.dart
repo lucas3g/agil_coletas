@@ -9,7 +9,7 @@ class ProdutorAdapter {
       municipio: map['MUNICIPIOS'],
       uf: map['UF'],
       codRota: map['ROTA'],
-      rotaColeta: map['ROTA_COLETA'],
+      rotaColeta: map['ROTA_COLETA'] ?? 0,
     );
   }
 
