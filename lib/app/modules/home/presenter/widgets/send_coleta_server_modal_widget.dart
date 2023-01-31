@@ -142,88 +142,85 @@ class _SendColetaServerModalWidgetState
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldMessenger(
-      child: Builder(builder: (context) {
-        return Scaffold(
-          backgroundColor: Colors.transparent,
-          body: AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Enviar coletas para o servidor?',
-                  style: AppTheme.textStyles.titleAlertDialog,
-                  textAlign: TextAlign.center,
-                ),
-                const Divider(),
-                Row(
-                  children: [
-                    Expanded(
-                      child: MyElevatedButtonWidget(
-                        backgroundColor: Colors.black,
-                        textButtonColor: Colors.white,
-                        height: 45,
-                        label: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.cancel),
-                            SizedBox(width: 5),
-                            Text('Cancelar'),
-                          ],
-                        ),
-                        onPressed: () {
-                          Modular.to.pop('dialog');
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 15),
-                    BlocBuilder<SendBloc, SendStates>(
-                        bloc: widget.sendBloc,
-                        builder: (context, state) {
-                          return BlocBuilder<LicenseBloc, LicenseStates>(
-                              bloc: licenseBloc,
-                              builder: (context, stateLicense) {
-                                return Expanded(
-                                  child: MyElevatedButtonWidget(
-                                    height: 45,
-                                    label: state is LoadingSend ||
-                                            stateLicense is LoadingLicense
-                                        ? const SizedBox(
-                                            width: 20,
-                                            height: 20,
-                                            child: CircularProgressIndicator(),
-                                          )
-                                        : Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: const [
-                                              Icon(Icons.send),
-                                              SizedBox(width: 5),
-                                              Text('Enviar'),
-                                            ],
-                                          ),
-                                    onPressed: state is! LoadingSend &&
-                                            stateLicense is! LoadingLicense
-                                        ? () {
-                                            licenseBloc.add(
-                                              VerifyLicenseEvent(
-                                                deviceInfo: GlobalDevice
-                                                    .instance.deviceInfo,
-                                              ),
-                                            );
-                                          }
-                                        : null,
-                                  ),
-                                );
-                              });
-                        }),
-                  ],
-                )
-              ],
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: AlertDialog(
+        contentPadding: const EdgeInsets.all(12),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Enviar coletas para o servidor?',
+              style: AppTheme.textStyles.titleAlertDialog,
+              textAlign: TextAlign.center,
             ),
-          ),
-        );
-      }),
+            const Divider(),
+            Row(
+              children: [
+                Expanded(
+                  child: MyElevatedButtonWidget(
+                    backgroundColor: Colors.black,
+                    textButtonColor: Colors.white,
+                    height: 45,
+                    label: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.cancel),
+                        SizedBox(width: 5),
+                        Text('Cancelar'),
+                      ],
+                    ),
+                    onPressed: () {
+                      Modular.to.pop('dialog');
+                    },
+                  ),
+                ),
+                const SizedBox(width: 15),
+                BlocBuilder<SendBloc, SendStates>(
+                    bloc: widget.sendBloc,
+                    builder: (context, state) {
+                      return BlocBuilder<LicenseBloc, LicenseStates>(
+                          bloc: licenseBloc,
+                          builder: (context, stateLicense) {
+                            return Expanded(
+                              child: MyElevatedButtonWidget(
+                                height: 45,
+                                label: state is LoadingSend ||
+                                        stateLicense is LoadingLicense
+                                    ? const SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: CircularProgressIndicator(),
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Icon(Icons.send),
+                                          SizedBox(width: 5),
+                                          Text('Enviar'),
+                                        ],
+                                      ),
+                                onPressed: state is! LoadingSend &&
+                                        stateLicense is! LoadingLicense
+                                    ? () {
+                                        licenseBloc.add(
+                                          VerifyLicenseEvent(
+                                            deviceInfo: GlobalDevice
+                                                .instance.deviceInfo,
+                                          ),
+                                        );
+                                      }
+                                    : null,
+                              ),
+                            );
+                          });
+                    }),
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
 }
