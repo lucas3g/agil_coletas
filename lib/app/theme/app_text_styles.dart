@@ -32,7 +32,7 @@ class AppTextStylesDefault implements AppTextStyles {
   TextStyle get labelLogin => GoogleFonts.montserrat(
         fontSize: 14,
         fontWeight: FontWeight.bold,
-        color: AppTheme.colors.labelLogin,
+        color: AppTheme.colors.preto,
       );
 
   @override

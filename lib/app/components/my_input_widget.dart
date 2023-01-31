@@ -95,21 +95,6 @@ class MyInputWidget extends StatelessWidget {
             color: Colors.grey.shade700,
           ),
         ),
-        // enabledBorder: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(10),
-        //   borderSide: BorderSide(
-        //     color: AppTheme.colors.primary,
-        //   ),
-        // ),
-        // focusedBorder: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(10),
-        //   borderSide: BorderSide(
-        //     color: AppTheme.colors.primary,
-        //   ),
-        // ),
-        // labelStyle: const TextStyle(
-        //   color: Colors.black87,
-        // ),
       ),
     );
   }
