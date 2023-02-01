@@ -34,32 +34,49 @@ class _SplashPageState extends State<SplashPage> {
   late dynamic fun;
 
   Future init() async {
+    await _checkModuleReady();
+    await _delay();
+    await _initImpressoraBloc();
+    await _checkFuncionario();
+  }
+
+  Future _checkModuleReady() async {
     await Modular.isModuleReady<AppModule>();
+  }
 
+  Future _delay() async {
     await Future.delayed(const Duration(seconds: 1));
+  }
 
+  Future _initImpressoraBloc() async {
     impressoraBloc = Modular.get<ImpressoraBloc>();
-
     if (!GlobalImpressora.instance.impressora.address.contains('address')) {
       impressoraBloc.add(VerificaStatusImpressoraEvent());
     }
+  }
 
+  Future _checkFuncionario() async {
     final shared = Modular.get<ILocalStorage>();
-
     fun = shared.getData('funcionario');
 
     if (fun != null) {
-      licenseBloc = Modular.get<LicenseBloc>();
-
-      licenseBloc.add(
-          VerifyLicenseEvent(deviceInfo: GlobalDevice.instance.deviceInfo));
-
-      await BaixaTudoController.instance.baixaTudo.baixaTudo();
-
-      return Modular.to.navigate('/home/');
+      await _initLicenseBloc();
+      await _baixaTudo();
+      Modular.to.navigate('/home/');
+      return;
     }
 
     Modular.to.navigate('/auth/');
+  }
+
+  Future _initLicenseBloc() async {
+    licenseBloc = Modular.get<LicenseBloc>();
+    licenseBloc
+        .add(VerifyLicenseEvent(deviceInfo: GlobalDevice.instance.deviceInfo));
+  }
+
+  Future _baixaTudo() async {
+    await BaixaTudoController.instance.baixaTudo.baixaTudo();
   }
 
   @override
