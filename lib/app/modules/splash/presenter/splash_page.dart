@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
 import 'package:agil_coletas/app/core_module/services/baixa_tudo/baixa_tudo_controller.dart';
@@ -50,9 +49,26 @@ class _SplashPageState extends State<SplashPage> {
 
   Future _initImpressoraBloc() async {
     impressoraBloc = Modular.get<ImpressoraBloc>();
+
     if (!GlobalImpressora.instance.impressora.address.contains('address')) {
       impressoraBloc.add(VerificaStatusImpressoraEvent());
     }
+
+    subImp = impressoraBloc.stream.listen((state) {
+      if (state is ImpressoraStatus) {
+        if (!state.status) {
+          impressoraBloc.add(
+            ConnectImpressoraEvent(
+              imp: GlobalImpressora.instance.impressora,
+            ),
+          );
+        }
+      }
+
+      if (state is SuccessConnectImpressora) {
+        impressoraBloc.add(SaveImpressoraLocalStorageEvent(imp: state.imp));
+      }
+    });
   }
 
   Future _checkFuncionario() async {
@@ -73,6 +89,12 @@ class _SplashPageState extends State<SplashPage> {
     licenseBloc = Modular.get<LicenseBloc>();
     licenseBloc
         .add(VerifyLicenseEvent(deviceInfo: GlobalDevice.instance.deviceInfo));
+
+    sub = licenseBloc.stream.listen((state) {
+      if (state is LicenseActive) {
+        licenseBloc.add(SaveLicenseEvent());
+      }
+    });
   }
 
   Future _baixaTudo() async {
@@ -85,31 +107,17 @@ class _SplashPageState extends State<SplashPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await init();
-
-      if (fun != null) {
-        sub = licenseBloc.stream.listen((state) {
-          if (state is LicenseActive) {
-            licenseBloc.add(SaveLicenseEvent());
-          }
-        });
-
-        subImp = impressoraBloc.stream.listen((state) {
-          if (state is ImpressoraStatus) {
-            if (!state.status) {
-              impressoraBloc.add(
-                ConnectImpressoraEvent(
-                  imp: GlobalImpressora.instance.impressora,
-                ),
-              );
-            }
-          }
-
-          if (state is SuccessConnectImpressora) {
-            impressoraBloc.add(SaveImpressoraLocalStorageEvent(imp: state.imp));
-          }
-        });
-      }
     });
+  }
+
+  @override
+  void dispose() {
+    if (fun != null) {
+      sub.cancel();
+    }
+    subImp.cancel();
+
+    super.dispose();
   }
 
   @override
