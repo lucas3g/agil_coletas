@@ -108,6 +108,10 @@ class _TiketsPageState extends State<TiketsPage> {
       if (state is SuccessCreateTiket || state is SuccessUpdateTikets) {
         widget.tiketBloc.add(GetTiketsEvent(codColeta: coleta.id));
       }
+
+      if (state is SuccessUpdateTikets) {
+        TiketController.atualizaColeta(state.tikets, coleta, widget.homeBloc);
+      }
     });
   }
 
@@ -197,11 +201,8 @@ class _TiketsPageState extends State<TiketsPage> {
                             ),
                             Expanded(
                               child: Text(
-                                TiketController.totalColetado(
-                                  tikets,
-                                  coleta,
-                                  widget.homeBloc,
-                                ).toString(),
+                                TiketController.totalColetado(tikets)
+                                    .toString(),
                                 style:
                                     AppTheme.textStyles.labelTotalColetadoBlack,
                               ),

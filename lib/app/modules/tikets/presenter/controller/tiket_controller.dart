@@ -69,16 +69,20 @@ class TiketController {
     );
   }
 
-  static int totalColetado(
-      List<Tiket> tikets, Coletas coleta, HomeBloc homeBloc) {
-    final result = tikets
-        .map((e) => e.quantidade.value)
-        .reduce((value, element) => value + element);
-
-    coleta.setTotalColetado(result);
-
-    homeBloc.add(UpdateColetaEvent(coleta: coleta));
+  static int totalColetado(List<Tiket> tickets) {
+    final result = tickets
+        .map((ticket) => ticket.quantidade.value)
+        .reduce((sum, value) => sum + value);
 
     return result;
+  }
+
+  static atualizaColeta(
+      List<Tiket> tickets, Coletas coleta, HomeBloc homeBloc) {
+    final total = totalColetado(tickets);
+
+    coleta.setTotalColetado(total);
+
+    homeBloc.add(UpdateColetaEvent(coleta: coleta));
   }
 }
