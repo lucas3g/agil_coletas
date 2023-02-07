@@ -115,32 +115,32 @@ class HomeDatasource implements IHomeDatasource {
           ];
         }
       }
+
+      final response = await clientHttp.post(
+        '$baseUrl/setJson/$cnpjSemCaracter/coletas/${DateTime.now().day}${DateTime.now().month}${DateTime.now().year}_${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}',
+        data: jsonEncode(coletasWithTikets),
+      );
+
+      if (response.statusCode != 200) {
+        throw MyException(
+            message:
+                'Erro ao tentar enviar coletas para o servidor ${response.statusCode}');
+      }
+
+      for (var coleta in coletas) {
+        final paramUpdate = SQLFliteUpdateParam(
+          table: Tables.coletas,
+          id: coleta.id,
+          fieldsWithValues: {'ENVIADA': 1},
+        );
+
+        await storage.update(paramUpdate);
+      }
+
+      return true;
     } else {
       return false;
     }
-
-    final response = await clientHttp.post(
-      '$baseUrl/setJson/$cnpjSemCaracter/coletas/${DateTime.now().day}${DateTime.now().month}${DateTime.now().year}_${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}',
-      data: jsonEncode(coletasWithTikets),
-    );
-
-    if (response.statusCode != 200) {
-      throw MyException(
-          message:
-              'Erro ao tentar enviar coletas para o servidor ${response.statusCode}');
-    }
-
-    for (var coleta in coletas) {
-      final paramUpdate = SQLFliteUpdateParam(
-        table: Tables.coletas,
-        id: coleta.id,
-        fieldsWithValues: {'ENVIADA': 1},
-      );
-
-      await storage.update(paramUpdate);
-    }
-
-    return true;
   }
 
   @override
