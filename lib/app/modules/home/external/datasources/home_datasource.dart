@@ -11,7 +11,6 @@ import 'package:agil_coletas/app/core_module/types/my_exception.dart';
 import 'package:agil_coletas/app/modules/home/domain/entities/coletas.dart';
 import 'package:agil_coletas/app/modules/home/infra/adapters/coletas_adapter.dart';
 import 'package:agil_coletas/app/modules/home/infra/datasources/home_datasource.dart';
-import 'package:agil_coletas/app/modules/tikets/domain/entities/tiket.dart';
 import 'package:agil_coletas/app/modules/tikets/infra/adapters/tiket_adapter.dart';
 
 class HomeDatasource implements IHomeDatasource {
@@ -68,79 +67,62 @@ class HomeDatasource implements IHomeDatasource {
 
   @override
   Future<bool> sendColetaToServer() async {
-    const filterColetas = FilterEntity(
-        name: 'ENVIADA',
-        value: 0,
-        type: FilterType.equal,
-        operator: FilterOperator.and);
+    // Get coletas that match filter criteria
+    final coletasResult = await storage.getPerFilter(
+        SQLFliteGetPerFilterParam(table: Tables.coletas, columns: [], filters: {
+      const FilterEntity(
+          name: 'ENVIADA',
+          value: 0,
+          type: FilterType.equal,
+          operator: FilterOperator.and),
+      const FilterEntity(
+          name: 'FINALIZADA',
+          value: 1,
+          type: FilterType.equal,
+          operator: FilterOperator.and),
+    }));
 
-    const filterFinalizada = FilterEntity(
-        name: 'FINALIZADA',
-        value: 1,
-        type: FilterType.equal,
-        operator: FilterOperator.and);
+    // Convert result to Coletas objects
+    final coletas = coletasResult.map(ColetasAdapter.fromMap).toList();
 
-    final paramGetColetas = SQLFliteGetPerFilterParam(
-        table: Tables.coletas,
-        columns: [],
-        filters: {filterColetas, filterFinalizada});
+    // Get coletas with tickets
+    final coletasWithTikets = await Future.wait(coletas.map((coleta) async {
+      final tiketsResult = await storage.getColetasTikets(coleta.id);
+      final listTikets = tiketsResult.map(TiketAdapter.fromMap).toList();
+      return {
+        ...ColetasAdapter.toMapServer(coleta),
+        'tikets': TiketAdapter.toListJsonServer(listTikets)
+      };
+    }));
 
-    final result = await storage.getPerFilter(paramGetColetas);
-
-    final List<Coletas> coletas = [];
-
-    for (var coleta in result) {
-      coletas.add(ColetasAdapter.fromMap(coleta));
-    }
-
-    List<Map<String, dynamic>> coletasWithTikets = [];
-
-    if (coletas.isNotEmpty) {
-      for (var coleta in coletas) {
-        final tikets = await storage.getColetasTikets(coleta.id);
-
-        final List<Tiket> listTikets = [];
-
-        for (var tiket in tikets) {
-          listTikets.add(TiketAdapter.fromMap(tiket));
-        }
-
-        if (tikets.isNotEmpty) {
-          coletasWithTikets = [
-            {
-              ...ColetasAdapter.toMapServer(coleta),
-              'tikets': TiketAdapter.toListJsonServer(listTikets)
-            },
-            ...coletasWithTikets
-          ];
-        }
-      }
-
-      final response = await clientHttp.post(
-        '$baseUrl/setJson/$cnpjSemCaracter/coletas/${DateTime.now().day}${DateTime.now().month}${DateTime.now().year}_${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}',
-        data: jsonEncode(coletasWithTikets),
-      );
-
+    if (coletasWithTikets.isNotEmpty) {
+      final response = await postColetasToServer(coletasWithTikets);
       if (response.statusCode != 200) {
         throw MyException(
             message:
                 'Erro ao tentar enviar coletas para o servidor ${response.statusCode}');
       }
 
-      for (var coleta in coletas) {
-        final paramUpdate = SQLFliteUpdateParam(
-          table: Tables.coletas,
-          id: coleta.id,
-          fieldsWithValues: {'ENVIADA': 1},
-        );
-
-        await storage.update(paramUpdate);
-      }
+      // Update ENVIADA field for coletas
+      await Future.wait(coletas.map((coleta) async {
+        await storage.update(SQLFliteUpdateParam(
+            table: Tables.coletas,
+            id: coleta.id,
+            fieldsWithValues: {'ENVIADA': 1}));
+      }));
 
       return true;
     }
 
     return false;
+  }
+
+  Future<BaseResponse> postColetasToServer(
+      List<Map<String, dynamic>> coletas) async {
+    return await clientHttp.post(
+      '$baseUrl/setJson/$cnpjSemCaracter/coletas/${DateTime.now().day}${DateTime.now().month}${DateTime.now().year}_${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}',
+      data: jsonEncode(coletas),
+    );
   }
 
   @override

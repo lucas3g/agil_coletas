@@ -145,7 +145,7 @@ class _SendColetaServerModalWidgetState
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: AlertDialog(
-        contentPadding: const EdgeInsets.all(12),
+        contentPadding: const EdgeInsets.all(20),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
