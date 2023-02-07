@@ -138,9 +138,9 @@ class HomeDatasource implements IHomeDatasource {
       }
 
       return true;
-    } else {
-      return false;
     }
+
+    return false;
   }
 
   @override
