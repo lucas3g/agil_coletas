@@ -178,7 +178,10 @@ class ImpressorasService implements IBlueThermalPrinter {
 
       printer.printCustom('-------------------------------', 1, 0);
 
-      printer.printCustom('Total: ${coleta.totalColetado}', 1, 0);
+      final totalColetado = tikets.fold(
+          0, (previousValue, e) => previousValue + e.quantidade.value);
+
+      printer.printCustom('Total: $totalColetado', 1, 0);
 
       printer.printNewLine();
       printer.printNewLine();

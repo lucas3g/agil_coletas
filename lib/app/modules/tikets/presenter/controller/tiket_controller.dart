@@ -70,9 +70,8 @@ class TiketController {
   }
 
   static int totalColetado(List<Tiket> tickets) {
-    final result = tickets
-        .map((ticket) => ticket.quantidade.value)
-        .reduce((sum, value) => sum + value);
+    final result = tickets.fold(
+        0, (previousValue, e) => previousValue + e.quantidade.value);
 
     return result;
   }
