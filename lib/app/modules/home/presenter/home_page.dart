@@ -124,7 +124,7 @@ class _HomePageState extends State<HomePage> {
       body: UpgradeAlert(
         upgrader: Upgrader(
           durationUntilAlertAgain: const Duration(days: 1),
-          minAppVersion: '39.0.0',
+          minAppVersion: '40.0.0',
         ),
         child: Padding(
           padding: const EdgeInsets.all(kPadding),
