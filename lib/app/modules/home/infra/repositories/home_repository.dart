@@ -26,9 +26,9 @@ class HomeRepository implements IHomeRepository {
         coletas.add(ColetasAdapter.fromMap(coleta));
       }
 
-      coletas.sort((a, b) => ("${a.finalizada}${a.enviada}${b.dataMov}")
+      coletas.sort((a, b) => ("${a.finalizada}${a.enviada}${a.dataMov}")
           .toString()
-          .compareTo(("${b.finalizada}${b.enviada}${a.dataMov}").toString()));
+          .compareTo(("${b.finalizada}${b.enviada}${b.dataMov}").toString()));
 
       return coletas.toSuccess();
     } on DioError catch (e) {
