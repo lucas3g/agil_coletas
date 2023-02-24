@@ -129,6 +129,7 @@ class _IniciaColetaModalWidgetState extends State<IniciaColetaModalWidget> {
               onChanged: (e) => coleta.km.setInicial(int.tryParse(e) ?? 0),
               keyboardType: TextInputType.number,
               inputFormaters: [FilteringTextInputFormatter.digitsOnly],
+              maxLength: 8,
             ),
           ),
           const SizedBox(height: 10),

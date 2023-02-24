@@ -98,6 +98,7 @@ class _TiketModalFinalizarWidgetState extends State<TiketModalFinalizarWidget> {
                   widget.coleta.setKM(kmFim: int.tryParse(e) ?? 0),
               keyboardType: TextInputType.number,
               inputFormaters: [FilteringTextInputFormatter.digitsOnly],
+              maxLength: 8,
             ),
             const SizedBox(height: 5),
             const Divider(),
